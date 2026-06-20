@@ -1,103 +1,214 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #eef2ff;
-  --color-primary-100: #e0e7ff;
-  --color-primary-200: #c7d2fe;
-  --color-primary-300: #a5b4fc;
-  --color-primary-400: #818cf8;
-  --color-primary-500: #6366f1;
-  --color-primary-600: #4f46e5;
-  --color-primary-700: #4338ca;
-  --color-primary-800: #3730a3;
-  --color-primary-900: #312e81;
-  --color-primary-950: #1e1b4b;
-
-  --color-surface: #fafafa;
-  --color-surface-elevated: #ffffff;
-  --color-border: #e5e7eb;
-  --color-text-primary: #0a0a0b;
-  --color-text-secondary: #52525b;
-  --color-text-muted: #a1a1aa;
-
-  --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-body: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --color-cream: #faf7f2;
+  --color-paper: #f5f0e8;
+  --color-ink: #2c2416;
+  --color-ink-light: #5c4f3a;
+  --color-ink-muted: #8a7b66;
+  --color-accent: #c45c26;
+  --color-accent-light: #e8a87c;
+  --color-accent-dark: #9a4520;
+  --color-sage: #6b7f6e;
+  --color-sage-light: #a8b8aa;
+  --color-gold: #b8860b;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+  --font-sans: "PingFang SC", "Helvetica Neue", system-ui, sans-serif;
 }
 
 @layer base {
   html {
+    -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    font-family: var(--font-body);
-    color: var(--color-text-primary);
-    background: var(--color-surface-elevated);
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.025em;
-  }
-
-  ::selection {
-    background: var(--color-primary-200);
-    color: var(--color-primary-900);
+    @apply bg-cream text-ink antialiased;
+    font-family: var(--font-sans);
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    background: linear-gradient(135deg, var(--color-primary-600), #7c3aed);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .font-serif {
+    font-family: var(--font-serif);
   }
 
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, #e5e7eb33 1px, transparent 1px),
-      linear-gradient(to bottom, #e5e7eb33 1px, transparent 1px);
-    background-size: 64px 64px;
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  .bg-gradient-radial {
-    background: radial-gradient(ellipse 80% 50% at 50% -20%, var(--color-primary-100), transparent);
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
-}
 
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(24px); }
-  to   { opacity: 1; transform: translateX(0); }
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fade-in-up {
-  animation: fade-in-up 0.6s ease-out both;
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
 .animate-fade-in {
-  animation: fade-in 0.5s ease-out both;
+  animation: fade-in 0.4s ease-out forwards;
 }
 
-.animate-slide-in-right {
-  animation: slide-in-right 0.5s ease-out both;
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out forwards;
 }
 
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
+.animate-toast {
+  animation: toast-in 0.4s ease-out forwards;
+}
+
+.prose-reading {
+  font-family: var(--font-serif);
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  font-size: 1.05rem;
+}
+
+.prose-reading p {
+  margin-bottom: 1.2em;
+  text-indent: 2em;
+}
+
+.prose-reading p:first-child {
+  text-indent: 0;
+}
+
+/* Markdown in chat cards */
+.markdown-body {
+  font-family: var(--font-serif);
+  line-height: 1.85;
+  color: var(--color-ink-light);
+  font-size: 0.925rem;
+}
+
+.markdown-body h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 1em 0 0.5em;
+}
+
+.markdown-body h3 {
+  font-size: 0.975rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0.8em 0 0.4em;
+}
+
+.markdown-body p {
+  margin-bottom: 0.75em;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0.5em 0 0.75em 1.2em;
+}
+
+.markdown-body li {
+  margin-bottom: 0.3em;
+}
+
+.markdown-body blockquote {
+  border-left: 3px solid var(--color-accent-light);
+  padding-left: 0.8em;
+  margin: 0.75em 0;
+  color: var(--color-ink-muted);
+  font-style: italic;
+}
+
+.markdown-body strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+/* E-book reader typography */
+.ebook-prose.markdown-body {
+  font-size: clamp(17px, 4.2vw, 20px);
+  line-height: 1.95;
+  letter-spacing: 0.03em;
+  color: #2a2520;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.ebook-prose.markdown-body h1 {
+  font-size: clamp(15px, 3.8vw, 18px);
+  font-weight: 500;
+  color: #8a7f72;
+  margin: 0 0 1.2em;
+  text-align: center;
+  letter-spacing: 0.08em;
+  text-indent: 0;
+}
+
+.ebook-prose.markdown-body h2 {
+  font-size: clamp(18px, 4.5vw, 22px);
+  margin-top: 0;
+  margin-bottom: 0.8em;
+  text-align: left;
+}
+
+.ebook-prose.markdown-body h3 {
+  font-size: clamp(17px, 4.2vw, 20px);
+  margin-top: 1em;
+}
+
+.ebook-prose.markdown-body p {
+  margin-bottom: 0.9em;
+  text-indent: 2em;
+}
+
+.ebook-prose.markdown-body p:first-child,
+.ebook-prose.markdown-body h2 + p,
+.ebook-prose.markdown-body h3 + p {
+  text-indent: 0;
+}
+
+.ebook-prose.markdown-body blockquote {
+  border-left-color: #c4b8a8;
+  text-indent: 0;
+}
+
+.ebook-page {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (min-width: 768px) {
+  .ebook-page {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ebook-page {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
