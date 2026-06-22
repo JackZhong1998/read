@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import AppLogo from "@/components/AppLogo";
 import { useApp } from "@/context/AppContext";
+import { AGE_GROUP_OPTIONS } from "@/lib/discover-data";
+import { saveDiscoverPreference } from "@/lib/storage";
 import type { AgeGroup, Gender } from "@/lib/types";
 
 const GENDERS: { value: Gender; label: string }[] = [
@@ -11,27 +14,25 @@ const GENDERS: { value: Gender; label: string }[] = [
   { value: "other", label: "其他" },
 ];
 
-const AGE_GROUPS: { value: AgeGroup; label: string }[] = [
-  { value: "18-25", label: "18-25 岁" },
-  { value: "26-35", label: "26-35 岁" },
-  { value: "36-45", label: "36-45 岁" },
-  { value: "46-55", label: "46-55 岁" },
-  { value: "55+", label: "55 岁以上" },
-];
-
 export default function OnboardingPage() {
   const router = useRouter();
   const { profile, setProfile, hydrated } = useApp();
 
   useEffect(() => {
     if (hydrated && profile) {
-      router.replace("/chat");
+      router.replace("/discover");
     }
   }, [hydrated, profile, router]);
 
   const handleComplete = (gender: Gender, ageGroup: AgeGroup) => {
-    setProfile({ gender, ageGroup, createdAt: Date.now() });
-    router.push("/chat");
+    const createdAt = Date.now();
+    setProfile({ gender, ageGroup, createdAt });
+    saveDiscoverPreference({
+      gender: gender === "female" ? "female" : "male",
+      ageGroup,
+      savedAt: createdAt,
+    });
+    router.push("/discover");
   };
 
   if (!hydrated) {
@@ -46,8 +47,9 @@ export default function OnboardingPage() {
     <div className="flex min-h-dvh flex-col bg-cream">
       <div className="flex flex-1 flex-col items-center justify-center px-6 py-12">
         <div className="mb-12 text-center animate-slide-up">
-          <div className="mb-4 text-5xl">📖</div>
-          <h1 className="font-serif text-3xl font-bold text-ink md:text-4xl">速读</h1>
+          <div className="mb-5 flex justify-center">
+            <AppLogo size="lg" />
+          </div>
           <p className="mt-3 text-ink-muted">AI 帮你找到值得读的书，读懂每一本</p>
         </div>
 
@@ -101,14 +103,15 @@ function OnboardingForm({
             返回
           </button>
           <h2 className="mb-6 text-center font-serif text-xl text-ink">你的年龄段</h2>
-          <div className="flex flex-col gap-3">
-            {AGE_GROUPS.map((a) => (
+          <div className="flex max-h-[50dvh] flex-col gap-3 overflow-y-auto pr-1">
+            {AGE_GROUP_OPTIONS.map((a) => (
               <button
                 key={a.value}
                 onClick={() => gender && onComplete(gender, a.value)}
-                className="rounded-2xl border border-paper bg-white px-6 py-4 text-lg text-ink transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
+                className="rounded-2xl border border-paper bg-white px-6 py-4 text-left transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
               >
-                {a.label}
+                <span className="text-lg text-ink">{a.label}</span>
+                <span className="ml-2 text-sm text-ink-muted">{a.range}</span>
               </button>
             ))}
           </div>

@@ -5,6 +5,7 @@ interface SuggestionChipsProps {
   onSelect: (text: string) => void;
   loading?: boolean;
   variant?: "chips" | "reader";
+  padded?: boolean;
 }
 
 export default function SuggestionChips({
@@ -12,7 +13,9 @@ export default function SuggestionChips({
   onSelect,
   loading,
   variant = "chips",
+  padded = true,
 }: SuggestionChipsProps) {
+  const chipPad = padded ? "px-4" : "";
   if (loading) {
     if (variant === "reader") {
       return (
@@ -24,7 +27,7 @@ export default function SuggestionChips({
       );
     }
     return (
-      <div className="flex gap-2 overflow-x-auto px-4 py-2 scrollbar-hide">
+      <div className={`flex gap-2 overflow-x-auto py-2 scrollbar-hide ${chipPad}`}>
         {[1, 2, 3].map((i) => (
           <div key={i} className="h-9 w-28 shrink-0 animate-pulse rounded-full bg-paper" />
         ))}
@@ -54,7 +57,7 @@ export default function SuggestionChips({
   }
 
   return (
-    <div className="flex gap-2 overflow-x-auto px-4 py-2 scrollbar-hide">
+    <div className={`flex gap-2 overflow-x-auto py-2 scrollbar-hide ${chipPad}`}>
       {suggestions.map((s, i) => (
         <button
           key={i}

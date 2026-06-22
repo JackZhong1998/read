@@ -25,8 +25,7 @@ const TYPE_COLORS = {
 };
 
 export default function ContentCard({ type, content, book, onFullscreen, streaming }: ContentCardProps) {
-  const displayContent =
-    type === "jingdu" || type === "shendu" ? normalizeReadingContent(content) : content;
+  const displayContent = normalizeReadingContent(content);
 
   return (
     <div className={`animate-fade-in overflow-hidden rounded-2xl border ${TYPE_COLORS[type]} shadow-sm`}>

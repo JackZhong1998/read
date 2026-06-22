@@ -4,20 +4,14 @@ import { randomUUID } from "crypto";
 import {
   detectReadingIntent,
   extractBookFromContext,
-  extractStreamingRecommendFields,
   isReadingContentLeak,
   normalizeChatContent,
-  parseRecommendResponse,
 } from "@/lib/content-utils";
-import {
-  callMoonshotStream,
-  parseJsonFromText,
-  READING_TOOLS,
-  type ChatMessageParam,
-} from "@/lib/moonshot";
-import { fillPrompt, RECOMMEND_SYSTEM_PROMPT } from "@/lib/prompts";
-import { generateJingdu, generateShendu } from "@/lib/reading-tools";
-import type { BookInfo, ReadBook, RecommendStreamEvent, UserProfile } from "@/lib/types";
+import { AGENT_TOOLS, callMoonshotStream, type ChatMessageParam } from "@/lib/moonshot";
+import { compressToolResult } from "@/lib/memory";
+import { fillPrompt, MAIN_AGENT_SYSTEM_PROMPT } from "@/lib/prompts";
+import { generateJingdu, generateShendu, generateTuijian } from "@/lib/reading-tools";
+import type { BookInfo, ReadBook, ReaderMemory, RecommendStreamEvent, UserProfile } from "@/lib/types";
 
 export interface RecommendResultItem {
   type: "chat" | "rec" | "jingdu" | "shendu";
@@ -27,52 +21,101 @@ export interface RecommendResultItem {
 
 export type { RecommendStreamEvent };
 
+type AgentToolName = "tuijian" | "jingdu" | "shendu";
+type ContentMessageType = "rec" | "jingdu" | "shendu";
+
+interface ChatSlot {
+  id: string;
+  length: number;
+  finished: boolean;
+}
+
 class StreamMessageEmitter {
-  private activeIds = new Map<"chat" | "rec" | "jingdu" | "shendu", string>();
-  private lengths = new Map<"chat" | "rec" | "jingdu" | "shendu", number>();
-  private finishedTypes = new Set<"chat" | "rec" | "jingdu" | "shendu">();
+  private chatSlots: ChatSlot[] = [];
+  private activeChatIndex = -1;
+  private contentActiveIds = new Map<ContentMessageType, string>();
+  private contentLengths = new Map<ContentMessageType, number>();
+  private contentFinished = new Set<ContentMessageType>();
 
   constructor(private emit: (event: RecommendStreamEvent) => void) {}
 
-  pushDelta(
-    type: "chat" | "rec" | "jingdu" | "shendu",
-    nextText: string,
-    book?: BookInfo
-  ) {
-    if (this.finishedTypes.has(type)) return;
+  private ensureActiveChat(): ChatSlot {
+    const current = this.chatSlots[this.activeChatIndex];
+    if (current && !current.finished) return current;
 
-    const prevLen = this.lengths.get(type) ?? 0;
+    const id = randomUUID();
+    const slot: ChatSlot = { id, length: 0, finished: false };
+    this.chatSlots.push(slot);
+    this.activeChatIndex = this.chatSlots.length - 1;
+    this.emit({ event: "message_start", id, type: "chat" });
+    return slot;
+  }
+
+  pushChatDelta(nextText: string) {
+    const slot = this.ensureActiveChat();
+    if (nextText.length <= slot.length) return;
+
+    const delta = nextText.slice(slot.length);
+    slot.length = nextText.length;
+    this.emit({ event: "message_delta", id: slot.id, delta });
+  }
+
+  finishActiveChat(content: string): RecommendResultItem | null {
+    const trimmed = content.trim();
+    if (!trimmed) return null;
+
+    const slot = this.ensureActiveChat();
+    if (slot.finished) return null;
+
+    this.emit({ event: "message_done", id: slot.id, type: "chat", content: trimmed });
+    slot.finished = true;
+
+    return { type: "chat", content: trimmed };
+  }
+
+  /** 工具调用前放弃未完成的空 chat 流，避免与收尾话合并 */
+  abandonIncompleteChat() {
+    const slot = this.chatSlots[this.activeChatIndex];
+    if (!slot || slot.finished) return;
+    slot.finished = true;
+    this.activeChatIndex = -1;
+  }
+
+  pushContentDelta(type: ContentMessageType, nextText: string, book?: BookInfo) {
+    if (this.contentFinished.has(type)) return;
+
+    const prevLen = this.contentLengths.get(type) ?? 0;
     if (nextText.length <= prevLen) return;
 
     const delta = nextText.slice(prevLen);
-    this.lengths.set(type, nextText.length);
+    this.contentLengths.set(type, nextText.length);
 
-    let id = this.activeIds.get(type);
+    let id = this.contentActiveIds.get(type);
     if (!id) {
       id = randomUUID();
-      this.activeIds.set(type, id);
+      this.contentActiveIds.set(type, id);
       this.emit({ event: "message_start", id, type, book });
     }
 
     this.emit({ event: "message_delta", id, delta });
   }
 
-  finish(
-    type: "chat" | "rec" | "jingdu" | "shendu",
+  finishContent(
+    type: ContentMessageType,
     content: string,
     book?: BookInfo
   ): RecommendResultItem | null {
     const trimmed = content.trim();
-    if (!trimmed || this.finishedTypes.has(type)) return null;
+    if (!trimmed || this.contentFinished.has(type)) return null;
 
-    const id = this.activeIds.get(type) ?? randomUUID();
-    if (!this.activeIds.has(type)) {
+    const id = this.contentActiveIds.get(type) ?? randomUUID();
+    if (!this.contentActiveIds.has(type)) {
       this.emit({ event: "message_start", id, type, book });
     }
     this.emit({ event: "message_done", id, type, content: trimmed, book });
-    this.activeIds.delete(type);
-    this.lengths.delete(type);
-    this.finishedTypes.add(type);
+    this.contentActiveIds.delete(type);
+    this.contentLengths.delete(type);
+    this.contentFinished.add(type);
 
     return { type, content: trimmed, book };
   }
@@ -85,13 +128,13 @@ function emitChatFromRaw(
 ) {
   const chatText = normalizeChatContent(raw);
   if (!chatText || isReadingContentLeak(chatText)) return;
-  const item = streamEmitter.finish("chat", chatText);
+  const item = streamEmitter.finishActiveChat(chatText);
   if (item) results.push(item);
 }
 
 async function runTool(
-  fnName: "jingdu" | "shendu",
-  book: BookInfo,
+  fnName: AgentToolName,
+  args: { direction?: string; title?: string; author?: string; intro?: string },
   profile: UserProfile,
   readBooks: ReadBook[],
   results: RecommendResultItem[],
@@ -100,12 +143,44 @@ async function runTool(
   messages: ChatMessageParam[],
   toolCallId: string
 ) {
+  if (fnName === "tuijian") {
+    const direction = args.direction?.trim();
+    if (!direction) return;
+
+    emit({ event: "tool_loading", tool: "tuijian" });
+
+    let displayBuffer = "";
+    const onDisplayDelta = (delta: string) => {
+      displayBuffer += delta;
+      streamEmitter.pushContentDelta("rec", displayBuffer);
+    };
+
+    const toolResult = await generateTuijian(profile, direction, readBooks ?? [], onDisplayDelta);
+    const resultItem = streamEmitter.finishContent("rec", toolResult);
+    if (resultItem) results.push(resultItem);
+
+    messages.push({
+      role: "tool",
+      tool_call_id: toolCallId,
+      name: fnName,
+      content: compressToolResult("tuijian", toolResult),
+    });
+    return;
+  }
+
+  const book: BookInfo = {
+    title: args.title ?? "",
+    author: args.author ?? "",
+    intro: args.intro,
+  };
+  if (!book.title || !book.author) return;
+
   emit({ event: "tool_loading", tool: fnName, book });
 
   let displayBuffer = "";
   const onDisplayDelta = (delta: string) => {
     displayBuffer += delta;
-    streamEmitter.pushDelta(fnName, displayBuffer, book);
+    streamEmitter.pushContentDelta(fnName, displayBuffer, book);
   };
 
   const toolResult =
@@ -113,17 +188,15 @@ async function runTool(
       ? await generateJingdu(profile, book, readBooks ?? [], onDisplayDelta)
       : await generateShendu(profile, book, readBooks ?? [], onDisplayDelta);
 
-  const resultItem = streamEmitter.finish(fnName, toolResult, book);
+  const resultItem = streamEmitter.finishContent(fnName, toolResult, book);
   if (resultItem) results.push(resultItem);
 
   messages.push({
     role: "tool",
     tool_call_id: toolCallId,
     name: fnName,
-    content: toolResult,
+    content: compressToolResult(fnName, toolResult, book),
   });
-
-  return toolResult;
 }
 
 export async function runRecommendWithEvents(
@@ -131,9 +204,15 @@ export async function runRecommendWithEvents(
   history: Array<{ role: "user" | "assistant"; content: string }>,
   profile: UserProfile,
   readBooks: ReadBook[],
-  emit: (event: RecommendStreamEvent) => void
+  emit: (event: RecommendStreamEvent) => void,
+  readerMemory?: ReaderMemory | null
 ): Promise<RecommendResultItem[]> {
-  const systemPrompt = fillPrompt(RECOMMEND_SYSTEM_PROMPT, profile, readBooks ?? []);
+  const systemPrompt = fillPrompt(
+    MAIN_AGENT_SYSTEM_PROMPT,
+    profile,
+    readBooks ?? [],
+    readerMemory
+  );
   const messages: ChatMessageParam[] = [
     { role: "system", content: systemPrompt },
     ...(history ?? []).map((h) => ({
@@ -148,31 +227,24 @@ export async function runRecommendWithEvents(
   let iterations = 0;
   const maxIterations = 5;
   const executedTools = new Set<string>();
-  let hadToolResults = false;
+  let pendingFollowUp = false;
 
   while (iterations < maxIterations) {
     iterations++;
 
     let accumulated = "";
-    const prevFields = { chat: "", rec: "" };
+    const isFollowUpRound = pendingFollowUp;
+    pendingFollowUp = false;
 
     const assistantMsg = await callMoonshotStream(messages, {
-      tools: READING_TOOLS,
+      tools: isFollowUpRound ? undefined : AGENT_TOOLS,
       disableThinking: true,
-      maxTokens: 4096,
+      maxTokens: isFollowUpRound ? 256 : 1024,
       onContentDelta: (delta) => {
         accumulated += delta;
-        const fields = extractStreamingRecommendFields(accumulated);
-        if (fields.chat.length > prevFields.chat.length) {
-          const chatText = normalizeChatContent(fields.chat);
-          if (chatText && !isReadingContentLeak(chatText)) {
-            streamEmitter.pushDelta("chat", chatText);
-            prevFields.chat = fields.chat;
-          }
-        }
-        if (fields.rec.length > prevFields.rec.length) {
-          streamEmitter.pushDelta("rec", fields.rec);
-          prevFields.rec = fields.rec;
+        const chatText = normalizeChatContent(accumulated);
+        if (chatText && !isReadingContentLeak(chatText)) {
+          streamEmitter.pushChatDelta(chatText);
         }
       },
     });
@@ -180,7 +252,7 @@ export async function runRecommendWithEvents(
     const finishReason = assistantMsg.finish_reason;
     const toolCalls = assistantMsg.tool_calls;
 
-    if (finishReason === "tool_calls" && toolCalls?.length) {
+    if (!isFollowUpRound && finishReason === "tool_calls" && toolCalls?.length) {
       messages.push({
         role: "assistant",
         content: assistantMsg.content ?? "",
@@ -188,30 +260,32 @@ export async function runRecommendWithEvents(
         reasoning_content: assistantMsg.reasoning_content,
       });
 
-      if (assistantMsg.content?.trim()) {
-        emitChatFromRaw(assistantMsg.content.trim(), results, streamEmitter);
+      const rawChat = (assistantMsg.content ?? accumulated).trim();
+      if (rawChat) {
+        emitChatFromRaw(rawChat, results, streamEmitter);
+      } else {
+        streamEmitter.abandonIncompleteChat();
       }
 
       for (const toolCall of toolCalls) {
-        const fnName = toolCall.function.name as "jingdu" | "shendu";
+        const fnName = toolCall.function.name as AgentToolName;
         const args = JSON.parse(toolCall.function.arguments) as {
-          title: string;
-          author: string;
+          direction?: string;
+          title?: string;
+          author?: string;
           intro?: string;
         };
-        const book: BookInfo = {
-          title: args.title,
-          author: args.author,
-          intro: args.intro,
-        };
 
-        const toolKey = `${fnName}:${book.title}:${book.author}`;
+        const toolKey =
+          fnName === "tuijian"
+            ? `tuijian:${args.direction ?? ""}`
+            : `${fnName}:${args.title}:${args.author}`;
         if (executedTools.has(toolKey)) continue;
         executedTools.add(toolKey);
 
         await runTool(
           fnName,
-          book,
+          args,
           profile,
           readBooks,
           results,
@@ -220,35 +294,23 @@ export async function runRecommendWithEvents(
           messages,
           toolCall.id
         );
-        hadToolResults = true;
       }
-      break;
+
+      pendingFollowUp = true;
+      continue;
     }
 
-    const content = assistantMsg.content ?? accumulated;
-    const parsed = parseRecommendResponse(content) ?? parseJsonFromText<{
-      chat: string;
-      rec: string;
-      book?: BookInfo;
-    }>(content);
-
-    if (parsed) {
-      if (parsed.chat?.trim()) {
-        const chatText = normalizeChatContent(parsed.chat.trim());
-        if (chatText && !isReadingContentLeak(chatText)) {
-          const item = streamEmitter.finish("chat", chatText);
-          if (item) results.push(item);
-        }
-      }
-      if (parsed.rec?.trim() && !hadToolResults) {
-        const item = streamEmitter.finish("rec", parsed.rec.trim(), parsed.book);
-        if (item) results.push(item);
-      }
-    } else if (content.trim() && !hadToolResults) {
-      emitChatFromRaw(content.trim(), results, streamEmitter);
+    const content = (assistantMsg.content ?? accumulated).trim();
+    if (content) {
+      messages.push({
+        role: "assistant",
+        content,
+        reasoning_content: assistantMsg.reasoning_content,
+      });
+      emitChatFromRaw(content, results, streamEmitter);
     }
 
-    if (!hadToolResults) {
+    if (!isFollowUpRound && !pendingFollowUp) {
       const intent = detectReadingIntent(message);
       if (intent) {
         const book = extractBookFromContext(message, history, readBooks);
@@ -256,19 +318,41 @@ export async function runRecommendWithEvents(
           const toolKey = `${intent}:${book.title}:${book.author}`;
           if (!executedTools.has(toolKey)) {
             executedTools.add(toolKey);
+            const fallbackId = `fallback-${toolKey}`;
+
+            messages.push({
+              role: "assistant",
+              content: "",
+              tool_calls: [
+                {
+                  id: fallbackId,
+                  type: "function",
+                  function: {
+                    name: intent,
+                    arguments: JSON.stringify({
+                      title: book.title,
+                      author: book.author,
+                      intro: book.intro,
+                    }),
+                  },
+                },
+              ],
+            });
+
             await runTool(
               intent,
-              book,
+              { title: book.title, author: book.author, intro: book.intro },
               profile,
               readBooks,
               results,
               streamEmitter,
               emit,
               messages,
-              `fallback-${toolKey}`
+              fallbackId
             );
-            hadToolResults = true;
-            break;
+
+            pendingFollowUp = true;
+            continue;
           }
         }
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { ChatMessage } from "@/lib/types";
 import {
   buildPagedBook,
@@ -8,8 +8,10 @@ import {
   getChapterAtPage,
   getLastAssistantChat,
   resolveNavPage,
+  type PageBook,
   type ReaderNavIntent,
 } from "@/lib/reader-utils";
+import { destroyPaginationMeasurer } from "@/lib/reader-pagination";
 import MarkdownContent from "./MarkdownContent";
 import ReaderTailPanel from "./ReaderTailPanel";
 import ToolLoadingBanner from "./ToolLoadingBanner";
@@ -20,7 +22,7 @@ interface EbookReaderProps {
   suggestions?: string[];
   suggestionsLoading?: boolean;
   chatLoading?: boolean;
-  toolLoading?: { tool: "jingdu" | "shendu"; bookTitle?: string } | null;
+  toolLoading?: { tool: "tuijian" | "jingdu" | "shendu"; bookTitle?: string } | null;
   onSendMessage?: (text: string) => void;
   onClose: () => void;
   onReachEnd?: (msg: ChatMessage) => void;
@@ -38,8 +40,8 @@ const KIND_ICONS: Record<string, string> = {
 };
 
 function readViewport() {
-  if (typeof window === "undefined") return { w: 375, h: 667 };
-  return { w: window.innerWidth, h: window.innerHeight };
+  if (typeof window === "undefined") return { w: 375, h: 560 };
+  return { w: window.innerWidth, h: Math.max(400, window.innerHeight - 120) };
 }
 
 export default function EbookReader({
@@ -58,13 +60,15 @@ export default function EbookReader({
   const [currentPage, setCurrentPage] = useState(0);
   const [showChrome, setShowChrome] = useState(true);
   const [showTOC, setShowTOC] = useState(false);
-  const [viewport, setViewport] = useState(readViewport);
+  const [pageLayout, setPageLayout] = useState(readViewport);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const markedChaptersRef = useRef<Set<string>>(new Set());
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const appliedNavSeqRef = useRef(0);
   /** 记录最近一次导航目标，分页重算后重新定位 */
   const navAnchorRef = useRef<{ chapterId: string; seq: number } | null>(null);
   const userPagedRef = useRef(false);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const lastAssistantChat = useMemo(() => getLastAssistantChat(messages), [messages]);
 
@@ -77,13 +81,26 @@ export default function EbookReader({
     [messages, withWaitingChapter, withTailPage]
   );
 
-  const { pages, chapterStarts, tailPageIndex } = useMemo(
+  const charPagedBook = useMemo(
     () =>
-      buildPagedBook(chapters, viewport, {
+      buildPagedBook(chapters, pageLayout, {
         includeTailPage: withTailPage,
+        useDomMeasure: false,
       }),
-    [chapters, viewport, withTailPage]
+    [chapters, pageLayout, withTailPage]
   );
+
+  const [domPagedBook, setDomPagedBook] = useState<PageBook | null>(null);
+
+  useEffect(() => {
+    setDomPagedBook(
+      buildPagedBook(chapters, pageLayout, {
+        includeTailPage: withTailPage,
+      })
+    );
+  }, [chapters, pageLayout, withTailPage]);
+
+  const { pages, chapterStarts, tailPageIndex } = domPagedBook ?? charPagedBook;
 
   const totalPages = pages.length;
   const isTailPage = withTailPage && tailPageIndex !== undefined && currentPage === tailPageIndex;
@@ -118,12 +135,34 @@ export default function EbookReader({
     [chapters, chapterStarts, tailPageIndex]
   );
 
-  useEffect(() => {
-    const update = () => setViewport(readViewport());
+  useLayoutEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+      if (w > 0 && h > 0) {
+        setPageLayout((prev) => (prev.w === w && prev.h === h ? prev : { w, h }));
+      }
+    };
+
     update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
     window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
   }, []);
+
+  useEffect(
+    () => () => {
+      queueMicrotask(() => destroyPaginationMeasurer());
+    },
+    []
+  );
 
   // 导航意图：seq 变化时定位；章节尚未就绪则等待下一帧
   useEffect(() => {
@@ -137,7 +176,7 @@ export default function EbookReader({
     if (!anchor || userPagedRef.current) return;
     if (navIntent?.seq !== anchor.seq) return;
     applyNavToChapter(anchor.chapterId, anchor.seq);
-  }, [chapterStarts, pages.length, viewport, navIntent?.seq, applyNavToChapter]);
+  }, [chapterStarts, pages.length, pageLayout, navIntent?.seq, applyNavToChapter]);
 
   useEffect(() => {
     setCurrentPage((p) => (p >= pages.length ? Math.max(0, pages.length - 1) : p));
@@ -251,6 +290,36 @@ export default function EbookReader({
     else if (ratio > 0.72) goNext();
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start) return;
+
+    const touch = e.changedTouches[0];
+    if (!touch) return;
+
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+
+    if (absDx < 48 || absDx < absDy * 1.2) return;
+
+    flashChrome();
+    if (dx < 0) {
+      if (isOverlayPage) return;
+      goNext();
+    } else if (canGoPrev) {
+      goPrev();
+    }
+  };
+
   const tocTitle = isTailPage
     ? "💬 对话"
     : currentChapter
@@ -334,18 +403,35 @@ export default function EbookReader({
         </div>
       )}
 
-      <div className="relative flex flex-1 overflow-hidden" onClick={handleTap}>
-        <div className="ebook-page mx-auto flex h-full w-full flex-col px-3 pt-8 pb-4 sm:px-5 md:max-w-2xl md:px-6 md:pt-10 lg:max-w-3xl">
-          {isWaitingChapter ? (
+      <div
+        className="relative flex flex-1 overflow-hidden"
+        onClick={handleTap}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="ebook-page relative mx-auto flex h-full min-h-0 w-full flex-col px-3 pt-8 pb-4 sm:px-5 md:max-w-2xl md:px-6 md:pt-10 lg:max-w-3xl">
+          <div
+            ref={viewportRef}
+            className="flex min-h-0 flex-1 flex-col overflow-hidden"
+            aria-hidden={isOverlayPage}
+          >
+            {!isOverlayPage && (
+              <div className="h-full min-h-0 overflow-hidden">
+                <MarkdownContent content={pages[currentPage] ?? ""} className="ebook-prose" />
+              </div>
+            )}
+          </div>
+
+          {isWaitingChapter && (
             <div
-              className="relative flex flex-1 flex-col items-center justify-center gap-4"
+              className="absolute inset-0 z-[1] flex flex-col items-center justify-center gap-4 bg-[#f3efe6] px-3 pt-8 pb-4 sm:px-5 md:px-6 md:pt-10"
               onClick={(e) => e.stopPropagation()}
             >
               {canGoPrev && (
                 <button
                   type="button"
                   onClick={goPrev}
-                  className="absolute left-0 top-0 text-xs text-[#8a7f72] hover:text-[#3d362e]"
+                  className="absolute left-3 top-8 text-xs text-[#8a7f72] hover:text-[#3d362e] sm:left-5 md:left-6 md:top-10"
                 >
                   ← 上一页
                 </button>
@@ -357,8 +443,13 @@ export default function EbookReader({
                 <LoadingDots text="正在思考..." />
               )}
             </div>
-          ) : isTailPage && onSendMessage ? (
-            <div className="flex min-h-0 flex-1 flex-col" onClick={(e) => e.stopPropagation()}>
+          )}
+
+          {isTailPage && onSendMessage && (
+            <div
+              className="absolute inset-0 z-[1] flex min-h-0 flex-col bg-[#f3efe6] px-3 pt-8 pb-4 sm:px-5 md:px-6 md:pt-10"
+              onClick={(e) => e.stopPropagation()}
+            >
               <ReaderTailPanel
                 lastChat={lastAssistantChat}
                 suggestions={suggestions}
@@ -366,13 +457,7 @@ export default function EbookReader({
                 chatLoading={chatLoading}
                 onSelectSuggestion={onSendMessage}
                 onSend={onSendMessage}
-                onGoPrev={goPrev}
-                canGoPrev={canGoPrev}
               />
-            </div>
-          ) : (
-            <div className="flex flex-1 flex-col justify-start overflow-hidden">
-              <MarkdownContent content={pages[currentPage] ?? ""} className="ebook-prose" />
             </div>
           )}
         </div>

@@ -1,7 +1,7 @@
 import { parseJsonFromText } from "./json-utils";
 import type { BookInfo } from "./types";
 
-export const AI_NAME = "读书先生";
+export const AI_NAME = "阅尘先生";
 
 interface ReadingContentJson {
   content?: string;
@@ -78,11 +78,11 @@ export function extractPartialJsonStringField(raw: string, field: string): strin
   return result;
 }
 
-/** 流式输出时提取可读正文（精读/深读 JSON 的 content 字段） */
+/** 流式输出时提取可读正文（精读/深读/推荐 JSON 的 content 字段） */
 export function extractStreamingReadingDisplay(raw: string): string {
   const partial = extractPartialJsonStringField(raw, "content");
   if (partial !== null) return partial;
-  return raw.trim();
+  return "";
 }
 
 /** 流式输出时提取推荐 JSON 的 chat / rec 字段 */

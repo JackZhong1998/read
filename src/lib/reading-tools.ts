@@ -5,7 +5,7 @@ import {
   normalizeReadingContent,
 } from "@/lib/content-utils";
 import { callMoonshotStream, type ChatMessageParam } from "@/lib/moonshot";
-import { fillPrompt, JINGDU_SYSTEM_PROMPT, SHENDU_SYSTEM_PROMPT } from "@/lib/prompts";
+import { fillPrompt, JINGDU_SYSTEM_PROMPT, RECOMMEND_CONTENT_SYSTEM_PROMPT, SHENDU_SYSTEM_PROMPT } from "@/lib/prompts";
 import type { ReadBook, UserProfile } from "@/lib/types";
 
 async function generateReadingContent(
@@ -38,6 +38,20 @@ async function generateReadingContent(
 
   const raw = response.content || accumulated;
   return normalizeReadingContent(raw);
+}
+
+export async function generateTuijian(
+  profile: UserProfile,
+  direction: string,
+  readBooks: ReadBook[] = [],
+  onDisplayDelta?: (delta: string) => void
+): Promise<string> {
+  const systemPrompt = fillPrompt(RECOMMEND_CONTENT_SYSTEM_PROMPT, profile, readBooks);
+  const userContent = `请根据以下方向为用户推荐书籍：
+
+推荐方向：${direction}`;
+
+  return generateReadingContent(systemPrompt, userContent, 4096, onDisplayDelta);
 }
 
 export async function generateJingdu(

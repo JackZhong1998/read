@@ -1,4 +1,5 @@
 import { AI_NAME, isReadingContentLeak, normalizeChatContent, normalizeReadingContent } from "./content-utils";
+import { paginateMarkdownByHeight } from "./reader-pagination";
 import type { ChatMessage } from "./types";
 
 export type ChapterKind = "dialogue" | "rec" | "jingdu" | "shendu" | "waiting";
@@ -199,6 +200,19 @@ export function paginateParagraphs(paragraphs: string[], charsPerPage: number): 
   let current = "";
 
   for (const p of paragraphs) {
+    if (p.length > charsPerPage) {
+      if (current.trim()) {
+        pages.push(current.trim());
+        current = "";
+      }
+      let offset = 0;
+      while (offset < p.length) {
+        pages.push(p.slice(offset, offset + charsPerPage));
+        offset += charsPerPage;
+      }
+      continue;
+    }
+
     const block = current ? `\n\n${p}` : p;
     if ((current + block).length > charsPerPage && current) {
       pages.push(current.trim());
@@ -209,6 +223,11 @@ export function paginateParagraphs(paragraphs: string[], charsPerPage: number): 
   }
   if (current.trim()) pages.push(current.trim());
   return pages.length ? pages : [""];
+}
+
+export interface ReaderLayout {
+  w: number;
+  h: number;
 }
 
 export function getCharsPerPage(width: number, height: number): number {
@@ -232,12 +251,13 @@ export interface PageBook {
 
 export function buildPagedBook(
   chapters: ReaderChapter[],
-  viewport: { w: number; h: number },
-  options?: { includeTailPage?: boolean; tailChat?: string }
+  layout: ReaderLayout,
+  options?: { includeTailPage?: boolean; tailChat?: string; useDomMeasure?: boolean }
 ): PageBook {
-  const chars = getCharsPerPage(viewport.w, viewport.h);
   const pages: string[] = [];
   const chapterStarts: Record<string, number> = {};
+  const useDomMeasure =
+    options?.useDomMeasure !== false && layout.h > 0 && layout.w > 0;
 
   for (const chapter of chapters) {
     chapterStarts[chapter.id] = pages.length;
@@ -246,8 +266,18 @@ export function buildPagedBook(
       continue;
     }
     const md = chapterToMarkdown(chapter);
-    const chapterPages = paginateParagraphs(splitParagraphs(md), chars);
-    pages.push(...chapterPages);
+    const charsPerPage = getCharsPerPage(layout.w, layout.h);
+    const charPages = paginateParagraphs(splitParagraphs(md), charsPerPage);
+    const chapterPages = useDomMeasure
+      ? paginateMarkdownByHeight(md, layout.h, layout.w)
+      : charPages;
+    // DOM 高度测量偶发失败时，退回字符分页，避免整章挤在一页
+    const domFailed =
+      useDomMeasure &&
+      chapterPages.length === 1 &&
+      charPages.length > 1 &&
+      md.length > charsPerPage * 0.5;
+    pages.push(...(domFailed ? charPages : chapterPages));
   }
 
   if (pages.length === 0) pages.push("");

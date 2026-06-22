@@ -154,6 +154,8 @@
   color: #2a2520;
   text-align: justify;
   hyphens: auto;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .ebook-prose.markdown-body h1 {

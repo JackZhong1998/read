@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import ChunkErrorRecovery from "@/components/ChunkErrorRecovery";
 import { AppProvider } from "@/context/AppContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "速读 - AI 智能阅读",
-  description: "AI 驱动的书籍推荐与速读体验",
+  description: "困惑共鸣，书籍解忧 — AI 驱动的精准荐书与速读体验",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="zh-CN">
       <body>
+        <ChunkErrorRecovery />
         <AppProvider>{children}</AppProvider>
       </body>
     </html>

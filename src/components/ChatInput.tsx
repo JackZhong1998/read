@@ -6,9 +6,10 @@ interface ChatInputProps {
   onSend: (text: string) => void;
   disabled?: boolean;
   placeholder?: string;
+  padded?: boolean;
 }
 
-export default function ChatInput({ onSend, disabled, placeholder }: ChatInputProps) {
+export default function ChatInput({ onSend, disabled, placeholder, padded = true }: ChatInputProps) {
   const [text, setText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -28,7 +29,9 @@ export default function ChatInput({ onSend, disabled, placeholder }: ChatInputPr
   };
 
   return (
-    <div className="border-t border-paper bg-white/90 backdrop-blur-sm px-4 py-3 safe-bottom">
+    <div
+      className={`bg-white/90 backdrop-blur-sm py-3 safe-bottom ${padded ? "border-t border-paper px-4" : ""}`}
+    >
       <div className="flex items-end gap-2">
         <textarea
           ref={inputRef}

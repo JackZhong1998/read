@@ -1,4 +1,12 @@
-import type { BookCache, ChatMessage, ReadBook, UserProfile } from "./types";
+import { normalizeAgeGroup } from "./discover-data";
+import type {
+  BookCache,
+  ChatMessage,
+  DiscoverPreference,
+  ReadBook,
+  ReaderMemory,
+  UserProfile,
+} from "./types";
 
 const KEYS = {
   profile: "speedread_profile",
@@ -7,6 +15,9 @@ const KEYS = {
   bookCache: "speedread_book_cache",
   readMode: "speedread_read_mode",
   suggestions: "speedread_suggestions",
+  readerMemory: "speedread_reader_memory",
+  pendingMessage: "speedread_pending_message",
+  discoverPreference: "speedread_discover_preference",
 } as const;
 
 function safeGet<T>(key: string): T | null {
@@ -29,11 +40,37 @@ function safeSet(key: string, value: unknown): void {
 }
 
 export function getProfile(): UserProfile | null {
-  return safeGet<UserProfile>(KEYS.profile);
+  const raw = safeGet<UserProfile & { ageGroup: string }>(KEYS.profile);
+  if (!raw) return null;
+  const ageGroup = normalizeAgeGroup(raw.ageGroup);
+  if (!ageGroup) return null;
+  if (ageGroup !== raw.ageGroup) {
+    const migrated = { ...raw, ageGroup };
+    saveProfile(migrated);
+    return migrated;
+  }
+  return raw as UserProfile;
 }
 
 export function saveProfile(profile: UserProfile): void {
   safeSet(KEYS.profile, profile);
+}
+
+export function getDiscoverPreference(): DiscoverPreference | null {
+  const raw = safeGet<DiscoverPreference & { ageGroup: string }>(KEYS.discoverPreference);
+  if (!raw) return null;
+  const ageGroup = normalizeAgeGroup(raw.ageGroup);
+  if (!ageGroup) return null;
+  if (ageGroup !== raw.ageGroup) {
+    const migrated = { ...raw, ageGroup };
+    saveDiscoverPreference(migrated);
+    return migrated;
+  }
+  return raw as DiscoverPreference;
+}
+
+export function saveDiscoverPreference(pref: DiscoverPreference): void {
+  safeSet(KEYS.discoverPreference, pref);
 }
 
 export function getMessages(): ChatMessage[] {
@@ -73,7 +110,8 @@ export function addReadBook(book: ReadBook): void {
 export function upsertReadBookFromMessage(
   book: { title: string; author: string; intro?: string },
   readType: "jingdu" | "shendu",
-  content: string
+  content: string,
+  essence?: string
 ): ReadBook {
   const entry: ReadBook = {
     id: `${book.title}::${book.author}::${readType}`,
@@ -82,6 +120,7 @@ export function upsertReadBookFromMessage(
     intro: book.intro,
     readType,
     content,
+    essence,
     readAt: Date.now(),
   };
   addReadBook(entry);
@@ -133,12 +172,65 @@ export function saveReadMode(mode: "page" | "scroll"): void {
   safeSet(KEYS.readMode, mode);
 }
 
-export function getSuggestions(): string[] {
-  return safeGet<string[]>(KEYS.suggestions) ?? [];
+export interface SuggestionsCache {
+  suggestions: string[];
+  updatedAt: number;
+  sourceType?: string;
 }
 
-export function saveSuggestions(suggestions: string[]): void {
-  safeSet(KEYS.suggestions, suggestions);
+export function getSuggestions(): string[] {
+  const raw = safeGet<string[] | SuggestionsCache>(KEYS.suggestions);
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  return raw.suggestions ?? [];
+}
+
+export function getSuggestionsCache(): SuggestionsCache | null {
+  const raw = safeGet<string[] | SuggestionsCache>(KEYS.suggestions);
+  if (!raw) return null;
+  if (Array.isArray(raw)) {
+    return raw.length ? { suggestions: raw, updatedAt: 0 } : null;
+  }
+  return raw.suggestions.length ? raw : null;
+}
+
+export function saveSuggestions(suggestions: string[], sourceType?: string): void {
+  if (!suggestions.length) return;
+  safeSet(KEYS.suggestions, {
+    suggestions,
+    updatedAt: Date.now(),
+    sourceType,
+  } satisfies SuggestionsCache);
+}
+
+export function getReaderMemory(): ReaderMemory | null {
+  const raw = safeGet<ReaderMemory>(KEYS.readerMemory);
+  if (!raw) return null;
+  return {
+    statedGoals: raw.statedGoals ?? [],
+    themes: raw.themes ?? [],
+    conversationNotes: raw.conversationNotes ?? [],
+    conversationSummary: raw.conversationSummary ?? "",
+    summarizedMessageCount: raw.summarizedMessageCount ?? 0,
+    bookInsights: raw.bookInsights ?? {},
+    updatedAt: raw.updatedAt ?? Date.now(),
+  };
+}
+
+export function saveReaderMemory(memory: ReaderMemory): void {
+  safeSet(KEYS.readerMemory, memory);
+}
+
+export function setPendingMessage(message: string): void {
+  safeSet(KEYS.pendingMessage, message);
+}
+
+export function consumePendingMessage(): string | null {
+  const message = safeGet<string>(KEYS.pendingMessage);
+  if (message && typeof window !== "undefined") {
+    localStorage.removeItem(KEYS.pendingMessage);
+  }
+  return message;
 }
 
 export function clearAllData(): void {

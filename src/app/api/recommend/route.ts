@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { runRecommendWithEvents } from "@/lib/recommend-runner";
-import type { ReadBook, RecommendStreamEvent, UserProfile } from "@/lib/types";
+import type { ReadBook, ReaderMemory, RecommendStreamEvent, UserProfile } from "@/lib/types";
 
 export const maxDuration = 120;
 
@@ -11,11 +11,12 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { message, history, profile, readBooks, stream } = body as {
+  const { message, history, profile, readBooks, readerMemory, stream } = body as {
     message: string;
     history: Array<{ role: "user" | "assistant"; content: string }>;
     profile: UserProfile;
     readBooks: ReadBook[];
+    readerMemory?: ReaderMemory | null;
     stream?: boolean;
   };
 
@@ -31,7 +32,14 @@ export async function POST(req: NextRequest) {
           controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
         };
         try {
-          await runRecommendWithEvents(message, history, profile, readBooks ?? [], send);
+          await runRecommendWithEvents(
+            message,
+            history,
+            profile,
+            readBooks ?? [],
+            send,
+            readerMemory
+          );
           send({ event: "done" });
         } catch (error) {
           console.error("Recommend stream error:", error);
@@ -52,11 +60,18 @@ export async function POST(req: NextRequest) {
 
   try {
     const results: Awaited<ReturnType<typeof runRecommendWithEvents>> = [];
-    await runRecommendWithEvents(message, history, profile, readBooks ?? [], (event) => {
+    await runRecommendWithEvents(
+      message,
+      history,
+      profile,
+      readBooks ?? [],
+      (event) => {
       if (event.event === "message_done") {
         results.push({ type: event.type, content: event.content, book: event.book });
       }
-    });
+    },
+      readerMemory
+    );
     return Response.json({ results });
   } catch (error) {
     console.error("Recommend API error:", error);

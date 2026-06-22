@@ -11,7 +11,7 @@ interface MessageListProps {
 
 export default function MessageList({ messages, onFullscreen }: MessageListProps) {
   return (
-    <div className="flex flex-col gap-4 px-4 py-4">
+    <div className="flex flex-col gap-4 py-4">
       {messages.map((msg) => {
         if (msg.role === "user") {
           return (

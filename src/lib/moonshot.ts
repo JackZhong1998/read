@@ -253,13 +253,32 @@ export async function callMoonshotStream(
   };
 }
 
-export const READING_TOOLS: ToolDefinition[] = [
+export const AGENT_TOOLS: ToolDefinition[] = [
+  {
+    type: "function",
+    function: {
+      name: "tuijian",
+      description:
+        "推荐书籍工具：根据推荐方向生成 5-8 本书的 Markdown 推荐散文。当用户需求已明确、需要给出书目推荐时必须调用此工具。不要在对话中直接写推荐列表。",
+      parameters: {
+        type: "object",
+        properties: {
+          direction: {
+            type: "string",
+            description:
+              "推荐方向描述：包含用户想读的主题、情绪、场景、诉求，以及你对读者需求的理解",
+          },
+        },
+        required: ["direction"],
+      },
+    },
+  },
   {
     type: "function",
     function: {
       name: "jingdu",
       description:
-        "精读工具：提取书籍精髓，生成800-1200字的精读内容。当用户说「精读」「速读」某本书时必须调用此工具。",
+        "精读工具：提取书籍精髓，生成 800-1200 字的精读内容。当用户说「精读」「速读」某本书时必须调用此工具。",
       parameters: {
         type: "object",
         properties: {
@@ -276,7 +295,7 @@ export const READING_TOOLS: ToolDefinition[] = [
     function: {
       name: "shendu",
       description:
-        "深读工具：对书籍进行1500-2500字的精细深度解读。当用户说「深读」「深度解读」「深度理解」某本书时必须调用此工具。",
+        "深读工具：对书籍进行 1500-2500 字的精细深度解读。当用户说「深读」「深度解读」「深度理解」某本书时必须调用此工具。",
       parameters: {
         type: "object",
         properties: {
@@ -289,3 +308,6 @@ export const READING_TOOLS: ToolDefinition[] = [
     },
   },
 ];
+
+/** @deprecated 使用 AGENT_TOOLS */
+export const READING_TOOLS = AGENT_TOOLS;

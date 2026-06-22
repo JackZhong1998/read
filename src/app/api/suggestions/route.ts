@@ -41,16 +41,31 @@ ${context}
     const parsed = parseJsonFromText<unknown>(content);
     let suggestions: string[] = [];
     if (Array.isArray(parsed)) {
-      suggestions = parsed.filter((s): s is string => typeof s === "string");
-    } else if (parsed && typeof parsed === "object" && parsed !== null && "suggestions" in parsed) {
-      const raw = (parsed as { suggestions: unknown }).suggestions;
+      suggestions = parsed.filter((s): s is string => typeof s === "string" && Boolean(s.trim()));
+    } else if (parsed && typeof parsed === "object" && parsed !== null) {
+      const obj = parsed as Record<string, unknown>;
+      const raw = obj.suggestions ?? obj.options ?? obj.items;
       if (Array.isArray(raw)) {
-        suggestions = raw.filter((s): s is string => typeof s === "string");
+        suggestions = raw.filter((s): s is string => typeof s === "string" && Boolean(s.trim()));
+      }
+    }
+
+    if (!suggestions.length) {
+      const inlineArray = content.match(/\[[\s\S]*?\]/);
+      if (inlineArray) {
+        try {
+          const fallback = JSON.parse(inlineArray[0]) as unknown;
+          if (Array.isArray(fallback)) {
+            suggestions = fallback.filter((s): s is string => typeof s === "string" && Boolean(s.trim()));
+          }
+        } catch {
+          // ignore
+        }
       }
     }
 
     return NextResponse.json({
-      suggestions: suggestions.slice(0, 4),
+      suggestions: suggestions.slice(0, 4).map((s) => s.trim()),
     });
   } catch (error) {
     console.error("Suggestions API error:", error);

@@ -1,16 +1,22 @@
 "use client";
 
 interface ToolLoadingProps {
-  tool: "jingdu" | "shendu";
+  tool: "tuijian" | "jingdu" | "shendu";
   bookTitle?: string;
 }
 
 const LABELS = {
+  tuijian: "书籍推荐",
   jingdu: "精读",
   shendu: "深读",
 };
 
 export default function ToolLoadingBanner({ tool, bookTitle }: ToolLoadingProps) {
+  const message =
+    tool === "tuijian"
+      ? "正在为你挑选书籍…"
+      : `正在为${bookTitle ? `《${bookTitle}》` : "这本书"}生成${LABELS[tool]}内容…`;
+
   return (
     <div className="flex items-center gap-3 px-4 py-3 animate-fade-in">
       <div className="flex gap-1">
@@ -22,9 +28,7 @@ export default function ToolLoadingBanner({ tool, bookTitle }: ToolLoadingProps)
           />
         ))}
       </div>
-      <span className="text-sm text-ink-muted">
-        正在为{bookTitle ? `《${bookTitle}》` : "这本书"}生成{LABELS[tool]}内容…
-      </span>
+      <span className="text-sm text-ink-muted">{message}</span>
     </div>
   );
 }

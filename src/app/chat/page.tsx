@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { useApp } from "@/context/AppContext";
+import AppNav from "@/components/AppNav";
 import ChatInput from "@/components/ChatInput";
 import EbookReader from "@/components/EbookReader";
 import LoadingDots from "@/components/LoadingDots";
@@ -11,19 +12,31 @@ import MessageList from "@/components/MessageList";
 import SuggestionChips from "@/components/SuggestionChips";
 import Toast from "@/components/Toast";
 import ToolLoadingBanner from "@/components/ToolLoadingBanner";
-import { TopicQuestionsCenter, TopicQuestionsDrawer } from "@/components/TopicQuestionsPanel";
+import { TopicQuestionsDrawer } from "@/components/TopicQuestionsPanel";
 import { getTopicQuestions } from "@/lib/questions";
 import { normalizeReadingContent, normalizeChatContent, isReadingContentLeak } from "@/lib/content-utils";
 import type { ReaderNavIntent } from "@/lib/reader-utils";
 import {
+  archiveOverflowMessages,
+  buildAgentHistory,
+  emptyReaderMemory,
+  extractEssence,
+  syncMemoryFromReadBooks,
+} from "@/lib/memory";
+import {
   cacheBookContent,
+  consumePendingMessage,
   getBookKey,
+  getReaderMemory,
   getSuggestions,
   markBookCompleted,
+  saveReaderMemory,
   saveSuggestions,
   upsertReadBookFromMessage,
 } from "@/lib/storage";
 import type { RecommendStreamEvent, ChatMessage } from "@/lib/types";
+
+const CHAT_SHELL = "mx-auto w-full max-w-lg px-5 sm:px-6 md:max-w-xl md:px-10 lg:max-w-2xl lg:px-12";
 
 export default function ChatPage() {
   const router = useRouter();
@@ -31,7 +44,7 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false);
   const [streamingActive, setStreamingActive] = useState(false);
   const [toolLoading, setToolLoading] = useState<{
-    tool: "jingdu" | "shendu";
+    tool: "tuijian" | "jingdu" | "shendu";
     bookTitle?: string;
   } | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -47,16 +60,102 @@ export default function ChatPage() {
 
   const hasConversation = messages.some((m) => m.role === "user");
 
-  useEffect(() => {
-    if (hydrated) {
-      setSuggestions(getSuggestions());
+  const suggestionsBootstrappedRef = useRef(false);
+  const memoryBootstrappedRef = useRef(false);
+
+  const updateSuggestions = useCallback((next: string[], sourceType?: string) => {
+    setSuggestions(next);
+    if (next.length > 0) {
+      saveSuggestions(next, sourceType);
     }
+  }, []);
+
+  const fetchSuggestions = useCallback(
+    async (contentType: string, lastContent: string, currentMessages: ChatMessage[]) => {
+      if (!profile) return;
+      setSuggestionsLoading(true);
+      try {
+        const context = currentMessages
+          .slice(-8)
+          .map((m) => {
+            const body =
+              m.type === "jingdu" || m.type === "shendu" || m.type === "rec"
+                ? normalizeReadingContent(m.content)
+                : m.content;
+            return `${m.role}/${m.type}: ${body.slice(0, 200)}`;
+          })
+          .join("\n");
+        const normalizedLast =
+          contentType === "jingdu" || contentType === "shendu" || contentType === "rec"
+            ? normalizeReadingContent(lastContent)
+            : lastContent;
+        const res = await fetch("/api/suggestions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            context: context + "\n" + normalizedLast,
+            profile,
+            contentType,
+            readBooks,
+          }),
+        });
+        if (!res.ok) {
+          console.error("Suggestions API failed:", res.status);
+          setSuggestions(getSuggestions());
+          return;
+        }
+        const data = (await res.json()) as { suggestions?: string[] };
+        const next = data.suggestions ?? [];
+        if (next.length > 0) {
+          updateSuggestions(next, contentType);
+        } else {
+          setSuggestions(getSuggestions());
+        }
+      } catch (error) {
+        console.error("Suggestions fetch error:", error);
+        setSuggestions(getSuggestions());
+      } finally {
+        setSuggestionsLoading(false);
+      }
+    },
+    [profile, readBooks, updateSuggestions]
+  );
+
+  useEffect(() => {
+    if (!hydrated) return;
+    setSuggestions(getSuggestions());
   }, [hydrated]);
 
-  const updateSuggestions = useCallback((next: string[]) => {
-    setSuggestions(next);
-    saveSuggestions(next);
-  }, []);
+  useEffect(() => {
+    if (!hydrated || memoryBootstrappedRef.current) return;
+    memoryBootstrappedRef.current = true;
+
+    let memory = getReaderMemory() ?? emptyReaderMemory();
+    memory = archiveOverflowMessages(memory, messages);
+    memory = syncMemoryFromReadBooks(memory, readBooks);
+    saveReaderMemory(memory);
+  }, [hydrated, messages, readBooks]);
+
+  useEffect(() => {
+    if (!hydrated || !profile || suggestionsBootstrappedRef.current) return;
+    suggestionsBootstrappedRef.current = true;
+
+    if (getSuggestions().length > 0) return;
+
+    const lastAssistant = [...messages]
+      .reverse()
+      .find((m) => m.role === "assistant" && !m.streaming);
+    if (!lastAssistant) return;
+
+    const content =
+      lastAssistant.type === "jingdu" ||
+      lastAssistant.type === "shendu" ||
+      lastAssistant.type === "rec"
+        ? normalizeReadingContent(lastAssistant.content)
+        : lastAssistant.content;
+
+    void fetchSuggestions(lastAssistant.type, content, messages);
+  }, [hydrated, profile, messages, fetchSuggestions]);
 
   useEffect(() => {
     if (hydrated && !profile) {
@@ -82,53 +181,25 @@ export default function ChatPage() {
     setReaderNav({ chapterId, seq: readerNavSeqRef.current });
   }, []);
 
-  const fetchSuggestions = useCallback(
-    async (contentType: string, lastContent: string, currentMessages: ChatMessage[]) => {
-      if (!profile) return;
-      setSuggestionsLoading(true);
-      try {
-        const context = currentMessages
-          .slice(-8)
-          .map((m) => {
-            const body =
-              m.type === "jingdu" || m.type === "shendu"
-                ? normalizeReadingContent(m.content)
-                : m.content;
-            return `${m.role}/${m.type}: ${body.slice(0, 200)}`;
-          })
-          .join("\n");
-        const normalizedLast =
-          contentType === "jingdu" || contentType === "shendu"
-            ? normalizeReadingContent(lastContent)
-            : lastContent;
-        const res = await fetch("/api/suggestions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            context: context + "\n" + normalizedLast,
-            profile,
-            contentType,
-            readBooks,
-          }),
-        });
-        const data = await res.json();
-        updateSuggestions(data.suggestions ?? []);
-      } catch {
-        updateSuggestions([]);
-      } finally {
-        setSuggestionsLoading(false);
-      }
+  const persistMemoryArchive = useCallback(
+    (msgs: ChatMessage[]) => {
+      let memory = archiveOverflowMessages(getReaderMemory() ?? emptyReaderMemory(), msgs);
+      memory = syncMemoryFromReadBooks(memory, readBooks);
+      saveReaderMemory(memory);
+      return memory;
     },
-    [profile, readBooks, updateSuggestions]
+    [readBooks]
   );
 
   const syncReadBook = useCallback(
     (item: { type: string; content: string; book?: ChatMessage["book"] }) => {
       if (!item.book || (item.type !== "jingdu" && item.type !== "shendu")) return;
+      const essence = extractEssence(item.type as "jingdu" | "shendu", item.content);
       const entry = upsertReadBookFromMessage(
         item.book,
         item.type as "jingdu" | "shendu",
-        item.content
+        item.content,
+        essence
       );
       markBookAsRead(entry);
     },
@@ -256,12 +327,17 @@ export default function ChatPage() {
     if (error.message === "Failed to fetch" || error.name === "AbortError") {
       return "网络连接中断，请重试";
     }
+    if (/服务暂时不可用/.test(error.message)) {
+      return "服务正在编译，请稍后重试";
+    }
     return error.message;
   };
 
   const isRetryableNetworkError = (error: unknown): boolean => {
     if (!(error instanceof Error)) return false;
-    return error.message === "Failed to fetch" || error.name === "AbortError";
+    if (error.message === "Failed to fetch" || error.name === "AbortError") return true;
+    if (/服务暂时不可用|服务正在编译/.test(error.message)) return true;
+    return false;
   };
 
   const consumeRecommendStream = async (
@@ -307,11 +383,13 @@ export default function ChatPage() {
       };
       let currentMessages = [...messages, userMsg];
       setMessages(currentMessages);
+
+      persistMemoryArchive(currentMessages);
+
       setLoading(true);
       setStreamingActive(false);
       setToolLoading(null);
       setSuggestions([]);
-      saveSuggestions([]);
 
       if (fromReader) {
         setReaderWaiting(true);
@@ -320,22 +398,16 @@ export default function ChatPage() {
 
       let readerNavigated = false;
 
-      const history = currentMessages.map((m) => ({
-        role: m.role,
-        content:
-          m.type === "chat" || m.role === "user"
-            ? m.content
-            : `[${m.type}] ${(m.type === "jingdu" || m.type === "shendu"
-                ? normalizeReadingContent(m.content)
-                : m.content
-              ).slice(0, 80)}...(正文已生成，勿重复输出)`,
-      }));
+      const history = buildAgentHistory(currentMessages);
+
+      const readerMemory = getReaderMemory() ?? emptyReaderMemory();
 
       const requestPayload = {
         message: text,
         history,
         profile,
         readBooks,
+        readerMemory,
         stream: true,
       };
 
@@ -347,8 +419,14 @@ export default function ChatPage() {
         });
 
         if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error ?? "请求失败");
+          let errMsg = `服务暂时不可用 (${res.status})`;
+          try {
+            const err = await res.json();
+            errMsg = err.error ?? errMsg;
+          } catch {
+            // dev 模式下 HMR 可能返回 HTML 错误页
+          }
+          throw new Error(errMsg);
         }
 
         let lastItem: { type: string; content: string } | null = null;
@@ -356,7 +434,7 @@ export default function ChatPage() {
 
         await consumeRecommendStream(res, (event) => {
           if (event.event === "tool_loading") {
-            setToolLoading({ tool: event.tool, bookTitle: event.book.title });
+            setToolLoading({ tool: event.tool, bookTitle: event.book?.title });
           } else if (event.event === "message_start") {
             setToolLoading(null);
             setStreamingActive(true);
@@ -415,7 +493,7 @@ export default function ChatPage() {
           result = await runOnce();
         } catch (firstError) {
           if (!isRetryableNetworkError(firstError)) throw firstError;
-          await new Promise((r) => setTimeout(r, 400));
+          await new Promise((r) => setTimeout(r, 800));
           result = await runOnce();
         }
 
@@ -429,11 +507,13 @@ export default function ChatPage() {
         const sugItem = result.sugSource ?? result.lastItem;
         if (sugItem) {
           const sugContent =
-            sugItem.type === "jingdu" || sugItem.type === "shendu"
+            sugItem.type === "jingdu" || sugItem.type === "shendu" || sugItem.type === "rec"
               ? normalizeReadingContent(sugItem.content)
               : sugItem.content;
           await fetchSuggestions(sugItem.type, sugContent, currentMessages);
         }
+
+        persistMemoryArchive(currentMessages);
       } catch (error) {
         setMessages([
           ...currentMessages,
@@ -452,8 +532,18 @@ export default function ChatPage() {
         setReaderWaiting(false);
       }
     },
-    [profile, loading, readBooks, messages, setMessages, fetchSuggestions, finalizeAssistantMessage, appendStreamingDelta, startStreamingMessage, findNavChapterId, requestReaderNav]
+    [profile, loading, readBooks, messages, setMessages, fetchSuggestions, finalizeAssistantMessage, appendStreamingDelta, startStreamingMessage, findNavChapterId, requestReaderNav, persistMemoryArchive]
   );
+
+  const pendingSentRef = useRef(false);
+  useEffect(() => {
+    if (!hydrated || !profile || pendingSentRef.current || loading) return;
+    const pending = consumePendingMessage();
+    if (pending) {
+      pendingSentRef.current = true;
+      void sendMessage(pending);
+    }
+  }, [hydrated, profile, loading, sendMessage]);
 
   const handleReachEnd = useCallback(
     (msg: ChatMessage) => {
@@ -486,34 +576,30 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-dvh flex-col bg-cream">
-      <header className="flex items-center justify-between border-b border-paper bg-white/90 px-4 py-3 backdrop-blur-sm safe-top">
-        <div>
-          <h1 className="font-serif text-lg font-bold text-ink">速读</h1>
-          <p className="text-xs text-ink-muted">已读 {readBooks.length} 篇</p>
-        </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setShowQuestionDrawer(true)}
-            className="rounded-full border border-paper px-3 py-1.5 text-xs text-ink-muted hover:border-accent hover:text-accent"
-          >
-            推荐问题
-          </button>
-          <button
-            onClick={() => router.push("/read")}
-            className="rounded-full border border-paper px-3 py-1.5 text-xs text-ink-muted hover:border-accent hover:text-accent"
-          >
-            已读书目
-          </button>
-        </div>
-      </header>
+      <AppNav subtitle={`已读 ${readBooks.length} 篇`} />
 
       <div ref={scrollRef} className="flex flex-1 flex-col overflow-y-auto">
+        <div className={CHAT_SHELL}>
         {!hasConversation && !loading ? (
-          <TopicQuestionsCenter
-            questions={questions}
-            onSelect={(q) => sendMessage(q.prompt)}
-            disabled={loading}
-          />
+          <div className="flex flex-1 flex-col items-center justify-center px-2 py-12">
+            <div className="mb-6 text-center">
+              <div className="mb-3 text-4xl">🌿</div>
+              <p className="font-serif text-lg text-ink-light">从一个困惑开始</p>
+              <p className="mt-1 text-sm text-ink-muted">在发现页找到共鸣，或直接输入你的问题</p>
+            </div>
+            <button
+              onClick={() => router.push("/discover")}
+              className="mb-4 rounded-full bg-accent px-6 py-3 text-sm text-white hover:bg-accent-dark"
+            >
+              去发现解忧书单
+            </button>
+            <button
+              onClick={() => setShowQuestionDrawer(true)}
+              className="text-sm text-ink-muted underline-offset-2 hover:text-accent hover:underline"
+            >
+              查看我的年龄段困惑
+            </button>
+          </div>
         ) : (
           <>
             <MessageList
@@ -529,16 +615,20 @@ export default function ChatPage() {
             {loading && !toolLoading && !streamingActive && <LoadingDots text="正在思考..." />}
           </>
         )}
+        </div>
       </div>
 
       {!readerOpen && (
         <div className="border-t border-paper bg-white/95 backdrop-blur-sm">
+          <div className={CHAT_SHELL}>
           <SuggestionChips
             suggestions={suggestions}
             onSelect={sendMessage}
             loading={suggestionsLoading}
+            padded={false}
           />
-          <ChatInput onSend={sendMessage} disabled={loading} />
+          <ChatInput onSend={sendMessage} disabled={loading} padded={false} />
+          </div>
         </div>
       )}
 

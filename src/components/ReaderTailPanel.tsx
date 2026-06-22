@@ -11,11 +11,9 @@ interface ReaderTailPanelProps {
   chatLoading?: boolean;
   onSelectSuggestion: (text: string) => void;
   onSend: (text: string) => void;
-  onGoPrev?: () => void;
-  canGoPrev?: boolean;
 }
 
-/** 内容章节之后的固定对话页：读书先生最后一句话 + Sug + 输入框 */
+/** 内容章节之后的固定对话页：阅尘先生最后一句话 + Sug + 输入框 */
 export default function ReaderTailPanel({
   lastChat,
   suggestions,
@@ -23,21 +21,9 @@ export default function ReaderTailPanel({
   chatLoading,
   onSelectSuggestion,
   onSend,
-  onGoPrev,
-  canGoPrev,
 }: ReaderTailPanelProps) {
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-[#f3efe6]">
-      {canGoPrev && onGoPrev && (
-        <button
-          type="button"
-          onClick={onGoPrev}
-          className="mb-3 shrink-0 self-start text-xs text-[#8a7f72] hover:text-[#3d362e]"
-        >
-          ← 上一页
-        </button>
-      )}
-
       {lastChat ? (
         <div className="mb-4 shrink-0">
           <div className="flex justify-start">
