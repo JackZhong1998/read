@@ -37,7 +37,7 @@ export function buildBookPrompt(bookTitle: string, context?: string): string {
 export function buildQuizPrompt(bookTitle: string, quizTitle: string): string {
   const title = bookTitle.replace(/[《》]/g, "");
   const theme = quizTitle.replace(/^3\s*分钟测一测[：:]\s*/, "");
-  return `我想读《${title}》，帮我做总结一下这本书吗？`;
+  return `我想读这个主题的书：${theme}`;
 }
 
 export function buildJingduPrompt(bookTitle: string, chapter?: string): string {
