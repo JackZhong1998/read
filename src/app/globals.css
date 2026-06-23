@@ -12,7 +12,7 @@
   --color-sage: #6b7f6e;
   --color-sage-light: #a8b8aa;
   --color-gold: #b8860b;
-  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+  --font-serif: "Songti SC", "STSong", "SimSun", "Noto Serif SC", "Source Han Serif SC", serif;
   --font-sans: "PingFang SC", "Helvetica Neue", system-ui, sans-serif;
 }
 
@@ -146,16 +146,17 @@
   font-weight: 600;
 }
 
-/* E-book reader typography — 标准阅读主题 */
+/* E-book reader typography — 宋体长文阅读主题 */
 .ebook-prose.markdown-body {
-  font-size: clamp(17px, 4.2vw, 19px);
-  line-height: 1.65;
-  letter-spacing: 0;
+  font-size: clamp(18px, 4.8vw, 20px);
+  line-height: 1.85;
+  letter-spacing: 0.04em;
   color: #2a2520;
   text-align: justify;
   text-justify: inter-character;
   max-height: 100%;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 .ebook-prose.markdown-body h1 {
@@ -208,16 +209,7 @@
   -webkit-user-select: none;
 }
 
-@media (min-width: 768px) {
-  .ebook-page {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .ebook-page {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
+.ebook-reader {
+  width: 100%;
+  max-width: 100vw;
 }
