@@ -1,0 +1,196 @@
+{
+  "gender": "male",
+  "ageGroup": "50+",
+  "header": {
+    "title": "50+ 岁 · 男生专属精读",
+    "subtitle": "少读一点，但每一本都能帮你在退休、家庭、健康与告别里走得更稳。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "相约星期二", "author": "米奇·阿尔博姆" },
+      "badges": ["畅销", "7 天能见效"],
+      "hook": "人生后半段，先学会好好说话。",
+      "readMinutes": 12,
+      "suitableFor": "刚退休、想重新找意义、又怕说错话",
+      "difficulty": 2,
+      "readScene": "午后/睡前"
+    },
+    "secondary": [
+      { "title": "活出生命的意义", "author": "维克多·弗兰克尔", "badge": "必读", "hook": "苦难挡不住你，除非你先放弃意义" },
+      { "title": "幸福的婚姻", "author": "约翰·戈特曼", "badge": "畅销", "hook": "老夫老妻，靠的不是忍，是懂" },
+      { "title": "最好的晚年", "author": "丹尼尔·莱维廷", "badge": "必读", "hook": "慢病来了不可怕，可怕的是不知道怎么活" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "retirement",
+      "title": "我退休了，还想活得有劲（身份重建）",
+      "books": [
+        { "title": "百岁人生", "author": "琳达·格拉顿", "badge": "Top", "doubanRating": 7.8, "goodreadsRating": 3.82 },
+        { "title": "瓦尔登湖", "author": "亨利·戴维·梭罗", "badge": "Top", "doubanRating": 8.4, "goodreadsRating": 3.76 },
+        { "title": "月亮与六便士", "author": "威廉·萨默塞特·毛姆", "badge": "必读", "doubanRating": 9.0, "goodreadsRating": 4.11 }
+      ],
+      "ctaLabel": "进入「退休重建」书单 →"
+    },
+    {
+      "id": "children",
+      "title": "我想和成年子女好好相处（不越界、不失联）",
+      "books": [
+        { "title": "为何家会伤人", "author": "武志红", "badge": "畅销", "doubanRating": 8.5, "goodreadsRating": 4.12 },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.29 },
+        { "title": "你在天堂里遇见的五个人", "author": "米奇·阿尔博姆", "badge": "必读", "doubanRating": 8.1, "goodreadsRating": 3.97 }
+      ],
+      "ctaLabel": "进入「亲子关系」书单 →"
+    },
+    {
+      "id": "loss",
+      "title": "老友走了，我也在变老（面对凋零与告别）",
+      "books": [
+        { "title": "相约星期二", "author": "米奇·阿尔博姆", "badge": "Top", "doubanRating": 8.3, "goodreadsRating": 4.14 },
+        { "title": "活着", "author": "余华", "badge": "Top", "doubanRating": 9.4, "goodreadsRating": 4.12 },
+        { "title": "当呼吸化为空气", "author": "保罗·卡拉尼什", "badge": "必读", "doubanRating": 8.9, "goodreadsRating": 4.36 }
+      ],
+      "ctaLabel": "进入「告别与凋零」书单 →"
+    },
+    {
+      "id": "health",
+      "title": "我想把身体管好（慢病、精力、心态）",
+      "books": [
+        { "title": "最好的晚年", "author": "丹尼尔·莱维廷", "badge": "Top", "doubanRating": 8.2, "goodreadsRating": 4.05 },
+        { "title": "我们为什么会生病", "author": "伦道夫·尼斯", "badge": "必读", "doubanRating": 8.6, "goodreadsRating": 4.04 },
+        { "title": "运动改造大脑", "author": "约翰·瑞迪", "badge": "畅销", "doubanRating": 8.2, "goodreadsRating": 4.08 }
+      ],
+      "ctaLabel": "进入「健康慢病」书单 →"
+    },
+    {
+      "id": "marriage",
+      "title": "我想和老伴把日子过顺（夫妻相处）",
+      "books": [
+        { "title": "幸福的婚姻", "author": "约翰·戈特曼", "badge": "Top", "doubanRating": 8.4, "goodreadsRating": 4.12 },
+        { "title": "围城", "author": "钱钟书", "badge": "经典", "doubanRating": 9.0, "goodreadsRating": 4.0 },
+        { "title": "亲密关系", "author": "罗兰·米勒", "badge": "必读", "doubanRating": 9.2, "goodreadsRating": 4.11 }
+      ],
+      "ctaLabel": "进入「夫妻相处」书单 →"
+    },
+    {
+      "id": "meaning",
+      "title": "我想弄明白：这辈子值不值（意义与未完成）",
+      "books": [
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔", "badge": "Top", "doubanRating": 8.6, "goodreadsRating": 4.37 },
+        { "title": "老人与海", "author": "欧内斯特·海明威", "badge": "Top", "doubanRating": 9.0, "goodreadsRating": 3.81 },
+        { "title": "好好告别", "author": "凯瑟琳·曼尼克斯", "badge": "必读", "doubanRating": 8.5, "goodreadsRating": 4.18 }
+      ],
+      "ctaLabel": "进入「生命意义」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会变成你后半生的底层操作系统。",
+      "books": [
+        { "title": "相约星期二", "author": "米奇·阿尔博姆" },
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔" },
+        { "title": "幸福的婚姻", "author": "约翰·戈特曼" },
+        { "title": "最好的晚年", "author": "丹尼尔·莱维廷" },
+        { "title": "活着", "author": "余华" },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡" },
+        { "title": "老人与海", "author": "欧内斯特·海明威" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是世界范围的高票选择。",
+      "books": [
+        { "title": "活着", "author": "余华", "doubanRating": 9.4, "goodreadsRating": 4.12 },
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔", "doubanRating": 8.6, "goodreadsRating": 4.37 },
+        { "title": "相约星期二", "author": "米奇·阿尔博姆", "doubanRating": 8.3, "goodreadsRating": 4.14 },
+        { "title": "瓦尔登湖", "author": "亨利·戴维·梭罗", "doubanRating": 8.4, "goodreadsRating": 3.76 },
+        { "title": "当呼吸化为空气", "author": "保罗·卡拉尼什", "doubanRating": 8.9, "goodreadsRating": 4.36 },
+        { "title": "老人与海", "author": "欧内斯特·海明威", "doubanRating": 9.0, "goodreadsRating": 3.81 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，能落地。",
+      "books": [
+        { "title": "你在天堂里遇见的五个人", "author": "米奇·阿尔博姆" },
+        { "title": "为何家会伤人", "author": "武志红" },
+        { "title": "运动改造大脑", "author": "约翰·瑞迪" },
+        { "title": "百岁人生", "author": "琳达·格拉顿" },
+        { "title": "好好告别", "author": "凯瑟琳·曼尼克斯" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，反而越到这个年龄越读得懂。",
+      "books": [
+        { "title": "围城", "author": "钱钟书" },
+        { "title": "月亮与六便士", "author": "威廉·萨默塞特·毛姆" },
+        { "title": "瓦尔登湖", "author": "亨利·戴维·梭罗" },
+        { "title": "老人与海", "author": "欧内斯特·海明威" },
+        { "title": "活着", "author": "余华" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种退休状态？",
+      "options": [
+        { "id": "lost", "label": "失落型", "resultBook": "百岁人生" },
+        { "id": "anxious", "label": "焦虑型", "resultBook": "最好的晚年" },
+        { "id": "reflective", "label": "回望型", "resultBook": "活出生命的意义" },
+        { "id": "lonely", "label": "孤独型", "resultBook": "相约星期二" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "一旦找到了生活的意义，人就知道自己为什么而活，也就知道如何承受任何痛苦。",
+        "quote_source_chapter": "意义疗法",
+        "quote_theme": "生命意义",
+        "bookTitle": "活出生命的意义"
+      },
+      {
+        "quote_text": "死亡终结生命，但不终结关系。",
+        "quote_source_chapter": "第一个星期二",
+        "quote_theme": "告别",
+        "bookTitle": "相约星期二"
+      },
+      {
+        "quote_text": "人可以被毁灭，但不能被打败。",
+        "quote_source_chapter": "出海",
+        "quote_theme": "未完成梦想",
+        "bookTitle": "老人与海"
+      },
+      {
+        "quote_text": "幸福的家庭不是没有问题，而是懂得修复问题。",
+        "quote_source_chapter": "婚姻地图",
+        "quote_theme": "夫妻相处",
+        "bookTitle": "幸福的婚姻"
+      },
+      {
+        "quote_text": "衰老不是衰退，而是人生另一段需要重新设计的旅程。",
+        "quote_source_chapter": "晚年新阶段",
+        "quote_theme": "退休身份",
+        "bookTitle": "最好的晚年"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "相约星期二", "chapter": "第二个星期二", "title": "谈恐惧：怕老、怕病、怕成为负担" },
+      { "rank": 2, "bookTitle": "幸福的婚姻", "chapter": "四骑士", "title": "批评、蔑视、防御、冷战——怎么破局" },
+      { "rank": 3, "bookTitle": "最好的晚年", "chapter": "慢病管理", "title": "不是对抗衰老，而是学会与它共处" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "相约星期二", "theme": "重新学会谈人生" },
+      { "day": 2, "bookTitle": "相约星期二", "theme": "面对恐惧与告别" },
+      { "day": 3, "bookTitle": "活出生命的意义", "theme": "找到后半生的意义支点" },
+      { "day": 4, "bookTitle": "非暴力沟通", "theme": "和子女、老伴少说伤人的话" },
+      { "day": 5, "bookTitle": "最好的晚年", "theme": "把慢病和精力管起来" },
+      { "day": 6, "bookTitle": "幸福的婚姻", "theme": "修复老夫老妻的日常摩擦" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下 3 件「还想完成的事」和 1 句想对家人说的话" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

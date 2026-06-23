@@ -1,0 +1,175 @@
+{
+  "gender": "male",
+  "ageGroup": "18-22",
+  "header": {
+    "title": "18-22 岁 · 男生专属精读",
+    "subtitle": "少读一点，但每一本都能帮你在学业、恋爱、宿舍和找方向上少踩坑。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "被讨厌的勇气", "author": "岸见一郎" },
+      "badges": ["畅销", "7 天能见效"],
+      "hook": "别活在别人的期待里，先把自己活明白。",
+      "readMinutes": 12,
+      "suitableFor": "内卷焦虑、总在意别人眼光、不敢做自己",
+      "difficulty": 2,
+      "readScene": "宿舍睡前/课间"
+    },
+    "secondary": [
+      { "title": "深度工作", "author": "卡尔·纽波特", "badge": "必读", "hook": "在碎片化时代，把专注力练成你的核心竞争力" },
+      { "title": "亲密关系", "author": "罗兰·米勒", "badge": "必读", "hook": "恋爱不是凭感觉，是可以学明白的事" },
+      { "title": "小狗钱钱", "author": "博多·舍费尔", "badge": "畅销", "hook": "生活费怎么管、兼职怎么攒，从零开始" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "study-direction",
+      "title": "学业与方向（选专业、考研、找实习）",
+      "books": [
+        { "title": "深度工作", "author": "卡尔·纽波特", "badge": "Top", "doubanRating": 8.0, "goodreadsRating": 4.19 },
+        { "title": "纳瓦尔宝典", "author": "埃里克·乔根森", "badge": "Top", "doubanRating": 8.4, "goodreadsRating": 4.48 },
+        { "title": "好好学习", "author": "成甲", "badge": "必读", "doubanRating": 7.4, "goodreadsRating": 3.85 }
+      ],
+      "ctaLabel": "进入「学业与方向」书单 →"
+    },
+    {
+      "id": "love-social",
+      "title": "恋爱与社交（宿舍关系、室友、表白）",
+      "books": [
+        { "title": "亲密关系", "author": "罗兰·米勒", "badge": "必读", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.29 },
+        { "title": "原生家庭", "author": "苏珊·福沃德", "badge": "畅销", "doubanRating": 8.3, "goodreadsRating": 4.05 }
+      ],
+      "ctaLabel": "进入「恋爱与社交」书单 →"
+    },
+    {
+      "id": "money-independence",
+      "title": "金钱独立（生活费、兼职、理财启蒙）",
+      "books": [
+        { "title": "小狗钱钱", "author": "博多·舍费尔", "badge": "畅销", "doubanRating": 8.2, "goodreadsRating": 4.72 },
+        { "title": "富爸爸穷爸爸", "author": "罗伯特·清崎", "badge": "Top", "doubanRating": 8.2, "goodreadsRating": 4.11 },
+        { "title": "金钱心理学", "author": "摩根·豪泽尔", "badge": "必读", "doubanRating": 8.3, "goodreadsRating": 4.3 }
+      ],
+      "ctaLabel": "进入「金钱独立」书单 →"
+    },
+    {
+      "id": "self-growth",
+      "title": "自我成长（内卷焦虑、自信、找自己）",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎", "badge": "畅销", "doubanRating": 8.6, "goodreadsRating": 3.98 },
+        { "title": "自卑与超越", "author": "阿尔弗雷德·阿德勒", "badge": "Top", "doubanRating": 8.4, "goodreadsRating": 4.12 },
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔", "badge": "必读", "doubanRating": 9.0, "goodreadsRating": 4.37 }
+      ],
+      "ctaLabel": "进入「自我成长」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "大学这几年读透这几本，比刷一百条短视频管用。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "深度工作", "author": "卡尔·纽波特" },
+        { "title": "亲密关系", "author": "罗兰·米勒" },
+        { "title": "纳瓦尔宝典", "author": "埃里克·乔根森" },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡" },
+        { "title": "小狗钱钱", "author": "博多·舍费尔" },
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是同龄人里口碑最高的选择。",
+      "books": [
+        { "title": "亲密关系", "author": "罗兰·米勒", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔", "doubanRating": 9.0, "goodreadsRating": 4.37 },
+        { "title": "被讨厌的勇气", "author": "岸见一郎", "doubanRating": 8.6, "goodreadsRating": 3.98 },
+        { "title": "纳瓦尔宝典", "author": "埃里克·乔根森", "doubanRating": 8.4, "goodreadsRating": 4.48 },
+        { "title": "自卑与超越", "author": "阿尔弗雷德·阿德勒", "doubanRating": 8.4, "goodreadsRating": 4.12 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，宿舍就能落地。",
+      "books": [
+        { "title": "原子习惯", "author": "詹姆斯·克利尔" },
+        { "title": "原生家庭", "author": "苏珊·福沃德" },
+        { "title": "富爸爸穷爸爸", "author": "罗伯特·清崎" },
+        { "title": "自控力", "author": "凯利·麦格尼格尔" },
+        { "title": "蛤蟆先生去看心理医生", "author": "罗伯特·戴博德" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，大学读一遍，以后越读越懂。",
+      "books": [
+        { "title": "平凡的世界", "author": "路遥" },
+        { "title": "三体", "author": "刘慈欣" },
+        { "title": "围城", "author": "钱钟书" },
+        { "title": "追风筝的人", "author": "卡勒德·胡赛尼" },
+        { "title": "活着", "author": "余华" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种大学生？",
+      "options": [
+        { "id": "grind-anxious", "label": "内卷焦虑型", "resultBook": "深度工作" },
+        { "id": "social-awkward", "label": "社交困难型", "resultBook": "非暴力沟通" },
+        { "id": "lost-direction", "label": "迷茫找方向型", "resultBook": "纳瓦尔宝典" },
+        { "id": "love-confused", "label": "恋爱困惑型", "resultBook": "亲密关系" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "决定我们自身的不是过去的经历，而是我们赋予经历的意义。",
+        "quote_source_chapter": "第一夜：否定心理创伤",
+        "quote_theme": "摆脱过去",
+        "bookTitle": "被讨厌的勇气"
+      },
+      {
+        "quote_text": "深度工作是在无干扰的状态下专注进行职业活动，使认知能力达到极限。",
+        "quote_source_chapter": "第 1 章：深度工作是有价值的",
+        "quote_theme": "专注力",
+        "bookTitle": "深度工作"
+      },
+      {
+        "quote_text": "亲密关系是人类经验的核心，它能满足我们对归属和爱的基本需要。",
+        "quote_source_chapter": "第 1 章：绪论",
+        "quote_theme": "恋爱",
+        "bookTitle": "亲密关系"
+      },
+      {
+        "quote_text": "如果你无法靠资产生活，你就得靠出卖自己的时间。",
+        "quote_source_chapter": "第一部分：财富",
+        "quote_theme": "金钱观",
+        "bookTitle": "纳瓦尔宝典"
+      },
+      {
+        "quote_text": "观察、感受、需要、请求——这四步能化解宿舍和室友之间的大多数冲突。",
+        "quote_source_chapter": "四步法总览",
+        "quote_theme": "宿舍沟通",
+        "bookTitle": "非暴力沟通"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "被讨厌的勇气", "chapter": "第一夜", "title": "课题分离：别替别人活" },
+      { "rank": 2, "bookTitle": "深度工作", "chapter": "第 2 章", "title": "给自己划出 90 分钟无干扰学习块" },
+      { "rank": 3, "bookTitle": "小狗钱钱", "chapter": "第 3 章", "title": "记账一周：钱花哪儿了？" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "被讨厌的勇气", "theme": "课题分离：从别人的眼光里解放" },
+      { "day": 2, "bookTitle": "被讨厌的勇气", "theme": "接纳不完美的自己" },
+      { "day": 3, "bookTitle": "深度工作", "theme": "练出专注学习的肌肉" },
+      { "day": 4, "bookTitle": "非暴力沟通", "theme": "和室友/同学少说错一句话" },
+      { "day": 5, "bookTitle": "亲密关系", "theme": "搞懂依恋类型和沟通模式" },
+      { "day": 6, "bookTitle": "小狗钱钱", "theme": "建立第一笔储蓄习惯" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下本周 3 个真实困惑和对应行动" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

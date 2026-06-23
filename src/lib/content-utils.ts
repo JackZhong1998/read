@@ -1,7 +1,7 @@
 import { parseJsonFromText } from "./json-utils";
 import type { BookInfo } from "./types";
 
-export const AI_NAME = "阅尘先生";
+export const AI_NAME = "读书先生";
 
 interface ReadingContentJson {
   content?: string;

@@ -1,0 +1,175 @@
+{
+  "gender": "male",
+  "ageGroup": "30-40",
+  "header": {
+    "title": "30-40 岁 · 男生专属精读",
+    "subtitle": "少读一点，但每一本都能让你在决策、金钱、关系和管理上更稳。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "原子习惯", "author": "詹姆斯·克利尔" },
+      "badges": ["畅销", "7 天能见效"],
+      "hook": "别靠意志力，靠系统。",
+      "readMinutes": 12,
+      "suitableFor": "工作忙、总想改变但难坚持",
+      "difficulty": 2,
+      "readScene": "通勤/午休"
+    },
+    "secondary": [
+      { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "badge": "必读", "hook": "让你在伴侣/同事面前少说错一句话" },
+      { "title": "金钱心理学", "author": "摩根·豪泽尔", "badge": "畅销", "hook": "钱的事，80%是行为问题，不是技巧问题" },
+      { "title": "心流", "author": "米哈里·契克森米哈赖", "badge": "必读", "hook": "把专注变成可复制的体验" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "decision",
+      "title": "我想提高决策质量（少踩坑）",
+      "books": [
+        { "title": "思考，快与慢", "author": "丹尼尔·卡尼曼", "badge": "Top", "doubanRating": 8.1, "goodreadsRating": 4.16 },
+        { "title": "黑天鹅", "author": "纳西姆·塔勒布", "badge": "Top", "doubanRating": 8.0, "goodreadsRating": 3.93 },
+        { "title": "原则", "author": "瑞·达利欧", "badge": "必读", "doubanRating": 8.3, "goodreadsRating": 4.1 }
+      ],
+      "ctaLabel": "进入「决策」书单 →"
+    },
+    {
+      "id": "money",
+      "title": "我想把钱这件事理顺（更稳更长期）",
+      "books": [
+        { "title": "金钱心理学", "author": "摩根·豪泽尔", "badge": "畅销", "doubanRating": 8.3, "goodreadsRating": 4.3 },
+        { "title": "穷查理宝典", "author": "查理·芒格", "badge": "Top", "doubanRating": 8.9, "goodreadsRating": 4.32 },
+        { "title": "原则", "author": "瑞·达利欧", "badge": "必读", "doubanRating": 8.3, "goodreadsRating": 4.1 }
+      ],
+      "ctaLabel": "进入「金钱」书单 →"
+    },
+    {
+      "id": "relationship",
+      "title": "我想把关系搞顺（伴侣/父母/同事）",
+      "books": [
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.29 },
+        { "title": "亲密关系", "author": "罗兰·米勒", "badge": "必读", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "被讨厌的勇气", "author": "岸见一郎", "badge": "畅销", "doubanRating": 8.6, "goodreadsRating": 3.98 }
+      ],
+      "ctaLabel": "进入「关系」书单 →"
+    },
+    {
+      "id": "management",
+      "title": "我开始带人了（管理升级）",
+      "books": [
+        { "title": "领导梯队", "author": "拉姆·查兰", "badge": "必读", "doubanRating": 8.3, "goodreadsRating": 4.05 },
+        { "title": "创新者的窘境", "author": "克莱顿·克里斯坦森", "badge": "必读", "doubanRating": 8.5, "goodreadsRating": 4.05 },
+        { "title": "影响力", "author": "罗伯特·西奥迪尼", "badge": "Top", "doubanRating": 8.6, "goodreadsRating": 4.19 }
+      ],
+      "ctaLabel": "进入「管理」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会变成你做事的底层操作系统。",
+      "books": [
+        { "title": "心流", "author": "米哈里·契克森米哈赖" },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡" },
+        { "title": "亲密关系", "author": "罗兰·米勒" },
+        { "title": "原则", "author": "瑞·达利欧" },
+        { "title": "活着", "author": "余华" },
+        { "title": "领导梯队", "author": "拉姆·查兰" },
+        { "title": "创新者的窘境", "author": "克莱顿·克里斯坦森" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是世界范围的高票选择。",
+      "books": [
+        { "title": "思考，快与慢", "author": "丹尼尔·卡尼曼", "doubanRating": 8.1, "goodreadsRating": 4.16 },
+        { "title": "黑天鹅", "author": "纳西姆·塔勒布", "doubanRating": 8.0, "goodreadsRating": 3.93 },
+        { "title": "穷查理宝典", "author": "查理·芒格", "doubanRating": 8.9, "goodreadsRating": 4.32 },
+        { "title": "影响力", "author": "罗伯特·西奥迪尼", "doubanRating": 8.6, "goodreadsRating": 4.19 },
+        { "title": "枪炮、病菌与钢铁", "author": "贾雷德·戴蒙德", "doubanRating": 8.7, "goodreadsRating": 4.04 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，能落地。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "原子习惯", "author": "詹姆斯·克利尔" },
+        { "title": "金钱心理学", "author": "摩根·豪泽尔" },
+        { "title": "断舍离", "author": "山下英子" },
+        { "title": "情商", "author": "丹尼尔·戈尔曼" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，反而越到这个年龄越读得懂。",
+      "books": [
+        { "title": "围城", "author": "钱钟书" },
+        { "title": "万历十五年", "author": "黄仁宇" },
+        { "title": "百年孤独", "author": "加西亚·马尔克斯" },
+        { "title": "瓦尔登湖", "author": "亨利·戴维·梭罗" },
+        { "title": "老人与海", "author": "欧内斯特·海明威" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种决策者？",
+      "options": [
+        { "id": "impulsive", "label": "冲动型", "resultBook": "思考，快与慢" },
+        { "id": "overthink", "label": "过度分析型", "resultBook": "心流" },
+        { "id": "risk-averse", "label": "风险厌恶型", "resultBook": "黑天鹅" },
+        { "id": "gambler", "label": "赌徒型", "resultBook": "原则" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "你并没有上升到你所希望的高度，而是落到了你所习惯的程度上。",
+        "quote_source_chapter": "第 1 章：微习惯的惊人力量",
+        "quote_theme": "习惯塑造身份",
+        "bookTitle": "原子习惯"
+      },
+      {
+        "quote_text": "观察、感受、需要、请求——这四步能化解绝大多数冲突。",
+        "quote_source_chapter": "四步法总览",
+        "quote_theme": "沟通",
+        "bookTitle": "非暴力沟通"
+      },
+      {
+        "quote_text": "财富是你看不见的东西：是未来的购买力，而不是眼前的数字。",
+        "quote_source_chapter": "财富是你看不见的东西",
+        "quote_theme": "金钱观",
+        "bookTitle": "金钱心理学"
+      },
+      {
+        "quote_text": "当挑战与技能匹配时，人最容易进入全神贯注的状态。",
+        "quote_source_chapter": "心流的最优体验",
+        "quote_theme": "专注",
+        "bookTitle": "心流"
+      },
+      {
+        "quote_text": "痛苦 + 反思 = 进步。没有原则，你只能重复犯错。",
+        "quote_source_chapter": "生活原则",
+        "quote_theme": "决策",
+        "bookTitle": "原则"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "原子习惯", "chapter": "第 2 章", "title": "把习惯做成「默认选项」" },
+      { "rank": 2, "bookTitle": "非暴力沟通", "chapter": "四步法", "title": "观察-感受-需要-请求" },
+      { "rank": 3, "bookTitle": "金钱心理学", "chapter": "风险与时间", "title": "你真正买的是「未来确定性」" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "原子习惯", "theme": "建立行动系统" },
+      { "day": 2, "bookTitle": "原子习惯", "theme": "巩固微习惯" },
+      { "day": 3, "bookTitle": "心流", "theme": "提升专注体验" },
+      { "day": 4, "bookTitle": "非暴力沟通", "theme": "减少关系摩擦" },
+      { "day": 5, "bookTitle": "金钱心理学", "theme": "稳住长期行为" },
+      { "day": 6, "bookTitle": "原则", "theme": "把决策写成可复用的原则" },
+      { "day": 7, "bookTitle": "复盘", "theme": "把本周 3 个真实问题写成「原则卡片」" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

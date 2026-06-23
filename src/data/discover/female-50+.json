@@ -1,0 +1,175 @@
+{
+  "gender": "female",
+  "ageGroup": "50+",
+  "header": {
+    "title": "50+ 岁 · 女生专属精读",
+    "subtitle": "少读一点，但每一本都能帮你在退休、家庭、健康与晚年生活上更从容。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "我们仨", "author": "杨绛" },
+      "badges": ["经典", "7 天能读完"],
+      "hook": "家还在，人散了——怎样把思念过成力量。",
+      "readMinutes": 15,
+      "suitableFor": "想整理家庭记忆、学会与离别相处",
+      "difficulty": 1,
+      "readScene": "午后/睡前"
+    },
+    "secondary": [
+      { "title": "最好的告别", "author": "阿图·葛文德", "badge": "必读", "hook": "不是怕死，是怕活得没有尊严" },
+      { "title": "断舍离", "author": "山下英子", "badge": "畅销", "hook": "放下杂物，也是放下心里的执念" },
+      { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "badge": "必读", "hook": "跟儿女、儿媳说话，少说一句伤人的话" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "retirement-value",
+      "title": "退休后怎样找到价值感（不被「闲着」定义）",
+      "books": [
+        { "title": "百岁人生", "author": "琳达·格拉顿", "badge": "Top", "doubanRating": 7.8, "goodreadsRating": 3.82 },
+        { "title": "心流", "author": "米哈里·契克森米哈赖", "badge": "必读", "doubanRating": 8.2, "goodreadsRating": 4.11 },
+        { "title": "瓦尔登湖", "author": "亨利·戴维·梭罗", "badge": "经典", "doubanRating": 8.4, "goodreadsRating": 3.75 }
+      ],
+      "ctaLabel": "进入「退休价值感」书单 →"
+    },
+    {
+      "id": "family-boundary",
+      "title": "婆媳与家庭边界（委屈不必一个人咽）",
+      "books": [
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.29 },
+        { "title": "被讨厌的勇气", "author": "岸见一郎", "badge": "畅销", "doubanRating": 8.6, "goodreadsRating": 3.98 },
+        { "title": "亲密关系", "author": "罗兰·米勒", "badge": "Top", "doubanRating": 9.2, "goodreadsRating": 4.11 }
+      ],
+      "ctaLabel": "进入「家庭边界」书单 →"
+    },
+    {
+      "id": "late-love-companion",
+      "title": "晚年感情与陪伴（独处也不将就）",
+      "books": [
+        { "title": "我们仨", "author": "杨绛", "badge": "经典", "doubanRating": 8.9, "goodreadsRating": 4.12 },
+        { "title": "相约星期二", "author": "米奇·阿尔博姆", "badge": "必读", "doubanRating": 8.3, "goodreadsRating": 4.14 },
+        { "title": "活着", "author": "余华", "badge": "Top", "doubanRating": 9.4, "goodreadsRating": 4.36 }
+      ],
+      "ctaLabel": "进入「晚年陪伴」书单 →"
+    },
+    {
+      "id": "health-finance",
+      "title": "慢病管理与养老理财（身体、钱都要稳）",
+      "books": [
+        { "title": "最好的告别", "author": "阿图·葛文德", "badge": "Top", "doubanRating": 9.0, "goodreadsRating": 4.48 },
+        { "title": "金钱心理学", "author": "摩根·豪泽尔", "badge": "畅销", "doubanRating": 8.3, "goodreadsRating": 4.3 },
+        { "title": "百岁人生", "author": "琳达·格拉顿", "badge": "必读", "doubanRating": 7.8, "goodreadsRating": 3.82 }
+      ],
+      "ctaLabel": "进入「健康与养老」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会变成你晚年生活的底层底气。",
+      "books": [
+        { "title": "我们仨", "author": "杨绛" },
+        { "title": "最好的告别", "author": "阿图·葛文德" },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡" },
+        { "title": "相约星期二", "author": "米奇·阿尔博姆" },
+        { "title": "断舍离", "author": "山下英子" },
+        { "title": "百岁人生", "author": "琳达·格拉顿" },
+        { "title": "活着", "author": "余华" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是世界范围的高票选择。",
+      "books": [
+        { "title": "我们仨", "author": "杨绛", "doubanRating": 8.9, "goodreadsRating": 4.12 },
+        { "title": "最好的告别", "author": "阿图·葛文德", "doubanRating": 9.0, "goodreadsRating": 4.48 },
+        { "title": "活着", "author": "余华", "doubanRating": 9.4, "goodreadsRating": 4.36 },
+        { "title": "亲密关系", "author": "罗兰·米勒", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "doubanRating": 8.4, "goodreadsRating": 4.29 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，能落地。",
+      "books": [
+        { "title": "断舍离", "author": "山下英子" },
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "金钱心理学", "author": "摩根·豪泽尔" },
+        { "title": "相约星期二", "author": "米奇·阿尔博姆" },
+        { "title": "心流", "author": "米哈里·契克森米哈赖" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，反而越到这个年纪越读得懂。",
+      "books": [
+        { "title": "我们仨", "author": "杨绛" },
+        { "title": "围城", "author": "钱钟书" },
+        { "title": "瓦尔登湖", "author": "亨利·戴维·梭罗" },
+        { "title": "平凡的世界", "author": "路遥" },
+        { "title": "老人与海", "author": "欧内斯特·海明威" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种晚年生活型？",
+      "options": [
+        { "id": "caretaker", "label": "付出型", "resultBook": "非暴力沟通" },
+        { "id": "explorer", "label": "探索型", "resultBook": "百岁人生" },
+        { "id": "companion", "label": "陪伴型", "resultBook": "我们仨" },
+        { "id": "legacy", "label": "传承型", "resultBook": "相约星期二" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "世间好物不坚牢，彩云易散琉璃脆。",
+        "quote_source_chapter": "第二部",
+        "quote_theme": "优雅告别",
+        "bookTitle": "我们仨"
+      },
+      {
+        "quote_text": "医疗的目的不是延长死亡，而是延长有意义的生命。",
+        "quote_source_chapter": "独立与依赖",
+        "quote_theme": "慢病管理",
+        "bookTitle": "最好的告别"
+      },
+      {
+        "quote_text": "断舍离不是扔东西，是放下「必须拥有」的执念。",
+        "quote_source_chapter": "断舍离的实践",
+        "quote_theme": "精神遗产",
+        "bookTitle": "断舍离"
+      },
+      {
+        "quote_text": "观察、感受、需要、请求——跟家人说话，先听懂自己。",
+        "quote_source_chapter": "四步法总览",
+        "quote_theme": "婆媳边界",
+        "bookTitle": "非暴力沟通"
+      },
+      {
+        "quote_text": "人是为活着本身而活着，而不是为活着之外的任何事物。",
+        "quote_source_chapter": "尾声",
+        "quote_theme": "退休价值感",
+        "bookTitle": "活着"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "我们仨", "chapter": "第一部", "title": "把家过成一本书" },
+      { "rank": 2, "bookTitle": "最好的告别", "chapter": "独立", "title": "晚年怎样保有尊严与自主" },
+      { "rank": 3, "bookTitle": "非暴力沟通", "chapter": "四步法", "title": "跟儿女说话，少说伤人的话" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "我们仨", "theme": "整理家庭记忆，与思念相处" },
+      { "day": 2, "bookTitle": "断舍离", "theme": "放下杂物与心里的执念" },
+      { "day": 3, "bookTitle": "最好的告别", "theme": "慢病与医疗，怎样保有尊严" },
+      { "day": 4, "bookTitle": "金钱心理学", "theme": "养老钱，稳比多更重要" },
+      { "day": 5, "bookTitle": "非暴力沟通", "theme": "婆媳边界，委屈不必一个人咽" },
+      { "day": 6, "bookTitle": "相约星期二", "theme": "精神遗产：把人生经验传下去" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下 3 件你想留给家人的事" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

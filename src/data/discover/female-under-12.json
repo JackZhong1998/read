@@ -1,0 +1,175 @@
+{
+  "gender": "female",
+  "ageGroup": "under-12",
+  "header": {
+    "title": "初中以下 · 女生专属童书",
+    "subtitle": "少读一点，但每一本都能帮你在友谊、自信、家庭和勇气里，找到温柔又坚定的自己。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "夏洛的网", "author": "E·B·怀特" },
+      "badges": ["必读", "7 天能读完"],
+      "hook": "真正的友谊，是有人愿意为你织一张网。",
+      "readMinutes": 10,
+      "suitableFor": "好朋友变冷淡、想学会善良又不委屈",
+      "difficulty": 1,
+      "readScene": "睡前/周末午后"
+    },
+    "secondary": [
+      { "title": "绿山墙的安妮", "author": "露西·莫德·蒙格马利", "badge": "必读", "hook": "红头发也没关系，想象力会帮你交到真朋友" },
+      { "title": "小公主", "author": "弗朗西丝·霍奇森·伯内特", "badge": "经典", "hook": "穿得再旧，心里的公主也不会被嘲笑打败" },
+      { "title": "秘密花园", "author": "弗朗西丝·霍奇森·伯内特", "badge": "Top", "hook": "被冷落的心，也能像荒园一样重新开花" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "friendship",
+      "title": "好朋友和别人玩了，我还值得被喜欢吗？",
+      "books": [
+        { "title": "绿山墙的安妮", "author": "露西·莫德·蒙格马利", "badge": "必读", "doubanRating": 9.1, "goodreadsRating": 4.31 },
+        { "title": "夏洛的网", "author": "E·B·怀特", "badge": "Top", "doubanRating": 8.7, "goodreadsRating": 4.2 },
+        { "title": "我有友情要出租", "author": "方素珍", "badge": "畅销", "doubanRating": 8.6, "goodreadsRating": 4.1 }
+      ],
+      "ctaLabel": "进入「友谊」书单 →"
+    },
+    {
+      "id": "confidence",
+      "title": "我不够好看，也不敢站上舞台",
+      "books": [
+        { "title": "小公主", "author": "弗朗西丝·霍奇森·伯内特", "badge": "Top", "doubanRating": 9.3, "goodreadsRating": 4.32 },
+        { "title": "纸袋公主", "author": "罗伯特·蒙施", "badge": "必读", "doubanRating": 8.5, "goodreadsRating": 4.28 },
+        { "title": "爱丽丝梦游仙境", "author": "刘易斯·卡罗尔", "badge": "经典", "doubanRating": 8.5, "goodreadsRating": 4.06 }
+      ],
+      "ctaLabel": "进入「自信与勇气」书单 →"
+    },
+    {
+      "id": "family-fairness",
+      "title": "家里好像偏心，还被冤枉过",
+      "books": [
+        { "title": "秘密花园", "author": "弗朗西丝·霍奇森·伯内特", "badge": "必读", "doubanRating": 9.0, "goodreadsRating": 4.16 },
+        { "title": "蓝色的海豚岛", "author": "斯科特·奥台尔", "badge": "Top", "doubanRating": 8.7, "goodreadsRating": 3.98 },
+        { "title": "窗边的小豆豆", "author": "黑柳彻子", "badge": "畅销", "doubanRating": 9.2, "goodreadsRating": 4.17 }
+      ],
+      "ctaLabel": "进入「公平与清白」书单 →"
+    },
+    {
+      "id": "brave-kind",
+      "title": "女孩也能很厉害，善良也要有底线",
+      "books": [
+        { "title": "谁是爱因斯坦？", "author": "杰茜·布拉利尔", "badge": "必读", "doubanRating": 8.2, "goodreadsRating": 4.05 },
+        { "title": "一百条裙子", "author": "埃莉诺·埃斯特斯", "badge": "Top", "doubanRating": 8.8, "goodreadsRating": 4.15 },
+        { "title": "长袜子皮皮", "author": "阿斯特丽德·林格伦", "badge": "经典", "doubanRating": 9.0, "goodreadsRating": 4.24 }
+      ],
+      "ctaLabel": "进入「勇敢与边界」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会悄悄长出一颗更稳、更亮的心。",
+      "books": [
+        { "title": "夏洛的网", "author": "E·B·怀特" },
+        { "title": "绿山墙的安妮", "author": "露西·莫德·蒙格马利" },
+        { "title": "小公主", "author": "弗朗西丝·霍奇森·伯内特" },
+        { "title": "秘密花园", "author": "弗朗西丝·霍奇森·伯内特" },
+        { "title": "窗边的小豆豆", "author": "黑柳彻子" },
+        { "title": "一百条裙子", "author": "埃莉诺·埃斯特斯" },
+        { "title": "蓝色的海豚岛", "author": "斯科特·奥台尔" }
+      ]
+    },
+    "top": {
+      "copy": "全世界女孩都爱读：口碑高，不容易踩雷。",
+      "books": [
+        { "title": "小公主", "author": "弗朗西丝·霍奇森·伯内特", "doubanRating": 9.3, "goodreadsRating": 4.32 },
+        { "title": "绿山墙的安妮", "author": "露西·莫德·蒙格马利", "doubanRating": 9.1, "goodreadsRating": 4.31 },
+        { "title": "窗边的小豆豆", "author": "黑柳彻子", "doubanRating": 9.2, "goodreadsRating": 4.17 },
+        { "title": "秘密花园", "author": "弗朗西丝·霍奇森·伯内特", "doubanRating": 9.0, "goodreadsRating": 4.16 },
+        { "title": "长袜子皮皮", "author": "阿斯特丽德·林格伦", "doubanRating": 9.0, "goodreadsRating": 4.24 }
+      ]
+    },
+    "bestseller": {
+      "copy": "字不多、好读：第一次自己读完一整本，就选这些。",
+      "books": [
+        { "title": "纸袋公主", "author": "罗伯特·蒙施" },
+        { "title": "我有友情要出租", "author": "方素珍" },
+        { "title": "谁是爱因斯坦？", "author": "杰茜·布拉利尔" },
+        { "title": "爱丽丝梦游仙境", "author": "刘易斯·卡罗尔" },
+        { "title": "海蒂", "author": "约翰娜·斯比丽" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会老：长大后再翻，还会发现新的自己。",
+      "books": [
+        { "title": "小妇人", "author": "露易莎·梅·奥尔科特" },
+        { "title": "海蒂", "author": "约翰娜·斯比丽" },
+        { "title": "爱丽丝梦游仙境", "author": "刘易斯·卡罗尔" },
+        { "title": "长袜子皮皮", "author": "阿斯特丽德·林格伦" },
+        { "title": "小王子", "author": "安托万·德·圣-埃克苏佩里" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种小读者？",
+      "options": [
+        { "id": "dreamer", "label": "爱幻想型", "resultBook": "绿山墙的安妮" },
+        { "id": "brave", "label": "外表软、心里硬", "resultBook": "小公主" },
+        { "id": "curious", "label": "爱问为什么", "resultBook": "谁是爱因斯坦？" },
+        { "id": "loyal", "label": "重感情、讲义气", "resultBook": "夏洛的网" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "你一直是我的朋友，这件事本身就是了不起的事。",
+        "quote_source_chapter": "夏洛告别威尔伯",
+        "quote_theme": "友谊",
+        "bookTitle": "夏洛的网"
+      },
+      {
+        "quote_text": "我不是公主，但我可以活得像公主一样有尊严。",
+        "quote_source_chapter": "阁楼里的莎拉",
+        "quote_theme": "外貌自信",
+        "bookTitle": "小公主"
+      },
+      {
+        "quote_text": "想象力比知识更重要——它能把失去的朋友，变成心里的光。",
+        "quote_source_chapter": "安妮来到绿山墙",
+        "quote_theme": "友谊",
+        "bookTitle": "绿山墙的安妮"
+      },
+      {
+        "quote_text": "花园门打开了，被冷落的心也会跟着发芽。",
+        "quote_source_chapter": "发现秘密花园",
+        "quote_theme": "家庭",
+        "bookTitle": "秘密花园"
+      },
+      {
+        "quote_text": "好奇心不分男孩女孩——问得越多，世界越大。",
+        "quote_source_chapter": "小时候的爱因斯坦",
+        "quote_theme": "女孩学理科",
+        "bookTitle": "谁是爱因斯坦？"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "夏洛的网", "chapter": "王牌猪", "title": "友谊里最高级的善良，是默默帮对方" },
+      { "rank": 2, "bookTitle": "小公主", "chapter": "阁楼里的莎拉", "title": "穿得再旧，也可以昂起头" },
+      { "rank": 3, "bookTitle": "纸袋公主", "chapter": "结局", "title": "公主也能救王子，然后潇洒说不" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "夏洛的网", "theme": "读懂什么是真友谊" },
+      { "day": 2, "bookTitle": "绿山墙的安妮", "theme": "用想象力安放失落" },
+      { "day": 3, "bookTitle": "小公主", "theme": "在心里住进自己的公主" },
+      { "day": 4, "bookTitle": "秘密花园", "theme": "被冷落时，先照顾好自己" },
+      { "day": 5, "bookTitle": "纸袋公主", "theme": "站上舞台：勇敢比漂亮更重要" },
+      { "day": 6, "bookTitle": "谁是爱因斯坦？", "theme": "女孩也能爱问、爱想、爱探索" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下 3 件：我善良了、我勇敢了、我守住了底线" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更有挑战"
+  }
+}

@@ -28,7 +28,7 @@ export default function OnboardingPage() {
     const createdAt = Date.now();
     setProfile({ gender, ageGroup, createdAt });
     saveDiscoverPreference({
-      gender: gender === "female" ? "female" : "male",
+      gender,
       ageGroup,
       savedAt: createdAt,
     });
@@ -111,7 +111,6 @@ function OnboardingForm({
                 className="rounded-2xl border border-paper bg-white px-6 py-4 text-left transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
               >
                 <span className="text-lg text-ink">{a.label}</span>
-                <span className="ml-2 text-sm text-ink-muted">{a.range}</span>
               </button>
             ))}
           </div>

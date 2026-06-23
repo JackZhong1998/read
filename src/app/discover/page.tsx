@@ -3,19 +3,22 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppNav from "@/components/AppNav";
+import DiscoverFeedView from "@/components/DiscoverFeedView";
 import DiscoverItemCard from "@/components/DiscoverItemCard";
 import { useApp } from "@/context/AppContext";
 import { AGE_GROUP_OPTIONS, getDiscoverItems, type DiscoverItem } from "@/lib/discover-data";
+import { buildBookPrompt, buildQuizPrompt, getDiscoverFeed } from "@/lib/discover-feed";
 import { getDiscoverPreference, saveDiscoverPreference, setPendingMessage } from "@/lib/storage";
 import type { AgeGroup, DiscoverPreference, Gender } from "@/lib/types";
 
 const GENDER_OPTIONS: { value: Gender; label: string; emoji: string }[] = [
   { value: "male", label: "男生", emoji: "👨" },
   { value: "female", label: "女生", emoji: "👩" },
+  { value: "other", label: "其他", emoji: "🧑" },
 ];
 
 function toDiscoverGender(gender: Gender): Gender {
-  return gender === "female" ? "female" : "male";
+  return gender;
 }
 
 function profileToPreference(profile: { gender: Gender; ageGroup: AgeGroup; createdAt: number }): DiscoverPreference {
@@ -31,6 +34,7 @@ export default function DiscoverPage() {
   const { profile, setProfile, hydrated } = useApp();
   const [savedPref, setSavedPref] = useState<DiscoverPreference | null>(null);
   const [prefsLoaded, setPrefsLoaded] = useState(false);
+  const [showSwitcher, setShowSwitcher] = useState(false);
 
   useEffect(() => {
     if (!hydrated || prefsLoaded) return;
@@ -48,18 +52,42 @@ export default function DiscoverPage() {
     setPrefsLoaded(true);
   }, [hydrated, profile, prefsLoaded]);
 
-  const items = useMemo(
-    () => (savedPref ? getDiscoverItems(savedPref.gender, savedPref.ageGroup) : []),
+  const feed = useMemo(
+    () => (savedPref ? getDiscoverFeed(savedPref.gender, savedPref.ageGroup) : null),
     [savedPref]
+  );
+
+  const legacyItems = useMemo(
+    () => (savedPref && !feed ? getDiscoverItems(savedPref.gender, savedPref.ageGroup) : []),
+    [savedPref, feed]
   );
 
   const handleSetupComplete = (gender: Gender, ageGroup: AgeGroup) => {
     const pref: DiscoverPreference = { gender: toDiscoverGender(gender), ageGroup, savedAt: Date.now() };
     saveDiscoverPreference(pref);
     setSavedPref(pref);
+    setShowSwitcher(false);
     if (!profile) {
       setProfile({ gender, ageGroup, createdAt: pref.savedAt });
     }
+  };
+
+  const handleStartBook = (title: string, context?: string) => {
+    if (!profile) {
+      router.push("/");
+      return;
+    }
+    setPendingMessage(buildBookPrompt(title, context));
+    router.push("/chat");
+  };
+
+  const handleStartQuiz = (bookTitle: string, quizTitle: string) => {
+    if (!profile) {
+      router.push("/");
+      return;
+    }
+    setPendingMessage(buildQuizPrompt(bookTitle, quizTitle));
+    router.push("/chat");
   };
 
   const handleStartChat = (item: DiscoverItem) => {
@@ -79,16 +107,21 @@ export default function DiscoverPage() {
     );
   }
 
-  if (!savedPref) {
+  if (!savedPref || showSwitcher) {
     return (
       <div className="flex min-h-dvh flex-col bg-cream">
         <AppNav subtitle="困惑共鸣 → 书籍解忧" />
         <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-4 py-8 sm:px-6">
           <section className="mb-8 text-center animate-fade-in">
-            <h1 className="font-serif text-2xl font-bold text-ink sm:text-3xl">发现你的解忧书单</h1>
+            <h1 className="font-serif text-2xl font-bold text-ink sm:text-3xl">
+              {showSwitcher ? "切换人群" : "发现你的解忧书单"}
+            </h1>
             <p className="mt-2 text-sm text-ink-muted">选择性别与年龄段，为你匹配专属推荐</p>
           </section>
-          <DiscoverSetup onComplete={handleSetupComplete} />
+          <DiscoverSetup
+            onComplete={handleSetupComplete}
+            onCancel={showSwitcher ? () => setShowSwitcher(false) : undefined}
+          />
         </main>
       </div>
     );
@@ -99,26 +132,48 @@ export default function DiscoverPage() {
       <AppNav subtitle="困惑共鸣 → 书籍解忧" />
 
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 sm:px-6">
-        <section className="mb-8 animate-fade-in">
-          <h1 className="font-serif text-2xl font-bold text-ink sm:text-3xl">发现你的解忧书单</h1>
-          <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-muted">
-            每个困惑都配有一本解忧之书——问题与推荐直接呈现，一键跳转 AI 对话。
-          </p>
-        </section>
+        {feed ? (
+          <DiscoverFeedView
+            feed={feed}
+            onStartBook={handleStartBook}
+            onStartQuiz={handleStartQuiz}
+            onSwitchSegment={() => setShowSwitcher(true)}
+          />
+        ) : (
+          <>
+            <section className="mb-8 animate-fade-in">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h1 className="font-serif text-2xl font-bold text-ink sm:text-3xl">发现你的解忧书单</h1>
+                  <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-muted">
+                    每个困惑都配有一本解忧之书——问题与推荐直接呈现，一键跳转 AI 对话。
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowSwitcher(true)}
+                  className="shrink-0 rounded-full border border-paper bg-white px-3 py-1.5 text-xs text-ink-muted hover:border-accent/40 hover:text-accent"
+                >
+                  切换人群
+                </button>
+              </div>
+            </section>
 
-        <section>
-          <p className="mb-4 text-xs text-ink-muted">10 个困惑 · 10 本解忧书</p>
-          <div className="flex flex-col gap-4">
-            {items.map((item, index) => (
-              <DiscoverItemCard
-                key={item.id}
-                item={item}
-                index={index}
-                onStartChat={handleStartChat}
-              />
-            ))}
-          </div>
-        </section>
+            <section>
+              <p className="mb-4 text-xs text-ink-muted">10 个困惑 · 10 本解忧书</p>
+              <div className="flex flex-col gap-4">
+                {legacyItems.map((item, index) => (
+                  <DiscoverItemCard
+                    key={item.id}
+                    item={item}
+                    index={index}
+                    onStartChat={handleStartChat}
+                  />
+                ))}
+              </div>
+            </section>
+          </>
+        )}
 
         {!profile && (
           <div className="mt-10 rounded-2xl border border-dashed border-accent/30 bg-accent/5 p-5 text-center">
@@ -136,13 +191,30 @@ export default function DiscoverPage() {
   );
 }
 
-function DiscoverSetup({ onComplete }: { onComplete: (gender: Gender, ageGroup: AgeGroup) => void }) {
+function DiscoverSetup({
+  onComplete,
+  onCancel,
+}: {
+  onComplete: (gender: Gender, ageGroup: AgeGroup) => void;
+  onCancel?: () => void;
+}) {
   const [step, setStep] = useState<"gender" | "age">("gender");
   const [gender, setGender] = useState<Gender | null>(null);
 
   if (step === "gender") {
     return (
       <div className="animate-slide-up">
+        {onCancel && (
+          <button
+            onClick={onCancel}
+            className="mb-4 flex items-center gap-1 text-sm text-ink-muted hover:text-ink"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            返回
+          </button>
+        )}
         <h2 className="mb-4 text-center font-serif text-lg text-ink">你的性别</h2>
         <div className="flex gap-3">
           {GENDER_OPTIONS.map((option) => (
@@ -183,7 +255,6 @@ function DiscoverSetup({ onComplete }: { onComplete: (gender: Gender, ageGroup: 
             className="rounded-2xl border border-paper bg-white px-5 py-3.5 text-left transition-all hover:border-accent hover:shadow-md active:scale-[0.98]"
           >
             <span className="text-base text-ink">{option.label}</span>
-            <span className="ml-2 text-sm text-ink-muted">{option.range}</span>
           </button>
         ))}
       </div>

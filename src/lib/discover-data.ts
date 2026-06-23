@@ -11,14 +11,14 @@ export interface DiscoverItem extends DiscoverEntry {
   prompt: string;
 }
 
-export const AGE_GROUP_OPTIONS: { value: AgeGroup; label: string; range: string }[] = [
-  { value: "under-12", label: "初中以下", range: "6-12 岁" },
-  { value: "12-18", label: "初高中", range: "12-18 岁" },
-  { value: "18-22", label: "大学", range: "18-22 岁" },
-  { value: "22-30", label: "职场新人", range: "22-30 岁" },
-  { value: "30-40", label: "而立之年", range: "30-40 岁" },
-  { value: "40-50", label: "不惑之年", range: "40-50 岁" },
-  { value: "50+", label: "知天命", range: "50 岁以上" },
+export const AGE_GROUP_OPTIONS: { value: AgeGroup; label: string }[] = [
+  { value: "under-12", label: "<13岁" },
+  { value: "12-18", label: "13-18岁" },
+  { value: "18-22", label: "18-22岁" },
+  { value: "22-30", label: "22-30岁" },
+  { value: "30-40", label: "30-40岁" },
+  { value: "40-50", label: "40-50岁" },
+  { value: "50+", label: "50岁以上" },
 ];
 
 type DiscoverCatalog = Record<AgeGroup, DiscoverEntry[]>;
@@ -221,8 +221,7 @@ export function getDiscoverItems(gender: Gender, ageGroup: AgeGroup): DiscoverIt
 }
 
 export function getAgeLabel(ageGroup: AgeGroup): string {
-  const option = AGE_GROUP_OPTIONS.find((o) => o.value === ageGroup);
-  return option ? `${option.label}（${option.range}）` : ageGroup;
+  return AGE_GROUP_OPTIONS.find((o) => o.value === ageGroup)?.label ?? ageGroup;
 }
 
 export function getAgeShortLabel(ageGroup: AgeGroup): string {

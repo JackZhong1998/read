@@ -1,0 +1,175 @@
+{
+  "gender": "male",
+  "ageGroup": "40-50",
+  "header": {
+    "title": "40-50 岁 · 男生专属精读",
+    "subtitle": "少读一点，但每一本都能帮你在职业下半场、家庭、健康和养老上走得更稳。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "活出生命的意义", "author": "维克多·弗兰克尔" },
+      "badges": ["经典", "7 天能见效"],
+      "hook": "当一切都被拿走，你还能选择态度。",
+      "readMinutes": 12,
+      "suitableFor": "感到迷茫、经历失去或人生转折",
+      "difficulty": 2,
+      "readScene": "睡前/周末"
+    },
+    "secondary": [
+      { "title": "皮囊", "author": "蔡崇达", "badge": "必读", "hook": "父母走后，家还在不在？" },
+      { "title": "最好的晚年", "author": "丹尼尔·列维廷", "badge": "畅销", "hook": "衰老不是衰退，是可以主动设计的" },
+      { "title": "百岁人生", "author": "琳达·格拉顿", "badge": "必读", "hook": "下半场不是收尾，是重新开局" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "career-second-half",
+      "title": "职业下半场：我还能怎么走？",
+      "books": [
+        { "title": "百岁人生", "author": "琳达·格拉顿", "badge": "Top", "doubanRating": 8.2, "goodreadsRating": 3.82 },
+        { "title": "第二曲线创新", "author": "查尔斯·汉迪", "badge": "必读", "doubanRating": 8.0, "goodreadsRating": 3.95 },
+        { "title": "远见", "author": "布赖恩·费瑟斯通豪", "badge": "必读", "doubanRating": 8.1, "goodreadsRating": 4.12 }
+      ],
+      "ctaLabel": "进入「职业下半场」书单 →"
+    },
+    {
+      "id": "marriage-family",
+      "title": "婚姻还在不在？留下来还是翻开新的一页？",
+      "books": [
+        { "title": "亲密关系", "author": "罗兰·米勒", "badge": "Top", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "爱的五种语言", "author": "加里·查普曼", "badge": "畅销", "doubanRating": 8.6, "goodreadsRating": 4.26 },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.29 }
+      ],
+      "ctaLabel": "进入「婚姻与家庭」书单 →"
+    },
+    {
+      "id": "teen-parenting",
+      "title": "孩子青春期了：怎么当爸，而不只是付钱？",
+      "books": [
+        { "title": "自驱型成长", "author": "威廉·斯蒂克斯鲁德", "badge": "Top", "doubanRating": 8.8, "goodreadsRating": 4.28 },
+        { "title": "如何说孩子才会听，怎么听孩子才肯说", "author": "阿黛尔·法伯", "badge": "畅销", "doubanRating": 8.8, "goodreadsRating": 4.22 },
+        { "title": "正面管教", "author": "简·尼尔森", "badge": "必读", "doubanRating": 8.7, "goodreadsRating": 4.21 }
+      ],
+      "ctaLabel": "进入「亲子关系」书单 →"
+    },
+    {
+      "id": "health-retirement-meaning",
+      "title": "身体在变老、父母在走：健康、养老和意义怎么备？",
+      "books": [
+        { "title": "最好的晚年", "author": "丹尼尔·列维廷", "badge": "Top", "doubanRating": 8.5, "goodreadsRating": 4.02 },
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔", "badge": "Top", "doubanRating": 9.0, "goodreadsRating": 4.37 },
+        { "title": "我们仨", "author": "杨绛", "badge": "必读", "doubanRating": 8.7, "goodreadsRating": 4.15 }
+      ],
+      "ctaLabel": "进入「健康·养老·意义」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读懂这些，你后半生的选择题会少很多弯路。",
+      "books": [
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔" },
+        { "title": "皮囊", "author": "蔡崇达" },
+        { "title": "亲密关系", "author": "罗兰·米勒" },
+        { "title": "百岁人生", "author": "琳达·格拉顿" },
+        { "title": "最好的晚年", "author": "丹尼尔·列维廷" },
+        { "title": "自驱型成长", "author": "威廉·斯蒂克斯鲁德" },
+        { "title": "我们仨", "author": "杨绛" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是世界范围的高票选择。",
+      "books": [
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔", "doubanRating": 9.0, "goodreadsRating": 4.37 },
+        { "title": "我们仨", "author": "杨绛", "doubanRating": 8.7, "goodreadsRating": 4.15 },
+        { "title": "亲密关系", "author": "罗兰·米勒", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "最好的晚年", "author": "丹尼尔·列维廷", "doubanRating": 8.5, "goodreadsRating": 4.02 },
+        { "title": "自驱型成长", "author": "威廉·斯蒂克斯鲁德", "doubanRating": 8.8, "goodreadsRating": 4.28 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，能落地。",
+      "books": [
+        { "title": "蛤蟆先生去看心理医生", "author": "罗伯特·戴博德" },
+        { "title": "爱的五种语言", "author": "加里·查普曼" },
+        { "title": "相约星期二", "author": "米奇·阿尔博姆" },
+        { "title": "金钱心理学", "author": "摩根·豪泽尔" },
+        { "title": "被讨厌的勇气", "author": "岸见一郎" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，反而越到这个年龄越读得懂。",
+      "books": [
+        { "title": "活着", "author": "余华" },
+        { "title": "围城", "author": "钱钟书" },
+        { "title": "许三观卖血记", "author": "余华" },
+        { "title": "平凡的世界", "author": "路遥" },
+        { "title": "老人与海", "author": "欧内斯特·海明威" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你正在经历哪种「中年转折」？",
+      "options": [
+        { "id": "career-stall", "label": "职业停滞型", "resultBook": "百岁人生" },
+        { "id": "marriage-cold", "label": "婚姻冷淡型", "resultBook": "亲密关系" },
+        { "id": "parenting-lost", "label": "亲子失控型", "resultBook": "自驱型成长" },
+        { "id": "meaning-empty", "label": "意义空虚型", "resultBook": "活出生命的意义" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "人所拥有的任何东西，都可以被剥夺，唯独人性最后的自由——在任何境遇中选择一己态度和生活方式的自由——不可被剥夺。",
+        "quote_source_chapter": "第一部分：集中营的经历",
+        "quote_theme": "意义与选择",
+        "bookTitle": "活出生命的意义"
+      },
+      {
+        "quote_text": "我唯一的行囊，就是我的皮囊。",
+        "quote_source_chapter": "皮囊",
+        "quote_theme": "父母与故乡",
+        "bookTitle": "皮囊"
+      },
+      {
+        "quote_text": "衰老不是衰退，而是大脑在主动重组，为下一阶段做准备。",
+        "quote_source_chapter": "第 1 章：衰老的新图景",
+        "quote_theme": "健康衰老",
+        "bookTitle": "最好的晚年"
+      },
+      {
+        "quote_text": "孩子需要的不是完美的父母，而是愿意承认错误、愿意倾听的父母。",
+        "quote_source_chapter": "第 3 章：压力从何而来",
+        "quote_theme": "亲子关系",
+        "bookTitle": "自驱型成长"
+      },
+      {
+        "quote_text": "我们仨，如今只剩下我。",
+        "quote_source_chapter": "第三部分",
+        "quote_theme": "失去与告别",
+        "bookTitle": "我们仨"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "活出生命的意义", "chapter": "第二部分", "title": "找到你此刻还能掌控的一件事" },
+      { "rank": 2, "bookTitle": "自驱型成长", "chapter": "第 3 章", "title": "停止当「监工爸爸」，开始当「顾问爸爸」" },
+      { "rank": 3, "bookTitle": "最好的晚年", "chapter": "第 5 章", "title": "三个今天就能做的抗衰习惯" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "活出生命的意义", "theme": "承认失去，找回选择" },
+      { "day": 2, "bookTitle": "皮囊", "theme": "面对父母与故乡" },
+      { "day": 3, "bookTitle": "百岁人生", "theme": "重新规划职业下半场" },
+      { "day": 4, "bookTitle": "亲密关系", "theme": "看清婚姻里的真实需求" },
+      { "day": 5, "bookTitle": "自驱型成长", "theme": "学会跟青春期孩子对话" },
+      { "day": 6, "bookTitle": "最好的晚年", "theme": "为健康和养老做具体准备" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下本周 3 个「后半生原则」" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "gender": "female",
+  "ageGroup": "18-22",
+  "header": {
+    "title": "18-22 岁 · 女生专属精读",
+    "subtitle": "少读一点，但每一本都能帮你看清自己、守住边界、敢选自己的路。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "被讨厌的勇气", "author": "岸见一郎" },
+      "badges": ["畅销", "7 天能见效"],
+      "hook": "课题分离：别人的期待，不是你的作业。",
+      "readMinutes": 12,
+      "suitableFor": "爱内耗、总怕让别人失望",
+      "difficulty": 2,
+      "readScene": "宿舍/图书馆"
+    },
+    "secondary": [
+      { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗", "badge": "必读", "hook": "原生家庭困不住想飞的你" },
+      { "title": "82年生的金智英", "author": "赵南柱", "badge": "畅销", "hook": "每个女生都看过的那本" },
+      { "title": "身体由我", "author": "恩德·布劳莫泽", "badge": "必读", "hook": "从羞耻到坦然，拿回身体话语权" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "career-stability",
+      "title": "毕业后该拼事业还是求稳？（含学术路）",
+      "books": [
+        { "title": "向前一步", "author": "谢丽尔·桑德伯格", "badge": "Top", "doubanRating": 8.3, "goodreadsRating": 4.2 },
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗", "badge": "Top", "doubanRating": 8.7, "goodreadsRating": 4.47 },
+        { "title": "学会提问", "author": "尼尔·布朗", "badge": "必读", "doubanRating": 8.2, "goodreadsRating": 4.05 }
+      ],
+      "ctaLabel": "进入「事业与学业」书单 →"
+    },
+    {
+      "id": "relationship-healing",
+      "title": "想从糟糕的恋爱里走出来",
+      "books": [
+        { "title": "亲密关系", "author": "罗兰·米勒", "badge": "必读", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "爱的艺术", "author": "埃里希·弗洛姆", "badge": "Top", "doubanRating": 8.8, "goodreadsRating": 4.0 },
+        { "title": "也许你该找个人聊聊", "author": "洛莉·戈特利布", "badge": "畅销", "doubanRating": 8.9, "goodreadsRating": 4.37 }
+      ],
+      "ctaLabel": "进入「恋爱与疗愈」书单 →"
+    },
+    {
+      "id": "body-feminism",
+      "title": "我想夺回身体和话语的主权",
+      "books": [
+        { "title": "身体由我", "author": "恩德·布劳莫泽", "badge": "必读", "doubanRating": 8.7, "goodreadsRating": 4.25 },
+        { "title": "82年生的金智英", "author": "赵南柱", "badge": "Top", "doubanRating": 8.0, "goodreadsRating": 3.93 },
+        { "title": "一间自己的房间", "author": "弗吉尼亚·伍尔夫", "badge": "Top", "doubanRating": 9.2, "goodreadsRating": 4.23 }
+      ],
+      "ctaLabel": "进入「身体与觉醒」书单 →"
+    },
+    {
+      "id": "people-pleasing",
+      "title": "不想再讨好所有人了",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎", "badge": "畅销", "doubanRating": 8.6, "goodreadsRating": 3.98 },
+        { "title": "边界感", "author": "内德·霍克", "badge": "必读", "doubanRating": 8.1, "goodreadsRating": 4.15 },
+        { "title": "高敏感是种天赋", "author": "伊尔斯·桑德", "badge": "Top", "doubanRating": 8.3, "goodreadsRating": 4.0 }
+      ],
+      "ctaLabel": "进入「边界与自我」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会变成你面对世界时的底层底气。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗" },
+        { "title": "82年生的金智英", "author": "赵南柱" },
+        { "title": "亲密关系", "author": "罗兰·米勒" },
+        { "title": "身体由我", "author": "恩德·布劳莫泽" },
+        { "title": "向前一步", "author": "谢丽尔·桑德伯格" },
+        { "title": "一间自己的房间", "author": "弗吉尼亚·伍尔夫" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是世界范围的高票选择。",
+      "books": [
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗", "doubanRating": 8.7, "goodreadsRating": 4.47 },
+        { "title": "亲密关系", "author": "罗兰·米勒", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "一间自己的房间", "author": "弗吉尼亚·伍尔夫", "doubanRating": 9.2, "goodreadsRating": 4.23 },
+        { "title": "无声告白", "author": "伍绮诗", "doubanRating": 8.9, "goodreadsRating": 4.1 },
+        { "title": "82年生的金智英", "author": "赵南柱", "doubanRating": 8.0, "goodreadsRating": 3.93 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，能落地。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "也许你该找个人聊聊", "author": "洛莉·戈特利布" },
+        { "title": "工作、消费主义和新穷人", "author": "齐格蒙特·鲍曼" },
+        { "title": "向前一步", "author": "谢丽尔·桑德伯格" },
+        { "title": "高敏感是种天赋", "author": "伊尔斯·桑德" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，反而越到这个年纪越读得懂。",
+      "books": [
+        { "title": "第二性", "author": "西蒙娜·德·波伏娃" },
+        { "title": "简·爱", "author": "夏洛蒂·勃朗特" },
+        { "title": "小妇人", "author": "路易莎·梅·奥尔科特" },
+        { "title": "飘", "author": "玛格丽特·米切尔" },
+        { "title": "倾城之恋", "author": "张爱玲" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你的「关系模式」更像哪一种？",
+      "options": [
+        { "id": "people-pleaser", "label": "讨好型", "resultBook": "被讨厌的勇气" },
+        { "id": "avoidant", "label": "回避型", "resultBook": "边界感" },
+        { "id": "anxious", "label": "焦虑型", "resultBook": "亲密关系" },
+        { "id": "independent", "label": "独立型", "resultBook": "向前一步" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "别人怎么评价你，那是别人的课题，你无法干涉。",
+        "quote_source_chapter": "第一夜：否定心理创伤",
+        "quote_theme": "课题分离",
+        "bookTitle": "被讨厌的勇气"
+      },
+      {
+        "quote_text": "教育意味着获得不同的视角，理解不同的人。",
+        "quote_source_chapter": "致鱼",
+        "quote_theme": "学术与自由",
+        "bookTitle": "你当像鸟飞往你的山"
+      },
+      {
+        "quote_text": "她只能成为别人的妻子、别人的母亲，却唯独不能成为自己。",
+        "quote_source_chapter": "全职主妇",
+        "quote_theme": "女性处境",
+        "bookTitle": "82年生的金智英"
+      },
+      {
+        "quote_text": "你的身体属于你，不是属于羞耻、偏见或他人的目光。",
+        "quote_source_chapter": "身体地图",
+        "quote_theme": "身体自主",
+        "bookTitle": "身体由我"
+      },
+      {
+        "quote_text": "消费者社会期望你不断购买，却从不告诉你真正需要的是什么。",
+        "quote_source_chapter": "工作伦理",
+        "quote_theme": "消费主义",
+        "bookTitle": "工作、消费主义和新穷人"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "被讨厌的勇气", "chapter": "第一夜", "title": "课题分离：别人的事，交给别人" },
+      { "rank": 2, "bookTitle": "亲密关系", "chapter": "第 3 章", "title": "依恋类型：你为什么总在恋爱里受伤" },
+      { "rank": 3, "bookTitle": "82年生的金智英", "chapter": "全职主妇", "title": "那些没人说出口的不甘" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "被讨厌的勇气", "theme": "建立课题分离" },
+      { "day": 2, "bookTitle": "被讨厌的勇气", "theme": "放下讨好本能" },
+      { "day": 3, "bookTitle": "你当像鸟飞往你的山", "theme": "重写人生叙事" },
+      { "day": 4, "bookTitle": "身体由我", "theme": "拿回身体话语权" },
+      { "day": 5, "bookTitle": "亲密关系", "theme": "看清关系模式" },
+      { "day": 6, "bookTitle": "向前一步", "theme": "事业野心与自我选择" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下本周 3 个「我只对自己负责」的决定" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "gender": "male",
+  "ageGroup": "12-18",
+  "header": {
+    "title": "13-18 岁 · 男生专属精读",
+    "subtitle": "课内课外都卷，但这些书能帮你把乱账捋清楚——学业、友情、暗恋、和父母较劲，都有答案。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "被讨厌的勇气", "author": "岸见一郎" },
+      "badges": ["畅销", "7 天能见效"],
+      "hook": "不是让你惹人厌，是敢不讨好所有人。",
+      "readMinutes": 12,
+      "suitableFor": "在意别人眼光、总觉得自己不够好",
+      "difficulty": 2,
+      "readScene": "睡前/周末"
+    },
+    "secondary": [
+      { "title": "追风筝的人", "author": "卡勒德·胡赛尼", "badge": "必读", "hook": "为你千千万万遍——友情里欠下的账，迟早要还" },
+      { "title": "麦田里的守望者", "author": "J.D.塞林格", "badge": "经典", "hook": "霍尔顿替你骂出心里话，再带你找到心里的麦田" },
+      { "title": "终身成长", "author": "卡罗尔·德韦克", "badge": "畅销", "hook": "成绩忽上忽下？你还没定型，分数只是起点" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "study",
+      "title": "学业压力大，想学得更聪明",
+      "books": [
+        { "title": "终身成长", "author": "卡罗尔·德韦克", "badge": "Top", "doubanRating": 7.8, "goodreadsRating": 4.09 },
+        { "title": "学习之道", "author": "芭芭拉·奥克利", "badge": "Top", "doubanRating": 8.3, "goodreadsRating": 4.06 },
+        { "title": "刻意练习", "author": "安德斯·艾利克森", "badge": "必读", "doubanRating": 7.7, "goodreadsRating": 4.10 }
+      ],
+      "ctaLabel": "进入「学业」书单 →"
+    },
+    {
+      "id": "crush",
+      "title": "暗恋和友情，我说不出口",
+      "books": [
+        { "title": "追风筝的人", "author": "卡勒德·胡赛尼", "badge": "Top", "doubanRating": 8.9, "goodreadsRating": 4.34 },
+        { "title": "少年维特的烦恼", "author": "歌德", "badge": "经典", "doubanRating": 8.1, "goodreadsRating": 3.75 },
+        { "title": "解忧杂货店", "author": "东野圭吾", "badge": "畅销", "doubanRating": 8.5, "goodreadsRating": 4.18 }
+      ],
+      "ctaLabel": "进入「情感」书单 →"
+    },
+    {
+      "id": "family",
+      "title": "和父母三观对不上",
+      "books": [
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗", "badge": "Top", "doubanRating": 8.7, "goodreadsRating": 4.47 },
+        { "title": "平凡的世界", "author": "路遥", "badge": "必读", "doubanRating": 9.0, "goodreadsRating": 4.38 },
+        { "title": "麦田里的守望者", "author": "J.D.塞林格", "badge": "经典", "doubanRating": 8.1, "goodreadsRating": 3.81 }
+      ],
+      "ctaLabel": "进入「家庭」书单 →"
+    },
+    {
+      "id": "identity",
+      "title": "不知道自己以后要成为谁",
+      "books": [
+        { "title": "你想活出怎样的人生", "author": "吉野源三郎", "badge": "必读", "doubanRating": 8.7, "goodreadsRating": 4.12 },
+        { "title": "被讨厌的勇气", "author": "岸见一郎", "badge": "畅销", "doubanRating": 8.6, "goodreadsRating": 3.98 },
+        { "title": "三体", "author": "刘慈欣", "badge": "Top", "doubanRating": 8.9, "goodreadsRating": 4.08 }
+      ],
+      "ctaLabel": "进入「成长」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会改变你看自己、看朋友、看爸妈的方式。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "追风筝的人", "author": "卡勒德·胡赛尼" },
+        { "title": "麦田里的守望者", "author": "J.D.塞林格" },
+        { "title": "终身成长", "author": "卡罗尔·德韦克" },
+        { "title": "你想活出怎样的人生", "author": "吉野源三郎" },
+        { "title": "平凡的世界", "author": "路遥" },
+        { "title": "老人与海", "author": "欧内斯特·海明威" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是同龄人都在打高分的选择。",
+      "books": [
+        { "title": "三体", "author": "刘慈欣", "doubanRating": 8.9, "goodreadsRating": 4.08 },
+        { "title": "追风筝的人", "author": "卡勒德·胡赛尼", "doubanRating": 8.9, "goodreadsRating": 4.34 },
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗", "doubanRating": 8.7, "goodreadsRating": 4.47 },
+        { "title": "学习之道", "author": "芭芭拉·奥克利", "doubanRating": 8.3, "goodreadsRating": 4.06 },
+        { "title": "苏菲的世界", "author": "乔斯坦·贾德", "doubanRating": 8.8, "goodreadsRating": 4.06 }
+      ]
+    },
+    "bestseller": {
+      "copy": "好读、好懂，周末就能翻完一本。",
+      "books": [
+        { "title": "解忧杂货店", "author": "东野圭吾" },
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "小王子", "author": "安托万·德·圣-埃克苏佩里" },
+        { "title": "活着", "author": "余华" },
+        { "title": "驭风少年", "author": "威廉·坎宽巴" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，反而越到这个年纪越读得进去。",
+      "books": [
+        { "title": "平凡的世界", "author": "路遥" },
+        { "title": "老人与海", "author": "欧内斯特·海明威" },
+        { "title": "麦田里的守望者", "author": "J.D.塞林格" },
+        { "title": "少年维特的烦恼", "author": "歌德" },
+        { "title": "鲁滨逊漂流记", "author": "丹尼尔·笛福" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种少年状态？",
+      "options": [
+        { "id": "grind", "label": "闷头卷型", "resultBook": "学习之道" },
+        { "id": "sensitive", "label": "敏感内耗型", "resultBook": "被讨厌的勇气" },
+        { "id": "loyal", "label": "仗义重情型", "resultBook": "追风筝的人" },
+        { "id": "lost", "label": "迷茫观望型", "resultBook": "你想活出怎样的人生" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "决定我们自身的不是过去的经历，而是我们赋予经历的意义。",
+        "quote_source_chapter": "第一夜：否定心理创伤",
+        "quote_theme": "自我认同",
+        "bookTitle": "被讨厌的勇气"
+      },
+      {
+        "quote_text": "为你，千千万万遍。",
+        "quote_source_chapter": "全书",
+        "quote_theme": "友谊",
+        "bookTitle": "追风筝的人"
+      },
+      {
+        "quote_text": "人的能力是可以通过努力不断成长的，大脑就像肌肉一样越练越强。",
+        "quote_source_chapter": "两种思维模式",
+        "quote_theme": "学业",
+        "bookTitle": "终身成长"
+      },
+      {
+        "quote_text": "人可以被毁灭，但不能被打败。",
+        "quote_source_chapter": "全书",
+        "quote_theme": "坚韧",
+        "bookTitle": "老人与海"
+      },
+      {
+        "quote_text": "我们越是努力逃避内心的疑问，就越会在某个深夜被它追上。",
+        "quote_source_chapter": "小哥白尼的笔记",
+        "quote_theme": "人生方向",
+        "bookTitle": "你想活出怎样的人生"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "被讨厌的勇气", "chapter": "第一夜", "title": "把「别人的评价」还给别人" },
+      { "rank": 2, "bookTitle": "终身成长", "chapter": "两种思维模式", "title": "把「我不行」改成「我还没学会」" },
+      { "rank": 3, "bookTitle": "追风筝的人", "chapter": "全书", "title": "想想友情里有没有欠下的账" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "被讨厌的勇气", "theme": "卸下讨好别人的包袱" },
+      { "day": 2, "bookTitle": "被讨厌的勇气", "theme": "分清「我的事」和「别人的事」" },
+      { "day": 3, "bookTitle": "终身成长", "theme": "把分数当成起点，不是判决" },
+      { "day": 4, "bookTitle": "追风筝的人", "theme": "直面友情里的懦弱与亏欠" },
+      { "day": 5, "bookTitle": "麦田里的守望者", "theme": "和父母较劲时，先听懂自己" },
+      { "day": 6, "bookTitle": "你想活出怎样的人生", "theme": "写下三个你想成为的人" },
+      { "day": 7, "bookTitle": "复盘", "theme": "把本周最烦的一件事写成「成长卡片」" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

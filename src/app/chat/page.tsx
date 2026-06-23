@@ -56,6 +56,8 @@ export default function ChatPage() {
   const [showQuestionDrawer, setShowQuestionDrawer] = useState(false);
   const [toast, setToast] = useState({ visible: false, message: "" });
   const scrollRef = useRef<HTMLDivElement>(null);
+  const stickToBottomRef = useRef(true);
+  const scrollRafRef = useRef<number | null>(null);
   const toastedBooksRef = useRef<Set<string>>(new Set());
 
   const hasConversation = messages.some((m) => m.role === "user");
@@ -171,10 +173,42 @@ export default function ChatPage() {
   }, [hydrated]);
 
   useEffect(() => {
-    if (!readerOpen) {
-      scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      stickToBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 96;
+    };
+    onScroll();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [hydrated]);
+
+  useEffect(() => {
+    if (readerOpen) return;
+    const el = scrollRef.current;
+    if (!el || !stickToBottomRef.current) return;
+
+    const isStreaming =
+      streamingActive || messages.some((m) => m.role === "assistant" && m.streaming);
+
+    if (isStreaming) {
+      if (scrollRafRef.current != null) cancelAnimationFrame(scrollRafRef.current);
+      scrollRafRef.current = requestAnimationFrame(() => {
+        scrollRafRef.current = null;
+        const box = scrollRef.current;
+        if (!box || !stickToBottomRef.current) return;
+        box.scrollTop = box.scrollHeight;
+      });
+      return () => {
+        if (scrollRafRef.current != null) {
+          cancelAnimationFrame(scrollRafRef.current);
+          scrollRafRef.current = null;
+        }
+      };
     }
-  }, [messages, loading, readerOpen, toolLoading]);
+
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [messages, loading, readerOpen, toolLoading, streamingActive]);
 
   const requestReaderNav = useCallback((chapterId: string) => {
     readerNavSeqRef.current += 1;
@@ -383,6 +417,7 @@ export default function ChatPage() {
       };
       let currentMessages = [...messages, userMsg];
       setMessages(currentMessages);
+      stickToBottomRef.current = true;
 
       persistMemoryArchive(currentMessages);
 
@@ -609,10 +644,15 @@ export default function ChatPage() {
                 requestReaderNav(msg.id);
               }}
             />
-            {toolLoading && (
-              <ToolLoadingBanner tool={toolLoading.tool} bookTitle={toolLoading.bookTitle} />
+            {(toolLoading || (loading && !streamingActive)) && (
+              <div className="min-h-[52px]">
+                {toolLoading ? (
+                  <ToolLoadingBanner tool={toolLoading.tool} bookTitle={toolLoading.bookTitle} />
+                ) : (
+                  <LoadingDots text="正在思考..." />
+                )}
+              </div>
             )}
-            {loading && !toolLoading && !streamingActive && <LoadingDots text="正在思考..." />}
           </>
         )}
         </div>

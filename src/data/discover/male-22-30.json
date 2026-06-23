@@ -1,0 +1,175 @@
+{
+  "gender": "male",
+  "ageGroup": "22-30",
+  "header": {
+    "title": "22-30 岁 · 男生专属精读",
+    "subtitle": "毕业后前五年，把第一份工作、存钱、晋升、感情和迷茫，读成可执行的行动。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "认知觉醒", "author": "周岭" },
+      "badges": ["畅销", "7 天能见效"],
+      "hook": "别硬扛焦虑，先搞懂大脑怎么运转。",
+      "readMinutes": 12,
+      "suitableFor": "刚工作、总觉得忙却看不到成长",
+      "difficulty": 2,
+      "readScene": "通勤/睡前"
+    },
+    "secondary": [
+      { "title": "深度工作", "author": "卡尔·纽波特", "badge": "必读", "hook": "在碎片时代，把专注力练成稀缺竞争力" },
+      { "title": "富爸爸穷爸爸", "author": "罗伯特·清崎", "badge": "畅销", "hook": "工资到账就花光？先换一套金钱思维" },
+      { "title": "拆掉思维里的墙", "author": "古典", "badge": "必读", "hook": "留大城市还是回老家，别被「应该」绑架" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "career",
+      "title": "职场突破（第一份工作、晋升、跳槽）",
+      "books": [
+        { "title": "深度工作", "author": "卡尔·纽波特", "badge": "Top", "doubanRating": 8.0, "goodreadsRating": 4.19 },
+        { "title": "高效能人士的七个习惯", "author": "史蒂芬·柯维", "badge": "必读", "doubanRating": 8.5, "goodreadsRating": 4.15 },
+        { "title": "麦肯锡方法", "author": "艾森·拉塞尔", "badge": "Top", "doubanRating": 7.6, "goodreadsRating": 3.88 }
+      ],
+      "ctaLabel": "进入「职场突破」书单 →"
+    },
+    {
+      "id": "money",
+      "title": "财务基础（存钱、理财、抗风险）",
+      "books": [
+        { "title": "小狗钱钱", "author": "博多·舍费尔", "badge": "畅销", "doubanRating": 8.6, "goodreadsRating": 4.07 },
+        { "title": "富爸爸穷爸爸", "author": "罗伯特·清崎", "badge": "Top", "doubanRating": 8.3, "goodreadsRating": 4.11 },
+        { "title": "工作前5年，决定你一生的财富", "author": "三浦展", "badge": "必读", "doubanRating": 7.4, "goodreadsRating": 3.72 }
+      ],
+      "ctaLabel": "进入「财务基础」书单 →"
+    },
+    {
+      "id": "relationship",
+      "title": "亲密关系（恋爱、结婚压力、和父母沟通）",
+      "books": [
+        { "title": "关键对话", "author": "科里·帕特森", "badge": "必读", "doubanRating": 8.2, "goodreadsRating": 4.05 },
+        { "title": "原生家庭", "author": "苏珊·福沃德", "badge": "必读", "doubanRating": 8.8, "goodreadsRating": 4.24 },
+        { "title": "男人来自火星，女人来自金星", "author": "约翰·格雷", "badge": "畅销", "doubanRating": 7.6, "goodreadsRating": 3.57 }
+      ],
+      "ctaLabel": "进入「亲密关系」书单 →"
+    },
+    {
+      "id": "self",
+      "title": "找到自我（迷茫、大城市 vs 回家、重建方向）",
+      "books": [
+        { "title": "拆掉思维里的墙", "author": "古典", "badge": "Top", "doubanRating": 7.8, "goodreadsRating": 3.85 },
+        { "title": "认知觉醒", "author": "周岭", "badge": "畅销", "doubanRating": 8.1, "goodreadsRating": 4.12 },
+        { "title": "蛤蟆先生去看心理医生", "author": "罗伯特·戴博德", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.38 }
+      ],
+      "ctaLabel": "进入「找到自我」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "毕业后前五年，这几本会帮你把「努力」变成「结果」。",
+      "books": [
+        { "title": "认知觉醒", "author": "周岭" },
+        { "title": "深度工作", "author": "卡尔·纽波特" },
+        { "title": "高效能人士的七个习惯", "author": "史蒂芬·柯维" },
+        { "title": "刻意练习", "author": "安德斯·艾利克森" },
+        { "title": "把时间当作朋友", "author": "李笑来" },
+        { "title": "拆掉思维里的墙", "author": "古典" },
+        { "title": "关键对话", "author": "科里·帕特森" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是世界范围的高票选择。",
+      "books": [
+        { "title": "深度工作", "author": "卡尔·纽波特", "doubanRating": 8.0, "goodreadsRating": 4.19 },
+        { "title": "高效能人士的七个习惯", "author": "史蒂芬·柯维", "doubanRating": 8.5, "goodreadsRating": 4.15 },
+        { "title": "刻意练习", "author": "安德斯·艾利克森", "doubanRating": 7.8, "goodreadsRating": 4.17 },
+        { "title": "富爸爸穷爸爸", "author": "罗伯特·清崎", "doubanRating": 8.3, "goodreadsRating": 4.11 },
+        { "title": "金字塔原理", "author": "芭芭拉·明托", "doubanRating": 8.3, "goodreadsRating": 4.05 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，能落地。",
+      "books": [
+        { "title": "认知觉醒", "author": "周岭" },
+        { "title": "好好学习", "author": "成甲" },
+        { "title": "自控力", "author": "凯利·麦格尼格尔" },
+        { "title": "沟通的方法", "author": "脱不花" },
+        { "title": "终身成长", "author": "卡罗尔·德韦克" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，年轻时读一遍，后面会反复想起。",
+      "books": [
+        { "title": "平凡的世界", "author": "路遥" },
+        { "title": "小王子", "author": "安托万·德·圣-埃克苏佩里" },
+        { "title": "解忧杂货店", "author": "东野圭吾" },
+        { "title": "月亮与六便士", "author": "威廉·萨默塞特·毛姆" },
+        { "title": "人间失格", "author": "太宰治" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种职场新人？",
+      "options": [
+        { "id": "hustler", "label": "拼命三郎型", "resultBook": "深度工作" },
+        { "id": "drifter", "label": "迷茫游荡型", "resultBook": "拆掉思维里的墙" },
+        { "id": "spender", "label": "月光焦虑型", "resultBook": "富爸爸穷爸爸" },
+        { "id": "people-pleaser", "label": "关系内耗型", "resultBook": "关键对话" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "焦虑的根源，是想同时做很多事，又想立刻看到结果。",
+        "quote_source_chapter": "第一章：大脑——一切问题的起源",
+        "quote_theme": "对抗迷茫",
+        "bookTitle": "认知觉醒"
+      },
+      {
+        "quote_text": "深度工作，是在无干扰的状态下专注进行职业活动，使认知能力达到极限。",
+        "quote_source_chapter": "第一部分：理念",
+        "quote_theme": "职场竞争力",
+        "bookTitle": "深度工作"
+      },
+      {
+        "quote_text": "穷人为钱工作，富人让钱为自己工作。",
+        "quote_source_chapter": "第一课：富人不为钱工作",
+        "quote_theme": "金钱观",
+        "bookTitle": "富爸爸穷爸爸"
+      },
+      {
+        "quote_text": "安全感是内心的事，安全感是你对自己的信心。",
+        "quote_source_chapter": "第一章：你是不是在等生活来敲你的门",
+        "quote_theme": "大城市与回家",
+        "bookTitle": "拆掉思维里的墙"
+      },
+      {
+        "quote_text": "当对话变得至关重要时，我们反而表现得更糟糕。",
+        "quote_source_chapter": "第一章：何谓关键对话",
+        "quote_theme": "沟通",
+        "bookTitle": "关键对话"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "认知觉醒", "chapter": "第二章", "title": "用「元认知」看清自己每天在忙什么" },
+      { "rank": 2, "bookTitle": "深度工作", "chapter": "规则 1", "title": "把工作切成「深度块」，关掉通知" },
+      { "rank": 3, "bookTitle": "小狗钱钱", "chapter": "第一章", "title": "先养一只「梦想储蓄罐」再谈理财" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "认知觉醒", "theme": "搞懂大脑，停止无效内耗" },
+      { "day": 2, "bookTitle": "认知觉醒", "theme": "把每天复盘写成成长日志" },
+      { "day": 3, "bookTitle": "深度工作", "theme": "练出 90 分钟不被打断的专注" },
+      { "day": 4, "bookTitle": "关键对话", "theme": "和父母/伴侣谈压力，少说对抗句" },
+      { "day": 5, "bookTitle": "小狗钱钱", "theme": "定第一个存钱目标（哪怕每月 500）" },
+      { "day": 6, "bookTitle": "拆掉思维里的墙", "theme": "写下「留/回」各自 3 条真实代价" },
+      { "day": 7, "bookTitle": "复盘", "theme": "把本周 3 个卡点写成下周行动清单" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

@@ -28,7 +28,9 @@ export default function ContentCard({ type, content, book, onFullscreen, streami
   const displayContent = normalizeReadingContent(content);
 
   return (
-    <div className={`animate-fade-in overflow-hidden rounded-2xl border ${TYPE_COLORS[type]} shadow-sm`}>
+    <div
+      className={`overflow-hidden rounded-2xl border ${TYPE_COLORS[type]} shadow-sm ${streaming ? "" : "animate-fade-in"}`}
+    >
       <div className="flex items-center justify-between px-4 pt-4 pb-2">
         <span className="text-xs font-medium tracking-wide text-ink-muted uppercase">
           {TYPE_LABELS[type]}
@@ -41,7 +43,9 @@ export default function ContentCard({ type, content, book, onFullscreen, streami
       </div>
 
       <div className="relative mx-4 mb-3">
-        <div className="max-h-48 overflow-y-auto rounded-xl bg-white/60 p-4 scrollbar-hide">
+        <div
+          className={`max-h-48 overflow-y-auto rounded-xl bg-white/60 p-4 scrollbar-hide ${streaming ? "min-h-48" : ""}`}
+        >
           <MarkdownContent content={displayContent} />
           {streaming && (
             <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-accent align-middle" />

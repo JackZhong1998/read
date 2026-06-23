@@ -1,0 +1,175 @@
+{
+  "gender": "female",
+  "ageGroup": "40-50",
+  "header": {
+    "title": "40-50 岁 · 女生专属精读",
+    "subtitle": "少读一点，但每一本都能帮你在更年期、空巢、婚姻和照护里，重新找回为自己而活的力量。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "目送", "author": "龙应台" },
+      "badges": ["经典", "这个年纪一读就懂"],
+      "hook": "目送孩子的背影，也目送那个总在付出的自己。",
+      "readMinutes": 15,
+      "suitableFor": "孩子远行、父母渐老、心里泛酸却说不出",
+      "difficulty": 2,
+      "readScene": "睡前/周末午后"
+    },
+    "secondary": [
+      { "title": "也许你该找个人聊聊", "author": "洛莉·戈特利布", "badge": "畅销", "hook": "情绪堵住了，先允许自己找个人说说" },
+      { "title": "身体由我", "author": "希娃·冯·布伦-布兰茨", "badge": "必读", "hook": "更年期不是病，是身体在提醒你：该为自己活了" },
+      { "title": "被讨厌的勇气", "author": "岸见一郎", "badge": "畅销", "hook": "不必再活成妻子、母亲、女儿期待的样子" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "body",
+      "title": "我想和身体和平相处（更年期·活力重建）",
+      "books": [
+        { "title": "身体由我", "author": "希娃·冯·布伦-布兰茨", "badge": "Top", "doubanRating": 8.3, "goodreadsRating": 4.18 },
+        { "title": "改变，从接纳自己开始", "author": "海蓝博士", "badge": "畅销", "doubanRating": 8.2, "goodreadsRating": 4.05 },
+        { "title": "次第花开", "author": "索达吉堪布", "badge": "必读", "doubanRating": 8.5, "goodreadsRating": 4.12 }
+      ],
+      "ctaLabel": "进入「身体与活力」书单 →"
+    },
+    {
+      "id": "emptynest",
+      "title": "孩子走后，我想重新找到自己（空巢·为自己而活）",
+      "books": [
+        { "title": "目送", "author": "龙应台", "badge": "Top", "doubanRating": 8.4, "goodreadsRating": 4.12 },
+        { "title": "我们仨", "author": "杨绛", "badge": "必读", "doubanRating": 8.8, "goodreadsRating": 4.21 },
+        { "title": "我的阿勒泰", "author": "李娟", "badge": "畅销", "doubanRating": 8.9, "goodreadsRating": 4.28 }
+      ],
+      "ctaLabel": "进入「空巢与自我」书单 →"
+    },
+    {
+      "id": "marriage",
+      "title": "婚姻久了越沉默，委屈攒太多（婚姻倦怠·婚姻委屈）",
+      "books": [
+        { "title": "亲密关系", "author": "罗兰·米勒", "badge": "Top", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "爱的艺术", "author": "埃里希·弗洛姆", "badge": "必读", "doubanRating": 8.8, "goodreadsRating": 4.02 },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.29 }
+      ],
+      "ctaLabel": "进入「婚姻与关系」书单 →"
+    },
+    {
+      "id": "second-act",
+      "title": "照护父母的同时，我也想重启人生（父母照护·职业第二春）",
+      "books": [
+        { "title": "最好的告别", "author": "阿图·葛文德", "badge": "Top", "doubanRating": 9.0, "goodreadsRating": 4.42 },
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔", "badge": "必读", "doubanRating": 9.1, "goodreadsRating": 4.37 },
+        { "title": "终身成长", "author": "卡罗尔·德韦克", "badge": "畅销", "doubanRating": 8.1, "goodreadsRating": 4.07 }
+      ],
+      "ctaLabel": "进入「照护与第二春」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会成为你下半场的精神底气。",
+      "books": [
+        { "title": "目送", "author": "龙应台" },
+        { "title": "也许你该找个人聊聊", "author": "洛莉·戈特利布" },
+        { "title": "身体由我", "author": "希娃·冯·布伦-布兰茨" },
+        { "title": "亲密关系", "author": "罗兰·米勒" },
+        { "title": "我们仨", "author": "杨绛" },
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "走到人生边上", "author": "杨绛" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是同年龄段女性世界范围的高票选择。",
+      "books": [
+        { "title": "亲密关系", "author": "罗兰·米勒", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "我们仨", "author": "杨绛", "doubanRating": 8.8, "goodreadsRating": 4.21 },
+        { "title": "我的阿勒泰", "author": "李娟", "doubanRating": 8.9, "goodreadsRating": 4.28 },
+        { "title": "最好的告别", "author": "阿图·葛文德", "doubanRating": 9.0, "goodreadsRating": 4.42 },
+        { "title": "活出生命的意义", "author": "维克多·弗兰克尔", "doubanRating": 9.1, "goodreadsRating": 4.37 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，能落地，今晚就能试一个小改变。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "也许你该找个人聊聊", "author": "洛莉·戈特利布" },
+        { "title": "身体由我", "author": "希娃·冯·布伦-布兰茨" },
+        { "title": "次第花开", "author": "索达吉堪布" },
+        { "title": "改变，从接纳自己开始", "author": "海蓝博士" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，越到这个年纪，越能读出里面的自己。",
+      "books": [
+        { "title": "我们仨", "author": "杨绛" },
+        { "title": "走到人生边上", "author": "杨绛" },
+        { "title": "平凡的世界", "author": "路遥" },
+        { "title": "额尔古纳河右岸", "author": "迟子建" },
+        { "title": "围城", "author": "钱钟书" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种「中场女性」？",
+      "options": [
+        { "id": "self-sacrifice", "label": "隐忍付出型", "resultBook": "被讨厌的勇气" },
+        { "id": "emotional-block", "label": "情感淤积型", "resultBook": "也许你该找个人聊聊" },
+        { "id": "body-anxiety", "label": "身体焦虑型", "resultBook": "身体由我" },
+        { "id": "role-lost", "label": "角色迷失型", "resultBook": "目送" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "我慢慢地、慢慢地了解到，所谓父女母子一场，只不过意味着，你和他的缘分就是今生今世不断地在目送他的背影渐行渐远。",
+        "quote_source_chapter": "背影",
+        "quote_theme": "空巢与告别",
+        "bookTitle": "目送"
+      },
+      {
+        "quote_text": "我们无法逃避痛苦，只能接纳。但我们可以选择如何回应——以及是否让它定义我们。",
+        "quote_source_chapter": "导言",
+        "quote_theme": "情绪疗愈",
+        "bookTitle": "也许你该找个人聊聊"
+      },
+      {
+        "quote_text": "你的身体不是敌人，它是陪你走过几十年的老朋友。更年期，是它终于开口说话的时候。",
+        "quote_source_chapter": "更年期不是终点",
+        "quote_theme": "更年期与自我",
+        "bookTitle": "身体由我"
+      },
+      {
+        "quote_text": "一切烦恼都来自人际关系——但这也意味着，一切幸福也来自人际关系。",
+        "quote_source_chapter": "第一夜",
+        "quote_theme": "婚姻与委屈",
+        "bookTitle": "被讨厌的勇气"
+      },
+      {
+        "quote_text": "亲密关系的秘密在于：我们越了解对方，就越可能把对方理想化，也越可能在失望中受伤。",
+        "quote_source_chapter": "依恋与吸引",
+        "quote_theme": "婚姻倦怠",
+        "bookTitle": "亲密关系"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "目送", "chapter": "背影", "title": "允许自己目送，也允许自己流泪" },
+      { "rank": 2, "bookTitle": "身体由我", "chapter": "更年期不是终点", "title": "听懂身体在说什么" },
+      { "rank": 3, "bookTitle": "也许你该找个人聊聊", "chapter": "导言", "title": "先承认：我需要被听见" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "目送", "theme": "承认空巢里的失落与不舍" },
+      { "day": 2, "bookTitle": "身体由我", "theme": "和身体重新做朋友" },
+      { "day": 3, "bookTitle": "也许你该找个人聊聊", "theme": "让堵住的情绪先流出来" },
+      { "day": 4, "bookTitle": "亲密关系", "theme": "看清婚姻里沉默的委屈" },
+      { "day": 5, "bookTitle": "最好的告别", "theme": "照护父母，也照护自己" },
+      { "day": 6, "bookTitle": "被讨厌的勇气", "theme": "练习为自己而活一次" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下本周 3 件「只为自己做」的小事" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

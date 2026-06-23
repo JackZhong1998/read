@@ -1,0 +1,175 @@
+{
+  "gender": "female",
+  "ageGroup": "12-18",
+  "header": {
+    "title": "13-18 岁 · 女生专属精读",
+    "subtitle": "少读一点，但每一本都能帮你熬过外貌焦虑、暗恋失恋、闺蜜风波和父母管束，变得更笃定。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "被讨厌的勇气", "author": "岸见一郎" },
+      "badges": ["畅销", "7 天能见效"],
+      "hook": "别人怎么看你，是他们的课题，不是你的。",
+      "readMinutes": 10,
+      "suitableFor": "在意别人眼光、总想讨好同学",
+      "difficulty": 1,
+      "readScene": "睡前/课间"
+    },
+    "secondary": [
+      { "title": "简·爱", "author": "夏洛蒂·勃朗特", "badge": "必读", "hook": "长得不够白？先学会昂起头爱自己" },
+      { "title": "傲慢与偏见", "author": "简·奥斯汀", "badge": "畅销", "hook": "暗恋是风暴，这本书教你等一个配得上你的人" },
+      { "title": "终身成长", "author": "卡罗尔·德韦克", "badge": "必读", "hook": "分数不能定义你，成长心态可以" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "appearance",
+      "title": "我对自己的外貌很不满意（痘痘/胖/不够白）",
+      "books": [
+        { "title": "简·爱", "author": "夏洛蒂·勃朗特", "badge": "Top", "doubanRating": 8.5, "goodreadsRating": 4.15 },
+        { "title": "82年生的金智英", "author": "赵南柱", "badge": "Top", "doubanRating": 8.8, "goodreadsRating": 4.02 },
+        { "title": "小妇人", "author": "露易莎·梅·奥尔科特", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.14 }
+      ],
+      "ctaLabel": "进入「外貌自信」书单 →"
+    },
+    {
+      "id": "crush",
+      "title": "我心里装着一个他（或刚失恋，放不下）",
+      "books": [
+        { "title": "傲慢与偏见", "author": "简·奥斯汀", "badge": "Top", "doubanRating": 8.9, "goodreadsRating": 4.28 },
+        { "title": "萤火虫小巷", "author": "克莉丝汀·汉娜", "badge": "畅销", "doubanRating": 8.5, "goodreadsRating": 4.26 },
+        { "title": "被讨厌的勇气", "author": "岸见一郎", "badge": "必读", "doubanRating": 8.6, "goodreadsRating": 3.98 }
+      ],
+      "ctaLabel": "进入「暗恋失恋」书单 →"
+    },
+    {
+      "id": "friendship",
+      "title": "闺蜜关系让我很受伤（背刺/孤立/渐行渐远）",
+      "books": [
+        { "title": "萤火虫小巷", "author": "克莉丝汀·汉娜", "badge": "Top", "doubanRating": 8.5, "goodreadsRating": 4.26 },
+        { "title": "小妇人", "author": "露易莎·梅·奥尔科特", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.14 },
+        { "title": "杀死一只知更鸟", "author": "哈珀·李", "badge": "必读", "doubanRating": 8.9, "goodreadsRating": 4.26 }
+      ],
+      "ctaLabel": "进入「闺蜜友谊」书单 →"
+    },
+    {
+      "id": "parents",
+      "title": "爸妈管太多，快喘不过气（翻手机/偷看日记）",
+      "books": [
+        { "title": "无声告白", "author": "伍绮诗", "badge": "必读", "doubanRating": 8.7, "goodreadsRating": 4.02 },
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗", "badge": "Top", "doubanRating": 8.7, "goodreadsRating": 4.47 },
+        { "title": "82年生的金智英", "author": "赵南柱", "badge": "畅销", "doubanRating": 8.8, "goodreadsRating": 4.02 }
+      ],
+      "ctaLabel": "进入「父母边界」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会变成你面对世界的底气，而不是别人的期待。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "简·爱", "author": "夏洛蒂·勃朗特" },
+        { "title": "小妇人", "author": "露易莎·梅·奥尔科特" },
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗" },
+        { "title": "杀死一只知更鸟", "author": "哈珀·李" },
+        { "title": "82年生的金智英", "author": "赵南柱" },
+        { "title": "终身成长", "author": "卡罗尔·德韦克" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是同龄女生和世界读者共同高票的选择。",
+      "books": [
+        { "title": "傲慢与偏见", "author": "简·奥斯汀", "doubanRating": 8.9, "goodreadsRating": 4.28 },
+        { "title": "简·爱", "author": "夏洛蒂·勃朗特", "doubanRating": 8.5, "goodreadsRating": 4.15 },
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗", "doubanRating": 8.7, "goodreadsRating": 4.47 },
+        { "title": "杀死一只知更鸟", "author": "哈珀·李", "doubanRating": 8.9, "goodreadsRating": 4.26 },
+        { "title": "小妇人", "author": "露易莎·梅·奥尔科特", "doubanRating": 8.4, "goodreadsRating": 4.14 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，今晚就能用上一句。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "终身成长", "author": "卡罗尔·德韦克" },
+        { "title": "82年生的金智英", "author": "赵南柱" },
+        { "title": "萤火虫小巷", "author": "克莉丝汀·汉娜" },
+        { "title": "无声告白", "author": "伍绮诗" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，反而在这个年纪第一次读最戳心。",
+      "books": [
+        { "title": "傲慢与偏见", "author": "简·奥斯汀" },
+        { "title": "简·爱", "author": "夏洛蒂·勃朗特" },
+        { "title": "小妇人", "author": "露易莎·梅·奥尔科特" },
+        { "title": "绿山墙的安妮", "author": "露西·莫德·蒙哥马利" },
+        { "title": "小王子", "author": "安托万·德·圣-埃克苏佩里" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种少女心境？",
+      "options": [
+        { "id": "sensitive", "label": "敏感型", "resultBook": "简·爱" },
+        { "id": "romantic", "label": "浪漫型", "resultBook": "傲慢与偏见" },
+        { "id": "rebel", "label": "叛逆型", "resultBook": "你当像鸟飞往你的山" },
+        { "id": "people-pleaser", "label": "讨好型", "resultBook": "被讨厌的勇气" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "你以为我穷、不好看就没有灵魂吗？",
+        "quote_source_chapter": "罗切斯特庄园告白",
+        "quote_theme": "外貌自信",
+        "bookTitle": "简·爱"
+      },
+      {
+        "quote_text": "骄傲阻止了我们提出请求，虚荣阻止了我们接受帮助。",
+        "quote_source_chapter": "达西的第一封信",
+        "quote_theme": "暗恋与偏见",
+        "bookTitle": "傲慢与偏见"
+      },
+      {
+        "quote_text": "一切烦恼都来自人际关系。但幸福也来自人际关系。",
+        "quote_source_chapter": "第一夜：否定心理创伤",
+        "quote_theme": "同学关系",
+        "bookTitle": "被讨厌的勇气"
+      },
+      {
+        "quote_text": "你可以爱一个人，但仍然选择和他说再见。",
+        "quote_source_chapter": "逃离巴克峰",
+        "quote_theme": "父母边界",
+        "bookTitle": "你当像鸟飞往你的山"
+      },
+      {
+        "quote_text": "我宁可做一个失败的自己，也不愿成为别人期待里的完美女孩。",
+        "quote_source_chapter": "金智英的独白",
+        "quote_theme": "性别刻板印象",
+        "bookTitle": "82年生的金智英"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "被讨厌的勇气", "chapter": "第一夜", "title": "课题分离：别人讨厌你是他的事" },
+      { "rank": 2, "bookTitle": "简·爱", "chapter": "罗切斯特庄园", "title": "「我没有灵魂吗？」昂起头先爱自己" },
+      { "rank": 3, "bookTitle": "终身成长", "chapter": "两种思维模式", "title": "考砸了≠你不行，只是还没学会" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "被讨厌的勇气", "theme": "学会课题分离，少在意眼光" },
+      { "day": 2, "bookTitle": "被讨厌的勇气", "theme": "放下讨好，做自己" },
+      { "day": 3, "bookTitle": "简·爱", "theme": "外貌焦虑里找回自尊" },
+      { "day": 4, "bookTitle": "傲慢与偏见", "theme": "读懂暗恋里的骄傲与偏见" },
+      { "day": 5, "bookTitle": "小妇人", "theme": "姐妹与闺蜜，独立不是不婚" },
+      { "day": 6, "bookTitle": "你当像鸟飞往你的山", "theme": "挣脱父母期待，飞往自己的山" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下本周 3 件「我只为自己做」的小事" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

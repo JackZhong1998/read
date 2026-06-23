@@ -1,0 +1,175 @@
+{
+  "gender": "female",
+  "ageGroup": "22-30",
+  "header": {
+    "title": "22-30 岁 · 女生专属精读",
+    "subtitle": "少读一点，但每一本都能帮你在催婚、职场、金钱和关系里，拿回自己的主动权。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "被讨厌的勇气", "author": "岸见一郎" },
+      "badges": ["畅销", "7 天能见效"],
+      "hook": "别人的课题，还给别人。",
+      "readMinutes": 12,
+      "suitableFor": "总在意别人眼光、怕说「不」",
+      "difficulty": 2,
+      "readScene": "通勤/睡前"
+    },
+    "secondary": [
+      { "title": "单身女性的时代", "author": "丽贝卡·特雷斯特", "badge": "必读", "hook": "催婚时最有底气的一句话：单身是我的选择" },
+      { "title": "自信的陷阱", "author": "拉斯·乌尔里希斯·彼得森", "badge": "畅销", "hook": "不是等不怕了才行动，是行动了才不怕" },
+      { "title": "富爸爸·女人一定要有钱", "author": "金·清崎", "badge": "必读", "hook": "经济安全感，不靠嫁人，靠财务系统" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "marriage-pressure",
+      "title": "我被催婚了，不想凑合嫁",
+      "books": [
+        { "title": "单身女性的时代", "author": "丽贝卡·特雷斯特", "badge": "Top", "doubanRating": 8.0, "goodreadsRating": 3.91 },
+        { "title": "围城", "author": "钱钟书", "badge": "经典", "doubanRating": 9.0, "goodreadsRating": 4.11 },
+        { "title": "82年生的金智英", "author": "赵南柱", "badge": "必读", "doubanRating": 8.8, "goodreadsRating": 4.02 }
+      ],
+      "ctaLabel": "进入「催婚与单身」书单 →"
+    },
+    {
+      "id": "financial",
+      "title": "我想靠自己兜里有钱（不靠嫁人）",
+      "books": [
+        { "title": "富爸爸·女人一定要有钱", "author": "金·清崎", "badge": "必读", "doubanRating": 7.6, "goodreadsRating": 4.08 },
+        { "title": "小狗钱钱", "author": "博多·舍费尔", "badge": "畅销", "doubanRating": 8.6, "goodreadsRating": 4.19 },
+        { "title": "工作、消费主义和新穷人", "author": "齐格蒙特·鲍曼", "badge": "Top", "doubanRating": 8.3, "goodreadsRating": 4.24 }
+      ],
+      "ctaLabel": "进入「经济独立」书单 →"
+    },
+    {
+      "id": "workplace",
+      "title": "职场对我好像更苛刻（性别歧视/玻璃天花板）",
+      "books": [
+        { "title": "向前一步", "author": "谢丽尔·桑德伯格", "badge": "Top", "doubanRating": 8.3, "goodreadsRating": 4.15 },
+        { "title": "第二性", "author": "西蒙娜·德·波伏娃", "badge": "Top", "doubanRating": 9.0, "goodreadsRating": 4.16 },
+        { "title": "关键对话", "author": "科里·帕特森", "badge": "必读", "doubanRating": 8.2, "goodreadsRating": 4.04 }
+      ],
+      "ctaLabel": "进入「职场突围」书单 →"
+    },
+    {
+      "id": "relationship",
+      "title": "这段感情要不要继续（恋爱抉择）",
+      "books": [
+        { "title": "也许你该找个人聊聊", "author": "洛莉·戈特利布", "badge": "Top", "doubanRating": 9.0, "goodreadsRating": 4.36 },
+        { "title": "亲密关系", "author": "罗兰·米勒", "badge": "必读", "doubanRating": 9.2, "goodreadsRating": 4.11 },
+        { "title": "巴黎美人", "author": "珍妮·达玛斯", "badge": "畅销", "doubanRating": 7.4, "goodreadsRating": 3.68 }
+      ],
+      "ctaLabel": "进入「恋爱抉择」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会变成你面对世界的底层底气。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "原生家庭", "author": "苏珊·福沃德" },
+        { "title": "自信的陷阱", "author": "拉斯·乌尔里希斯·彼得森" },
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗" },
+        { "title": "一间只属于自己的房间", "author": "弗吉尼亚·伍尔夫" },
+        { "title": "斯坦福大学人生设计课", "author": "比尔·博内特" },
+        { "title": "一个人的好天气", "author": "青山七惠" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是世界范围的高票选择。",
+      "books": [
+        { "title": "也许你该找个人聊聊", "author": "洛莉·戈特利布", "doubanRating": 9.0, "goodreadsRating": 4.36 },
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗", "doubanRating": 8.7, "goodreadsRating": 4.47 },
+        { "title": "第二性", "author": "西蒙娜·德·波伏娃", "doubanRating": 9.0, "goodreadsRating": 4.16 },
+        { "title": "向前一步", "author": "谢丽尔·桑德伯格", "doubanRating": 8.3, "goodreadsRating": 4.15 },
+        { "title": "82年生的金智英", "author": "赵南柱", "doubanRating": 8.8, "goodreadsRating": 4.02 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：读得快，能落地。",
+      "books": [
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "自信的陷阱", "author": "拉斯·乌尔里希斯·彼得森" },
+        { "title": "单身女性的时代", "author": "丽贝卡·特雷斯特" },
+        { "title": "当你开始爱自己，全世界都会来爱你", "author": "周梵" },
+        { "title": "小狗钱钱", "author": "博多·舍费尔" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，反而越到这个年纪越读得懂。",
+      "books": [
+        { "title": "简·爱", "author": "夏洛蒂·勃朗特" },
+        { "title": "傲慢与偏见", "author": "简·奥斯汀" },
+        { "title": "小妇人", "author": "路易莎·梅·奥尔科特" },
+        { "title": "围城", "author": "钱钟书" },
+        { "title": "那不勒斯四部曲", "author": "埃莱娜·费兰特" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种「职场女孩」？",
+      "options": [
+        { "id": "people-pleaser", "label": "讨好型", "resultBook": "被讨厌的勇气" },
+        { "id": "impostor", "label": "冒充者型", "resultBook": "自信的陷阱" },
+        { "id": "boundary-less", "label": "边界模糊型", "resultBook": "原生家庭" },
+        { "id": "drifter", "label": "漂泊迷茫型", "resultBook": "一个人的好天气" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "别人如何评价你，那是别人的课题，你无法左右。",
+        "quote_source_chapter": "课题分离",
+        "quote_theme": "催婚与自我",
+        "bookTitle": "被讨厌的勇气"
+      },
+      {
+        "quote_text": "单身女性正在重塑城市、经济和文化——这不是「剩下」，是主动选择。",
+        "quote_source_chapter": "单身女性的崛起",
+        "quote_theme": "催婚压力",
+        "bookTitle": "单身女性的时代"
+      },
+      {
+        "quote_text": "自信不是感觉，是行动。你不需要先觉得自己配得上，才开始做。",
+        "quote_source_chapter": "自信的陷阱",
+        "quote_theme": "冒充者综合征",
+        "bookTitle": "自信的陷阱"
+      },
+      {
+        "quote_text": "你没有义务为父母的情绪负责，也没有义务满足他们对「好女儿」的想象。",
+        "quote_source_chapter": "与父母的对峙",
+        "quote_theme": "原生家庭边界",
+        "bookTitle": "原生家庭"
+      },
+      {
+        "quote_text": "一个女人要想写作，必须有钱，还要有一间自己的房间。",
+        "quote_source_chapter": "第一章",
+        "quote_theme": "经济与精神独立",
+        "bookTitle": "一间只属于自己的房间"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "被讨厌的勇气", "chapter": "课题分离", "title": "把催婚、评价、期待还给别人" },
+      { "rank": 2, "bookTitle": "自信的陷阱", "chapter": "行动先于自信", "title": "不等「配得感」到位再出手" },
+      { "rank": 3, "bookTitle": "原生家庭", "chapter": "非辩护性回应", "title": "不撕破脸，也能守住边界" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "被讨厌的勇气", "theme": "课题分离：别人的期待还回去" },
+      { "day": 2, "bookTitle": "被讨厌的勇气", "theme": "巩固：在催婚场景里练习说「不」" },
+      { "day": 3, "bookTitle": "自信的陷阱", "theme": "冒充者综合征：先行动再自信" },
+      { "day": 4, "bookTitle": "原生家庭", "theme": "设立边界，不撕破脸" },
+      { "day": 5, "bookTitle": "富爸爸·女人一定要有钱", "theme": "搭建自己的财务安全感" },
+      { "day": 6, "bookTitle": "向前一步", "theme": "职场里把椅子往前挪" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下本周 3 个「只属于我的决定」" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

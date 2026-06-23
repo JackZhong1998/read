@@ -1,0 +1,175 @@
+{
+  "gender": "female",
+  "ageGroup": "30-40",
+  "header": {
+    "title": "30-40 岁 · 女生专属精读",
+    "subtitle": "少读一点，但每一本都能帮你在生育、职场、家庭与自我之间，找到更清醒的答案。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "向前一步", "author": "谢丽尔·桑德伯格" },
+      "badges": ["畅销", "7 天能见效"],
+      "hook": "不是要你更拼，是让你不再为「想要」而内疚。",
+      "readMinutes": 12,
+      "suitableFor": "在生育与升职之间反复拉扯",
+      "difficulty": 2,
+      "readScene": "通勤/睡前"
+    },
+    "secondary": [
+      { "title": "82年生的金智英", "author": "赵南柱", "badge": "必读", "hook": "那些说不出口的委屈，原来不只你一个人" },
+      { "title": "为何家会伤人", "author": "武志红", "badge": "必读", "hook": "先看清原生家庭，再谈怎么当妈/当儿媳" },
+      { "title": "身体从未忘记", "author": "巴塞尔·范德考克", "badge": "畅销", "hook": "累到崩溃时，身体比脑子更早喊停" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "career-motherhood",
+      "title": "事业与生育（我不想二选一）",
+      "books": [
+        { "title": "向前一步", "author": "谢丽尔·桑德伯格", "badge": "Top", "doubanRating": 7.8, "goodreadsRating": 3.95 },
+        { "title": "成为", "author": "米歇尔·奥巴马", "badge": "Top", "doubanRating": 8.7, "goodreadsRating": 4.27 },
+        { "title": "看不见的女性", "author": "卡罗琳·克里亚多·佩雷斯", "badge": "必读", "doubanRating": 9.1, "goodreadsRating": 4.35 }
+      ],
+      "ctaLabel": "进入「事业与生育」书单 →"
+    },
+    {
+      "id": "family-boundary",
+      "title": "家庭边界（伴侣/婆媳/育儿分工）",
+      "books": [
+        { "title": "为何家会伤人", "author": "武志红", "badge": "必读", "doubanRating": 8.1, "goodreadsRating": 4.02 },
+        { "title": "非暴力沟通", "author": "马歇尔·卢森堡", "badge": "必读", "doubanRating": 8.4, "goodreadsRating": 4.29 },
+        { "title": "坡道上的家", "author": "李柚梨", "badge": "Top", "doubanRating": 8.8, "goodreadsRating": 4.24 }
+      ],
+      "ctaLabel": "进入「家庭边界」书单 →"
+    },
+    {
+      "id": "body-mind",
+      "title": "身心重建（从透支里把自己捡回来）",
+      "books": [
+        { "title": "身体从未忘记", "author": "巴塞尔·范德考克", "badge": "Top", "doubanRating": 9.0, "goodreadsRating": 4.36 },
+        { "title": "蛤蟆先生去看心理医生", "author": "罗伯特·戴博德", "badge": "畅销", "doubanRating": 8.4, "goodreadsRating": 4.38 },
+        { "title": "我们内心的冲突", "author": "卡伦·霍妮", "badge": "必读", "doubanRating": 8.7, "goodreadsRating": 4.12 }
+      ],
+      "ctaLabel": "进入「身心重建」书单 →"
+    },
+    {
+      "id": "find-yourself",
+      "title": "找回自己（不只是谁的妈妈/妻子/员工）",
+      "books": [
+        { "title": "82年生的金智英", "author": "赵南柱", "badge": "Top", "doubanRating": 8.9, "goodreadsRating": 4.02 },
+        { "title": "第二性", "author": "西蒙娜·德·波伏娃", "badge": "必读", "doubanRating": 9.0, "goodreadsRating": 4.16 },
+        { "title": "一间自己的房间", "author": "弗吉尼亚·伍尔夫", "badge": "经典", "doubanRating": 9.2, "goodreadsRating": 4.22 }
+      ],
+      "ctaLabel": "进入「找回自己」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会帮你重新理解：我是谁，以及我想成为谁。",
+      "books": [
+        { "title": "向前一步", "author": "谢丽尔·桑德伯格" },
+        { "title": "82年生的金智英", "author": "赵南柱" },
+        { "title": "为何家会伤人", "author": "武志红" },
+        { "title": "身体从未忘记", "author": "巴塞尔·范德考克" },
+        { "title": "成为", "author": "米歇尔·奥巴马" },
+        { "title": "看不见的女性", "author": "卡罗琳·克里亚多·佩雷斯" },
+        { "title": "坡道上的家", "author": "李柚梨" }
+      ]
+    },
+    "top": {
+      "copy": "不用猜你会不会踩雷：这是千万女性验证过的高票选择。",
+      "books": [
+        { "title": "看不见的女性", "author": "卡罗琳·克里亚多·佩雷斯", "doubanRating": 9.1, "goodreadsRating": 4.35 },
+        { "title": "82年生的金智英", "author": "赵南柱", "doubanRating": 8.9, "goodreadsRating": 4.02 },
+        { "title": "坡道上的家", "author": "李柚梨", "doubanRating": 8.8, "goodreadsRating": 4.24 },
+        { "title": "成为", "author": "米歇尔·奥巴马", "doubanRating": 8.7, "goodreadsRating": 4.27 },
+        { "title": "身体从未忘记", "author": "巴塞尔·范德考克", "doubanRating": 9.0, "goodreadsRating": 4.36 }
+      ]
+    },
+    "bestseller": {
+      "copy": "适合忙：碎片时间读得完，回家就能用。",
+      "books": [
+        { "title": "蛤蟆先生去看心理医生", "author": "罗伯特·戴博德" },
+        { "title": "向前一步", "author": "谢丽尔·桑德伯格" },
+        { "title": "被讨厌的勇气", "author": "岸见一郎" },
+        { "title": "你当像鸟飞往你的山", "author": "塔拉·韦斯特弗" },
+        { "title": "亲密关系", "author": "罗兰·米勒" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会过期，三十岁后读，才懂其中的锋利与温柔。",
+      "books": [
+        { "title": "第二性", "author": "西蒙娜·德·波伏娃" },
+        { "title": "一间自己的房间", "author": "弗吉尼亚·伍尔夫" },
+        { "title": "飘", "author": "玛格丽特·米切尔" },
+        { "title": "简·爱", "author": "夏洛蒂·勃朗特" },
+        { "title": "小妇人", "author": "露易莎·梅·奥尔科特" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种「多重角色」？",
+      "options": [
+        { "id": "career-first", "label": "事业优先型", "resultBook": "向前一步" },
+        { "id": "family-sacrifice", "label": "家庭牺牲型", "resultBook": "82年生的金智英" },
+        { "id": "boundary-struggle", "label": "边界挣扎型", "resultBook": "为何家会伤人" },
+        { "id": "burnout", "label": "透支耗尽型", "resultBook": "身体从未忘记" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "女性不应该因为害怕将来无法兼顾而提前退出竞争。",
+        "quote_source_chapter": "第 3 章：坐到桌前",
+        "quote_theme": "事业与生育",
+        "bookTitle": "向前一步"
+      },
+      {
+        "quote_text": "你不必成为别人期待中的好妻子、好妈妈、好儿媳，你只需要成为你自己。",
+        "quote_source_chapter": "尾声",
+        "quote_theme": "自我身份",
+        "bookTitle": "82年生的金智英"
+      },
+      {
+        "quote_text": "健康的家庭里，爱不是捆绑，而是允许每个人成为独立的自己。",
+        "quote_source_chapter": "第 2 章：原生家庭",
+        "quote_theme": "家庭边界",
+        "bookTitle": "为何家会伤人"
+      },
+      {
+        "quote_text": "创伤不只留在记忆里，它刻进了身体——学会倾听，是疗愈的第一步。",
+        "quote_source_chapter": "第 6 章：身体记录簿",
+        "quote_theme": "身心重建",
+        "bookTitle": "身体从未忘记"
+      },
+      {
+        "quote_text": "女人不是天生的，而是被塑造的——看清这一点，才能开始改写剧本。",
+        "quote_source_chapter": "第二卷：当代女性的处境",
+        "quote_theme": "找回自己",
+        "bookTitle": "第二性"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "向前一步", "chapter": "第 3 章", "title": "坐到桌前：别提前为自己退场" },
+      { "rank": 2, "bookTitle": "为何家会伤人", "chapter": "第 2 章", "title": "原生家庭：分清「我的事」和「他们的事」" },
+      { "rank": 3, "bookTitle": "身体从未忘记", "chapter": "第 6 章", "title": "身体记录簿：累的时候先听它说话" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "向前一步", "theme": "厘清事业与生育的真实选项" },
+      { "day": 2, "bookTitle": "向前一步", "theme": "练习「坐到桌前」不再提前退场" },
+      { "day": 3, "bookTitle": "82年生的金智英", "theme": "看见多重角色里的隐形消耗" },
+      { "day": 4, "bookTitle": "为何家会伤人", "theme": "划清伴侣/婆媳/育儿的边界" },
+      { "day": 5, "bookTitle": "身体从未忘记", "theme": "从透支中重建身心信号" },
+      { "day": 6, "bookTitle": "第二性", "theme": "追问「我是谁」而不只是谁的谁" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下本周 3 个「只属于我」的决定" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "gender": "male",
+  "ageGroup": "under-12",
+  "header": {
+    "title": "初中以下 · 男生专属精读",
+    "subtitle": "少选几本，但每一本都能帮你在学校、朋友和自我管理上更厉害一点。"
+  },
+  "oneTapStart": {
+    "primary": {
+      "book": { "title": "神奇树屋", "author": "玛丽·波·奥斯本" },
+      "badges": ["畅销", "7 天能读完"],
+      "hook": "翻开书，你就是穿越时空的探险男孩。",
+      "readMinutes": 10,
+      "suitableFor": "坐不住、觉得书太无聊、想先找点刺激",
+      "difficulty": 1,
+      "readScene": "睡前/周末上午"
+    },
+    "secondary": [
+      { "title": "查理和巧克力工厂", "author": "罗尔德·达尔", "badge": "必读", "hook": "管住嘴和手，才能赢得人生的金奖券" },
+      { "title": "夏洛的网", "author": "E·B·怀特", "badge": "经典", "hook": "真正的朋友，会为你拼尽最后一口气" },
+      { "title": "手斧男孩", "author": "加里·保罗森", "badge": "畅销", "hook": "一个人在荒野里，也能学会相信自己" }
+    ]
+  },
+  "problemClusters": [
+    {
+      "id": "friends",
+      "title": "我想交到真朋友（不被冷落）",
+      "books": [
+        { "title": "窗边的小豆豆", "author": "黑柳彻子", "badge": "必读", "doubanRating": 9.2, "goodreadsRating": 4.17 },
+        { "title": "大个子老鼠小个子猫", "author": "周锐", "badge": "畅销", "doubanRating": 8.8 },
+        { "title": "夏洛的网", "author": "E·B·怀特", "badge": "经典", "doubanRating": 8.9, "goodreadsRating": 4.21 }
+      ],
+      "ctaLabel": "进入「交朋友」书单 →"
+    },
+    {
+      "id": "self-control",
+      "title": "我总控制不住自己（游戏/零食/脾气）",
+      "books": [
+        { "title": "查理和巧克力工厂", "author": "罗尔德·达尔", "badge": "必读", "doubanRating": 8.7, "goodreadsRating": 4.15 },
+        { "title": "淘气包埃米尔", "author": "阿斯特丽德·林格伦", "badge": "畅销", "doubanRating": 8.9, "goodreadsRating": 4.12 },
+        { "title": "爸妈太过分", "author": "安妮·范·赖恩", "badge": "必读", "doubanRating": 8.4 }
+      ],
+      "ctaLabel": "进入「自控力」书单 →"
+    },
+    {
+      "id": "bullying",
+      "title": "我被欺负了/看到同学被欺负（怎么办）",
+      "books": [
+        { "title": "奇迹男孩", "author": "R.J.帕拉西奥", "badge": "Top", "doubanRating": 8.6, "goodreadsRating": 4.4 },
+        { "title": "一百条裙子", "author": "埃莉诺·埃斯特斯", "badge": "必读", "doubanRating": 8.7, "goodreadsRating": 4.26 },
+        { "title": "洞", "author": "路易斯·萨奇尔", "badge": "Top", "doubanRating": 8.6, "goodreadsRating": 3.99 }
+      ],
+      "ctaLabel": "进入「被欺负」书单 →"
+    },
+    {
+      "id": "motivation",
+      "title": "学习好无聊（我想找到动力）",
+      "books": [
+        { "title": "草房子", "author": "曹文轩", "badge": "必读", "doubanRating": 9.2, "goodreadsRating": 4.08 },
+        { "title": "爱的教育", "author": "亚米契斯", "badge": "经典", "doubanRating": 8.8, "goodreadsRating": 4.05 },
+        { "title": "了不起的狐狸爸爸", "author": "罗尔德·达尔", "badge": "畅销", "doubanRating": 8.3, "goodreadsRating": 4.15 }
+      ],
+      "ctaLabel": "进入「学习动力」书单 →"
+    }
+  ],
+  "zones": {
+    "mustRead": {
+      "copy": "读完会变成你面对学校和朋友的「秘密武器」。",
+      "books": [
+        { "title": "窗边的小豆豆", "author": "黑柳彻子" },
+        { "title": "夏洛的网", "author": "E·B·怀特" },
+        { "title": "草房子", "author": "曹文轩" },
+        { "title": "小王子", "author": "圣埃克苏佩里" },
+        { "title": "手斧男孩", "author": "加里·保罗森" },
+        { "title": "父与子", "author": "埃·奥·卜劳恩" },
+        { "title": "爱的教育", "author": "亚米契斯" }
+      ]
+    },
+    "top": {
+      "copy": "全世界小朋友都在读的高分书，跟着选不会踩雷。",
+      "books": [
+        { "title": "窗边的小豆豆", "author": "黑柳彻子", "doubanRating": 9.2, "goodreadsRating": 4.17 },
+        { "title": "草房子", "author": "曹文轩", "doubanRating": 9.2, "goodreadsRating": 4.08 },
+        { "title": "夏洛的网", "author": "E·B·怀特", "doubanRating": 8.9, "goodreadsRating": 4.21 },
+        { "title": "哈利·波特与魔法石", "author": "J.K.罗琳", "doubanRating": 9.1, "goodreadsRating": 4.47 },
+        { "title": "查理和巧克力工厂", "author": "罗尔德·达尔", "doubanRating": 8.7, "goodreadsRating": 4.15 }
+      ]
+    },
+    "bestseller": {
+      "copy": "字不多、故事猛，适合先读起来再爱上书。",
+      "books": [
+        { "title": "神奇树屋", "author": "玛丽·波·奥斯本" },
+        { "title": "查理和巧克力工厂", "author": "罗尔德·达尔" },
+        { "title": "了不起的狐狸爸爸", "author": "罗尔德·达尔" },
+        { "title": "淘气包埃米尔", "author": "阿斯特丽德·林格伦" },
+        { "title": "奇迹男孩", "author": "R.J.帕拉西奥" }
+      ]
+    },
+    "classic": {
+      "copy": "经典不会老，越长大越能读出里面的酷。",
+      "books": [
+        { "title": "小王子", "author": "圣埃克苏佩里" },
+        { "title": "汤姆·索亚历险记", "author": "马克·吐温" },
+        { "title": "尼尔斯骑鹅旅行记", "author": "塞尔玛·拉格洛夫" },
+        { "title": "柳林风声", "author": "肯尼斯·格雷厄姆" },
+        { "title": "爱丽丝梦游仙境", "author": "刘易斯·卡罗尔" }
+      ]
+    }
+  },
+  "shortHooks": {
+    "quiz": {
+      "title": "3 分钟测一测：你更像哪种校园小机灵？",
+      "options": [
+        { "id": "lone-wolf", "label": "独行侠型", "resultBook": "手斧男孩" },
+        { "id": "loyal-friend", "label": "热心肠型", "resultBook": "夏洛的网" },
+        { "id": "troublemaker", "label": "淘气王型", "resultBook": "淘气包埃米尔" },
+        { "id": "dreamer", "label": "梦想家型", "resultBook": "神奇树屋" }
+      ]
+    },
+    "quotes": [
+      {
+        "quote_text": "只有用心才能看清事物，本质的东西眼睛是看不见的。",
+        "quote_source_chapter": "狐狸的话",
+        "quote_theme": "友谊与责任",
+        "bookTitle": "小王子"
+      },
+      {
+        "quote_text": "你一直是我的朋友，这件事本身就是一件了不起的事。",
+        "quote_source_chapter": "夏洛的告别",
+        "quote_theme": "真朋友",
+        "bookTitle": "夏洛的网"
+      },
+      {
+        "quote_text": "金奖券不是给最有钱的孩子，而是给最值得信任的孩子。",
+        "quote_source_chapter": "参观巧克力工厂",
+        "quote_theme": "自律",
+        "bookTitle": "查理和巧克力工厂"
+      },
+      {
+        "quote_text": "校长说：你真是一个好孩子。对，每个孩子都可以是好孩子。",
+        "quote_source_chapter": "巴学园的第一天",
+        "quote_theme": "被看见",
+        "bookTitle": "窗边的小豆豆"
+      },
+      {
+        "quote_text": "恐惧会骗你说做不到，但你的手斧和头脑不会骗你。",
+        "quote_source_chapter": "荒野求生",
+        "quote_theme": "勇敢",
+        "bookTitle": "手斧男孩"
+      }
+    ],
+    "weeklyTasks": [
+      { "rank": 1, "bookTitle": "神奇树屋", "chapter": "第 1 册", "title": "恐龙谷里，第一次当探险家" },
+      { "rank": 2, "bookTitle": "夏洛的网", "chapter": "王牌猪", "title": "友谊能改变别人对你的看法" },
+      { "rank": 3, "bookTitle": "查理和巧克力工厂", "chapter": "金奖券", "title": "管住自己，比赢得奖品更重要" }
+    ]
+  },
+  "sevenDayPath": {
+    "days": [
+      { "day": 1, "bookTitle": "神奇树屋", "theme": "开启冒险阅读" },
+      { "day": 2, "bookTitle": "神奇树屋", "theme": "养成每天读一点的习惯" },
+      { "day": 3, "bookTitle": "夏洛的网", "theme": "学会什么是真朋友" },
+      { "day": 4, "bookTitle": "查理和巧克力工厂", "theme": "练习管住自己" },
+      { "day": 5, "bookTitle": "窗边的小豆豆", "theme": "发现学校也可以很好玩" },
+      { "day": 6, "bookTitle": "手斧男孩", "theme": "在困难里变勇敢" },
+      { "day": 7, "bookTitle": "复盘", "theme": "写下本周 3 个校园难题和 1 个解决办法" }
+    ],
+    "ctaLabel": "开始 7 天路线"
+  },
+  "footer": {
+    "refreshLabel": "换一批同年龄段推荐",
+    "easyFilter": "我想更轻松",
+    "hardFilter": "我想更硬核"
+  }
+}
