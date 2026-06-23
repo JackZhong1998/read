@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { useApp } from "@/context/AppContext";
@@ -57,6 +57,7 @@ export default function ChatPage() {
   const [toast, setToast] = useState({ visible: false, message: "" });
   const scrollRef = useRef<HTMLDivElement>(null);
   const stickToBottomRef = useRef(true);
+  const scrollGuardReadyRef = useRef(false);
   const scrollRafRef = useRef<number | null>(null);
   const toastedBooksRef = useRef<Set<string>>(new Set());
 
@@ -172,13 +173,45 @@ export default function ChatPage() {
     void fetch("/api/suggestions").catch(() => {});
   }, [hydrated]);
 
+  useLayoutEffect(() => {
+    if (!hydrated || readerOpen || !hasConversation) return;
+    const el = scrollRef.current;
+    const content = el?.firstElementChild;
+    if (!el || !content) return;
+
+    scrollGuardReadyRef.current = false;
+    stickToBottomRef.current = true;
+
+    const snap = () => {
+      el.scrollTop = el.scrollHeight;
+    };
+
+    snap();
+
+    const ro = new ResizeObserver(() => {
+      if (!scrollGuardReadyRef.current) snap();
+    });
+    ro.observe(content);
+
+    const doneTimer = window.setTimeout(() => {
+      snap();
+      scrollGuardReadyRef.current = true;
+      ro.disconnect();
+    }, 150);
+
+    return () => {
+      ro.disconnect();
+      clearTimeout(doneTimer);
+    };
+  }, [hydrated, hasConversation, readerOpen]);
+
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
     const onScroll = () => {
+      if (!scrollGuardReadyRef.current) return;
       stickToBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 96;
     };
-    onScroll();
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
   }, [hydrated]);

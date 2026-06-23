@@ -84,13 +84,13 @@
 
 .prose-reading {
   font-family: var(--font-serif);
-  line-height: 1.9;
-  letter-spacing: 0.02em;
-  font-size: 1.05rem;
+  font-size: 17px;
+  line-height: 1.65;
+  letter-spacing: 0;
 }
 
 .prose-reading p {
-  margin-bottom: 1.2em;
+  margin-bottom: 1em;
   text-indent: 2em;
 }
 
@@ -146,42 +146,44 @@
   font-weight: 600;
 }
 
-/* E-book reader typography */
+/* E-book reader typography — 标准阅读主题 */
 .ebook-prose.markdown-body {
-  font-size: clamp(17px, 4.2vw, 20px);
-  line-height: 1.95;
-  letter-spacing: 0.03em;
+  font-size: clamp(17px, 4.2vw, 19px);
+  line-height: 1.65;
+  letter-spacing: 0;
   color: #2a2520;
   text-align: justify;
-  hyphens: auto;
+  text-justify: inter-character;
   max-height: 100%;
   overflow: hidden;
 }
 
 .ebook-prose.markdown-body h1 {
-  font-size: clamp(15px, 3.8vw, 18px);
+  font-size: clamp(15px, 3.6vw, 17px);
   font-weight: 500;
   color: #8a7f72;
-  margin: 0 0 1.2em;
+  margin: 0 0 1em;
   text-align: center;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-indent: 0;
 }
 
 .ebook-prose.markdown-body h2 {
-  font-size: clamp(18px, 4.5vw, 22px);
+  font-size: clamp(19px, 4.5vw, 21px);
   margin-top: 0;
-  margin-bottom: 0.8em;
+  margin-bottom: 0.75em;
   text-align: left;
+  letter-spacing: 0;
 }
 
 .ebook-prose.markdown-body h3 {
-  font-size: clamp(17px, 4.2vw, 20px);
-  margin-top: 1em;
+  font-size: clamp(17px, 4.2vw, 19px);
+  margin-top: 0.9em;
+  letter-spacing: 0;
 }
 
 .ebook-prose.markdown-body p {
-  margin-bottom: 0.9em;
+  margin-bottom: 1em;
   text-indent: 2em;
 }
 
@@ -194,6 +196,11 @@
 .ebook-prose.markdown-body blockquote {
   border-left-color: #c4b8a8;
   text-indent: 0;
+}
+
+.ebook-prose.ebook-tail-dialogue {
+  max-height: none;
+  overflow: visible;
 }
 
 .ebook-page {

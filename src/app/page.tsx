@@ -50,6 +50,7 @@ export default function OnboardingPage() {
           <div className="mb-5 flex justify-center">
             <AppLogo size="lg" />
           </div>
+          <h1 className="sr-only">速读 - AI 智能阅读</h1>
           <p className="mt-3 text-ink-muted">AI 帮你找到值得读的书，读懂每一本</p>
         </div>
 

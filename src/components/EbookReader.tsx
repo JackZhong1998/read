@@ -5,6 +5,7 @@ import type { ChatMessage } from "@/lib/types";
 import {
   buildPagedBook,
   buildReaderChapters,
+  formatTailDialogueMarkdown,
   getChapterAtPage,
   getLastAssistantChat,
   resolveNavPage,
@@ -72,13 +73,18 @@ export default function EbookReader({
 
   const lastAssistantChat = useMemo(() => getLastAssistantChat(messages), [messages]);
 
-  const { chapters } = useMemo(
+  const { chapters, tailDialogueContent } = useMemo(
     () =>
       buildReaderChapters(messages, {
         includeWaitingChapter: withWaitingChapter,
         mergeTailDialogue: withTailPage,
       }),
     [messages, withWaitingChapter, withTailPage]
+  );
+
+  const tailDialogueMarkdown = useMemo(
+    () => formatTailDialogueMarkdown(tailDialogueContent || lastAssistantChat),
+    [tailDialogueContent, lastAssistantChat]
   );
 
   const charPagedBook = useMemo(
@@ -282,7 +288,11 @@ export default function EbookReader({
     const x = e.clientX - rect.left;
     const ratio = x / rect.width;
     flashChrome();
-    if (isOverlayPage) {
+    if (isTailPage) {
+      if (ratio < 0.28 && canGoPrev) goPrev();
+      return;
+    }
+    if (isWaitingChapter) {
       if (ratio < 0.28 && canGoPrev) goPrev();
       return;
     }
@@ -313,8 +323,8 @@ export default function EbookReader({
 
     flashChrome();
     if (dx < 0) {
-      if (isOverlayPage) return;
-      goNext();
+      if (isOverlayPage && !isTailPage) return;
+      if (!isTailPage) goNext();
     } else if (canGoPrev) {
       goPrev();
     }
@@ -327,20 +337,28 @@ export default function EbookReader({
       : "目录";
 
   return (
-    <div className="ebook-reader fixed inset-0 z-50 flex flex-col bg-[#f3efe6] text-[#2a2520]">
+    <div className="ebook-reader fixed inset-0 z-50 flex flex-col bg-cream text-[#2a2520]">
       <div
-        className={`absolute inset-x-0 top-0 z-10 flex items-center justify-between px-3 pt-[max(8px,env(safe-area-inset-top))] pb-2 transition-opacity duration-300 safe-top ${
+        className={`absolute inset-x-0 top-0 z-30 flex items-center justify-between px-3 pt-[max(8px,env(safe-area-inset-top))] pb-2 transition-opacity duration-300 safe-top ${
           showChrome ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
         <button
-          onClick={onClose}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
           className="rounded-full bg-black/5 px-3 py-1.5 text-xs text-[#5c5348] backdrop-blur-sm"
         >
           关闭
         </button>
         <button
-          onClick={() => setShowTOC((v) => !v)}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowTOC((v) => !v);
+          }}
           className="max-w-[45%] truncate rounded-full bg-black/5 px-3 py-1.5 text-xs text-[#5c5348] backdrop-blur-sm"
         >
           {tocTitle}
@@ -366,7 +384,7 @@ export default function EbookReader({
       </div>
 
       {showTOC && showChrome && (
-        <div className="absolute inset-x-0 top-[calc(env(safe-area-inset-top)+40px)] z-20 mx-3 rounded-xl bg-[#faf7f2]/95 shadow-lg backdrop-blur-md md:mx-auto md:max-w-sm">
+        <div className="absolute inset-x-0 top-[calc(env(safe-area-inset-top)+40px)] z-40 mx-3 rounded-xl bg-[#faf7f2]/95 shadow-lg backdrop-blur-md md:mx-auto md:max-w-sm">
           <div className="max-h-64 overflow-y-auto p-2">
             {chapters.map((ch) => (
               <button
@@ -409,7 +427,7 @@ export default function EbookReader({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="ebook-page relative mx-auto flex h-full min-h-0 w-full flex-col px-3 pt-8 pb-4 sm:px-5 md:max-w-2xl md:px-6 md:pt-10 lg:max-w-3xl">
+        <div className="ebook-page relative mx-auto flex h-full min-h-0 w-full flex-col px-5 pt-8 pb-6 md:max-w-2xl md:px-6 md:pt-10 lg:max-w-3xl">
           <div
             ref={viewportRef}
             className="flex min-h-0 flex-1 flex-col overflow-hidden"
@@ -424,7 +442,7 @@ export default function EbookReader({
 
           {isWaitingChapter && (
             <div
-              className="absolute inset-0 z-[1] flex flex-col items-center justify-center gap-4 bg-[#f3efe6] px-3 pt-8 pb-4 sm:px-5 md:px-6 md:pt-10"
+              className="absolute inset-0 z-[1] flex flex-col items-center justify-center gap-4 bg-cream px-5 pt-8 pb-6 md:px-6 md:pt-10"
               onClick={(e) => e.stopPropagation()}
             >
               {canGoPrev && (
@@ -446,22 +464,20 @@ export default function EbookReader({
           )}
 
           {isTailPage && onSendMessage && (
-            <div
-              className="absolute inset-0 z-[1] flex min-h-0 flex-col bg-[#f3efe6] px-3 pt-8 pb-4 sm:px-5 md:px-6 md:pt-10"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="absolute inset-0 z-[1] flex min-h-0 flex-col px-5 pt-8 pb-6 md:px-6 md:pt-10">
               <ReaderTailPanel
-                lastChat={lastAssistantChat}
+                dialogueMarkdown={tailDialogueMarkdown}
                 suggestions={suggestions}
                 suggestionsLoading={suggestionsLoading}
                 chatLoading={chatLoading}
                 onSelectSuggestion={onSendMessage}
                 onSend={onSendMessage}
+                onTapBlank={flashChrome}
               />
             </div>
           )}
         </div>
-        {isOverlayPage && canGoPrev ? (
+        {(isTailPage || isWaitingChapter) && canGoPrev ? (
           <div
             className="absolute inset-y-0 left-0 z-10 w-[28%]"
             onClick={(e) => {

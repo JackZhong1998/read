@@ -7,9 +7,10 @@ interface ChatInputProps {
   disabled?: boolean;
   placeholder?: string;
   padded?: boolean;
+  bare?: boolean;
 }
 
-export default function ChatInput({ onSend, disabled, placeholder, padded = true }: ChatInputProps) {
+export default function ChatInput({ onSend, disabled, placeholder, padded = true, bare = false }: ChatInputProps) {
   const [text, setText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -30,7 +31,12 @@ export default function ChatInput({ onSend, disabled, placeholder, padded = true
 
   return (
     <div
-      className={`bg-white/90 backdrop-blur-sm py-3 safe-bottom ${padded ? "border-t border-paper px-4" : ""}`}
+      className={
+        bare
+          ? "py-2 safe-bottom"
+          : `bg-white/90 backdrop-blur-sm py-3 safe-bottom ${padded ? "border-t border-paper px-4" : ""}`
+      }
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="flex items-end gap-2">
         <textarea
@@ -41,7 +47,9 @@ export default function ChatInput({ onSend, disabled, placeholder, padded = true
           disabled={disabled}
           placeholder={placeholder ?? "说说你的想法..."}
           rows={1}
-          className="flex-1 resize-none rounded-2xl border border-paper bg-cream px-4 py-3 text-sm text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none disabled:opacity-50"
+          className={`flex-1 resize-none rounded-2xl border px-4 py-3 text-sm text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none disabled:opacity-50 ${
+            bare ? "border-[#b8aea0] bg-white" : "border-paper bg-cream"
+          }`}
           style={{ maxHeight: "120px" }}
         />
         <button

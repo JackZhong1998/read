@@ -90,6 +90,14 @@ export function buildTailDialogueContent(messages: ChatMessage[]): string {
   return "";
 }
 
+/** 尾页对话区 Markdown：与阅读页对话章节格式一致 */
+export function formatTailDialogueMarkdown(content: string): string {
+  const text = content.trim();
+  if (!text) return "";
+  if (/\*\*(我|读书先生)：\*\*/.test(text)) return text;
+  return `**${AI_NAME}：** ${text}`;
+}
+
 export function buildReaderChapters(
   messages: ChatMessage[],
   options?: { includeWaitingChapter?: boolean; mergeTailDialogue?: boolean }
