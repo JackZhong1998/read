@@ -29,15 +29,15 @@ export function listDiscoverFeeds(): DiscoverFeedSegment[] {
 export function buildBookPrompt(bookTitle: string, context?: string): string {
   const title = bookTitle.replace(/[《》]/g, "");
   if (context) {
-    return `我想读《${title}》。${context} 能帮我推荐这本书并开始精读吗？`;
+    return `我想读《${title}》。${context} 能帮我总结推荐这本书吗？`;
   }
-  return `我想读《${title}》，能帮我推荐这本书并开始精读吗？`;
+  return `我想读《${title}》，能帮我总结这本书吗？`;
 }
 
 export function buildQuizPrompt(bookTitle: string, quizTitle: string): string {
   const title = bookTitle.replace(/[《》]/g, "");
   const theme = quizTitle.replace(/^3\s*分钟测一测[：:]\s*/, "");
-  return `我想读《${title}》，帮我做个 3 分钟小测验：${theme}，看看我在书里更像哪个角色？`;
+  return `我想读《${title}》，帮我做总结一下这本书吗？`;
 }
 
 export function buildJingduPrompt(bookTitle: string, chapter?: string): string {
