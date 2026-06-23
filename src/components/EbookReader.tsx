@@ -427,7 +427,7 @@ export default function EbookReader({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="ebook-page relative mx-auto flex h-full min-h-0 w-full max-w-full flex-col pl-[max(14px,env(safe-area-inset-left))] pr-[max(14px,env(safe-area-inset-right))] pt-[max(2rem,calc(env(safe-area-inset-top)+1rem))] pb-[max(1rem,env(safe-area-inset-bottom))] md:max-w-2xl md:px-8 md:pt-10 lg:max-w-3xl">
+        <div className="ebook-page relative mx-auto flex h-full min-h-0 w-full max-w-full flex-col pl-[max(24px,env(safe-area-inset-left))] pr-[max(24px,env(safe-area-inset-right))] pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.75rem))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pl-[max(28px,env(safe-area-inset-left))] sm:pr-[max(28px,env(safe-area-inset-right))] md:max-w-2xl md:px-10 md:pt-10 lg:max-w-3xl">
           <div
             ref={viewportRef}
             className="flex min-h-0 flex-1 flex-col overflow-hidden"
@@ -442,7 +442,7 @@ export default function EbookReader({
 
           {isWaitingChapter && (
             <div
-              className="absolute inset-0 z-[1] flex flex-col items-center justify-center gap-4 bg-cream pl-[max(14px,env(safe-area-inset-left))] pr-[max(14px,env(safe-area-inset-right))] pt-[max(2rem,calc(env(safe-area-inset-top)+1rem))] pb-[max(1rem,env(safe-area-inset-bottom))] md:px-8 md:pt-10"
+              className="absolute inset-0 z-[1] flex flex-col items-center justify-center gap-4 bg-cream pl-[max(24px,env(safe-area-inset-left))] pr-[max(24px,env(safe-area-inset-right))] pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.75rem))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pl-[max(28px,env(safe-area-inset-left))] sm:pr-[max(28px,env(safe-area-inset-right))] md:px-10 md:pt-10"
               onClick={(e) => e.stopPropagation()}
             >
               {canGoPrev && (
@@ -464,7 +464,7 @@ export default function EbookReader({
           )}
 
           {isTailPage && onSendMessage && (
-            <div className="absolute inset-0 z-[1] flex min-h-0 flex-col pl-[max(14px,env(safe-area-inset-left))] pr-[max(14px,env(safe-area-inset-right))] pt-[max(2rem,calc(env(safe-area-inset-top)+1rem))] pb-[max(1rem,env(safe-area-inset-bottom))] md:px-8 md:pt-10">
+            <div className="absolute inset-0 z-[1] flex min-h-0 flex-col pl-[max(24px,env(safe-area-inset-left))] pr-[max(24px,env(safe-area-inset-right))] pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.75rem))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pl-[max(28px,env(safe-area-inset-left))] sm:pr-[max(28px,env(safe-area-inset-right))] md:px-10 md:pt-10">
               <ReaderTailPanel
                 dialogueMarkdown={tailDialogueMarkdown}
                 suggestions={suggestions}

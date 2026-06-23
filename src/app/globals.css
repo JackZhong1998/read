@@ -98,7 +98,7 @@
   text-indent: 0;
 }
 
-/* Markdown in chat cards */
+/* Markdown base */
 .markdown-body {
   font-family: var(--font-serif);
   line-height: 1.85;
@@ -106,18 +106,32 @@
   font-size: 0.925rem;
 }
 
-.markdown-body h2 {
-  font-size: 1.05rem;
+.markdown-body h1 {
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--color-ink);
-  margin: 1em 0 0.5em;
+  margin: 0.5em 0 0.4em;
+}
+
+.markdown-body h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0.85em 0 0.45em;
 }
 
 .markdown-body h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0.75em 0 0.35em;
+}
+
+.markdown-body h4 {
   font-size: 0.975rem;
   font-weight: 600;
   color: var(--color-ink);
-  margin: 0.8em 0 0.4em;
+  margin: 0.65em 0 0.3em;
 }
 
 .markdown-body p {
@@ -146,11 +160,59 @@
   font-weight: 600;
 }
 
+/* 聊天卡片内阅读预览 */
+.card-prose.markdown-body {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--color-ink-light);
+}
+
+.card-prose.markdown-body h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0.25em 0 0.5em;
+}
+
+.card-prose.markdown-body h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0.6em 0 0.35em;
+  line-height: 1.35;
+}
+
+.card-prose.markdown-body h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin: 0.55em 0 0.3em;
+  line-height: 1.4;
+}
+
+.card-prose.markdown-body p {
+  margin-bottom: 0.65em;
+}
+
+.card-prose.markdown-body p:first-child,
+.card-prose.markdown-body h1 + p,
+.card-prose.markdown-body h2 + p,
+.card-prose.markdown-body h3 + p {
+  margin-top: 0;
+}
+
+.card-prose.markdown-body blockquote {
+  font-size: 0.9rem;
+  margin: 0.6em 0;
+}
+
+.card-prose.markdown-body ul,
+.card-prose.markdown-body ol {
+  margin: 0.4em 0 0.65em 1.1em;
+}
+
 /* E-book reader typography — 宋体长文阅读主题 */
 .ebook-prose.markdown-body {
-  font-size: clamp(18px, 4.8vw, 20px);
-  line-height: 1.85;
-  letter-spacing: 0.04em;
+  font-size: clamp(17px, 4.2vw, 19px);
+  line-height: 1.8;
+  letter-spacing: 0.03em;
   color: #2a2520;
   text-align: justify;
   text-justify: inter-character;
@@ -159,44 +221,101 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* h1：章节名（对话章）— 居中副标题，仍大于正文 */
 .ebook-prose.markdown-body h1 {
-  font-size: clamp(15px, 3.6vw, 17px);
-  font-weight: 500;
-  color: #8a7f72;
-  margin: 0 0 1em;
+  font-size: clamp(20px, 5vw, 23px);
+  font-weight: 600;
+  color: #6b6358;
+  margin: 0 0 0.85em;
   text-align: center;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
+  text-indent: 0;
+  line-height: 1.35;
+}
+
+/* h2：## 大节标题 */
+.ebook-prose.markdown-body h2 {
+  font-size: clamp(22px, 5.6vw, 26px);
+  font-weight: 700;
+  color: #2a2520;
+  margin: 0.15em 0 0.55em;
+  text-align: left;
+  letter-spacing: 0.02em;
+  line-height: 1.32;
   text-indent: 0;
 }
 
-.ebook-prose.markdown-body h2 {
-  font-size: clamp(19px, 4.5vw, 21px);
-  margin-top: 0;
-  margin-bottom: 0.75em;
-  text-align: left;
-  letter-spacing: 0;
+/* h3：### 小节标题 */
+.ebook-prose.markdown-body h3 {
+  font-size: clamp(19px, 4.8vw, 22px);
+  font-weight: 600;
+  color: #3d362e;
+  margin: 0.8em 0 0.4em;
+  letter-spacing: 0.01em;
+  line-height: 1.38;
+  text-indent: 0;
 }
 
-.ebook-prose.markdown-body h3 {
-  font-size: clamp(17px, 4.2vw, 19px);
-  margin-top: 0.9em;
-  letter-spacing: 0;
+.ebook-prose.markdown-body h4 {
+  font-size: clamp(17px, 4.4vw, 20px);
+  font-weight: 600;
+  color: #3d362e;
+  margin: 0.7em 0 0.35em;
+  text-indent: 0;
 }
 
 .ebook-prose.markdown-body p {
-  margin-bottom: 1em;
+  margin-bottom: 0.9em;
   text-indent: 2em;
 }
 
 .ebook-prose.markdown-body p:first-child,
+.ebook-prose.markdown-body h1 + p,
 .ebook-prose.markdown-body h2 + p,
-.ebook-prose.markdown-body h3 + p {
+.ebook-prose.markdown-body h3 + p,
+.ebook-prose.markdown-body h4 + p {
   text-indent: 0;
 }
 
-.ebook-prose.markdown-body blockquote {
-  border-left-color: #c4b8a8;
+.ebook-prose.markdown-body ul,
+.ebook-prose.markdown-body ol {
+  margin: 0.45em 0 0.85em;
+  padding-left: 1.4em;
   text-indent: 0;
+}
+
+.ebook-prose.markdown-body li {
+  margin-bottom: 0.35em;
+  text-indent: 0;
+}
+
+.ebook-prose.markdown-body li > p {
+  text-indent: 0;
+  margin-bottom: 0.35em;
+}
+
+.ebook-prose.markdown-body blockquote {
+  border-left: 3px solid #c4b8a8;
+  padding-left: 0.85em;
+  margin: 0.75em 0;
+  color: #5c5348;
+  font-style: italic;
+  text-indent: 0;
+}
+
+.ebook-prose.markdown-body blockquote p {
+  text-indent: 0;
+}
+
+.ebook-prose.markdown-body strong {
+  color: #2a2520;
+  font-weight: 700;
+}
+
+.ebook-prose.markdown-body hr {
+  border: none;
+  border-top: 1px solid #ddd4c8;
+  margin: 1em 0;
 }
 
 .ebook-prose.ebook-tail-dialogue {
