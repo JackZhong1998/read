@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { href: "/discover", label: "发现" },
   { href: "/chat", label: "对话" },
   { href: "/read", label: "书目" },
+  { href: "/notes", label: "笔记" },
 ] as const;
 
 interface AppNavProps {

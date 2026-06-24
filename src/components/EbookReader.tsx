@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import type { ChatMessage } from "@/lib/types";
 import {
   buildPagedBook,
   buildReaderChapters,
+  chapterToMarkdown,
   formatTailDialogueMarkdown,
   getChapterAtPage,
   getLastAssistantChat,
@@ -13,8 +15,20 @@ import {
   type PageBook,
   type ReaderNavIntent,
 } from "@/lib/reader-utils";
+import {
+  findSelectionOffsets,
+  getRangeOffsetsInContainer,
+  resolveNoteSource,
+} from "@/lib/reading-notes";
+import { generateSharePoster } from "@/lib/share-poster";
+import { getSiteUrl, SITE_NAME } from "@/lib/site";
 import { destroyPaginationMeasurer } from "@/lib/reader-pagination";
+import { useApp } from "@/context/AppContext";
+import MarkdownWithNotes from "./MarkdownWithNotes";
 import MarkdownContent from "./MarkdownContent";
+import NoteCommentPopup from "./NoteCommentPopup";
+import SelectionActionBar from "./SelectionActionBar";
+import SharePosterModal from "./SharePosterModal";
 import ReaderTailPanel from "./ReaderTailPanel";
 import ToolLoadingBanner from "./ToolLoadingBanner";
 import LoadingDots from "./LoadingDots";
@@ -71,6 +85,32 @@ export default function EbookReader({
   const navAnchorRef = useRef<{ chapterId: string; seq: number } | null>(null);
   const userPagedRef = useRef(false);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const selectionModeRef = useRef(false);
+  const swipeIntentRef = useRef(false);
+  const proseRef = useRef<HTMLDivElement>(null);
+  const suppressNavRef = useRef(false);
+
+  const { readingNotes, addReadingNote, updateReadingNote } = useApp();
+  const [selectionEnabled, setSelectionEnabled] = useState(false);
+  const [commentPopup, setCommentPopup] = useState<{
+    noteId: string;
+    x: number;
+    y: number;
+    comment?: string;
+  } | null>(null);
+  const [selectionBar, setSelectionBar] = useState<{
+    text: string;
+    x: number;
+    y: number;
+    startOffset: number;
+    endOffset: number;
+  } | null>(null);
+  const [sharePoster, setSharePoster] = useState<{
+    imageUrl: string;
+    blob: Blob;
+    bookTitle: string;
+  } | null>(null);
 
   const lastAssistantChat = useMemo(() => getLastAssistantChat(messages), [messages]);
 
@@ -122,6 +162,23 @@ export default function EbookReader({
   const currentChapter = isTailPage
     ? undefined
     : getChapterAtPage(chapters, chapterStarts, currentPage);
+
+  const pageContent = pages[currentPage] ?? "";
+  const chapterNotes = useMemo(
+    () =>
+      currentChapter
+        ? readingNotes.filter((n) => n.chapterId === currentChapter.id)
+        : [],
+    [readingNotes, currentChapter]
+  );
+
+  const bookMeta = useMemo(() => {
+    const source = resolveNoteSource(currentChapter, messages);
+    return {
+      title: source.sourceTitle,
+      author: source.sourceAuthor,
+    };
+  }, [currentChapter, messages]);
 
   const applyNavToChapter = useCallback(
     (chapterId: string, seq: number) => {
@@ -240,12 +297,22 @@ export default function EbookReader({
 
   const goNext = useCallback(() => {
     userPagedRef.current = true;
+    setCommentPopup(null);
+    setSelectionBar(null);
+    setSelectionEnabled(false);
+    selectionModeRef.current = false;
+    suppressNavRef.current = false;
     setCurrentPage((p) => Math.min(p + 1, totalPages - 1));
     flashChrome();
   }, [totalPages, flashChrome]);
 
   const goPrev = useCallback(() => {
     userPagedRef.current = true;
+    setCommentPopup(null);
+    setSelectionBar(null);
+    setSelectionEnabled(false);
+    selectionModeRef.current = false;
+    suppressNavRef.current = false;
     setCurrentPage((p) => Math.max(p - 1, 0));
     flashChrome();
   }, [flashChrome]);
@@ -289,7 +356,119 @@ export default function EbookReader({
 
   const canGoPrev = currentPage > 0;
 
+  const cancelLongPress = useCallback(() => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  }, []);
+
+  const exitSelectionMode = useCallback(() => {
+    cancelLongPress();
+    selectionModeRef.current = false;
+    setSelectionEnabled(false);
+    if (!selectionBar) {
+      suppressNavRef.current = false;
+    }
+  }, [cancelLongPress, selectionBar]);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    if (!touch || selectionBar) return;
+    swipeIntentRef.current = false;
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+    cancelLongPress();
+
+    longPressTimerRef.current = setTimeout(() => {
+      if (swipeIntentRef.current) return;
+      selectionModeRef.current = true;
+      setSelectionEnabled(true);
+    }, 500);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    const start = touchStartRef.current;
+    const touch = e.touches[0];
+    if (!start || !touch) return;
+
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+
+    if (absDx > 10 || absDy > 10) {
+      cancelLongPress();
+    }
+    if (absDx > 12 && absDx > absDy) {
+      swipeIntentRef.current = true;
+      exitSelectionMode();
+    }
+  };
+
+  const captureSelection = useCallback((): {
+    text: string;
+    x: number;
+    y: number;
+    startOffset: number;
+    endOffset: number;
+  } | null => {
+    if (!currentChapter || isOverlayPage || !proseRef.current) return null;
+
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed) return null;
+
+    const selectedText = sel.toString().trim();
+    if (selectedText.length < 2) return null;
+
+    const anchorNode = sel.anchorNode;
+    if (!anchorNode || !proseRef.current.contains(anchorNode)) return null;
+
+    const range = sel.getRangeAt(0);
+    const rect = range.getBoundingClientRect();
+    const domOffsets = getRangeOffsetsInContainer(proseRef.current, range);
+    const chapterMd = chapterToMarkdown(currentChapter);
+    const fallback = findSelectionOffsets(chapterMd, pageContent, 0, selectedText);
+    const offsets = domOffsets
+      ? { startOffset: domOffsets.start, endOffset: domOffsets.end }
+      : fallback;
+    if (!offsets) return null;
+
+    return {
+      text: selectedText,
+      x: rect.left + rect.width / 2,
+      y: rect.top,
+      startOffset: offsets.startOffset,
+      endOffset: offsets.endOffset,
+    };
+  }, [currentChapter, isOverlayPage, pageContent]);
+
+  const showSelectionBar = useCallback(() => {
+    const captured = captureSelection();
+    if (!captured) return;
+    setSelectionBar(captured);
+    suppressNavRef.current = true;
+  }, [captureSelection]);
+
+  const clearSelection = useCallback(() => {
+    window.getSelection()?.removeAllRanges();
+    setSelectionBar(null);
+    selectionModeRef.current = false;
+    setSelectionEnabled(false);
+    suppressNavRef.current = false;
+  }, []);
+
   const handleTap = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (commentPopup) {
+      setCommentPopup(null);
+      return;
+    }
+    if (selectionBar) {
+      clearSelection();
+      return;
+    }
+    if (suppressNavRef.current || selectionModeRef.current) return;
+    const sel = window.getSelection();
+    if (sel && sel.toString().trim()) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const ratio = x / rect.width;
@@ -306,35 +485,189 @@ export default function EbookReader({
     else if (ratio > 0.72) goNext();
   };
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    const touch = e.touches[0];
-    if (!touch) return;
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
-  };
+  const handleHighlightNote = useCallback(() => {
+    if (!selectionBar || !currentChapter) return;
+
+    const { text, x, y, startOffset, endOffset } = selectionBar;
+    const duplicate = chapterNotes.find(
+      (n) =>
+        n.text === text &&
+        n.pageIndex === currentPage &&
+        Math.abs(n.startOffset - startOffset) < 3
+    );
+
+    window.getSelection()?.removeAllRanges();
+    setSelectionBar(null);
+    setSelectionEnabled(false);
+    selectionModeRef.current = false;
+    suppressNavRef.current = false;
+
+    if (duplicate) {
+      setCommentPopup({
+        noteId: duplicate.id,
+        x,
+        y,
+        comment: duplicate.comment,
+      });
+      return;
+    }
+
+    const source = resolveNoteSource(currentChapter, messages);
+    const noteId = uuidv4();
+    addReadingNote({
+      id: noteId,
+      sourceId: source.sourceId,
+      sourceTitle: source.sourceTitle,
+      sourceAuthor: source.sourceAuthor,
+      chapterId: currentChapter.id,
+      text,
+      startOffset,
+      endOffset,
+      pageIndex: currentPage,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    });
+
+    setCommentPopup({ noteId, x, y });
+  }, [
+    selectionBar,
+    currentChapter,
+    chapterNotes,
+    currentPage,
+    messages,
+    addReadingNote,
+  ]);
+
+  const handleShareSelection = useCallback(async () => {
+    if (!selectionBar) return;
+    const quote = selectionBar.text;
+    clearSelection();
+
+    try {
+      const blob = await generateSharePoster({
+        quote,
+        bookTitle: bookMeta.title,
+        bookAuthor: bookMeta.author,
+        siteUrl: getSiteUrl(),
+        siteName: SITE_NAME,
+      });
+      const imageUrl = URL.createObjectURL(blob);
+      setSharePoster({ imageUrl, blob, bookTitle: bookMeta.title });
+    } catch {
+      // poster generation failed
+    }
+  }, [selectionBar, bookMeta, clearSelection]);
+
+  const handleSelectionEnd = useCallback(() => {
+    if (!selectionModeRef.current) return;
+    requestAnimationFrame(() => {
+      if (!proseRef.current) return;
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed || sel.toString().trim().length < 2) return;
+      if (!proseRef.current.contains(sel.anchorNode)) return;
+      showSelectionBar();
+      selectionModeRef.current = false;
+      setSelectionEnabled(false);
+    });
+  }, [showSelectionBar]);
+
+  useEffect(() => {
+    if (!selectionBar) return;
+    const onSelectionChange = () => {
+      const captured = captureSelection();
+      if (captured) setSelectionBar(captured);
+    };
+    document.addEventListener("selectionchange", onSelectionChange);
+    return () => document.removeEventListener("selectionchange", onSelectionChange);
+  }, [selectionBar, captureSelection]);
+
+  const trySwipePage = useCallback(
+    (dx: number, dy: number): boolean => {
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+      if (absDx < 40 || absDx < absDy * 1.1) return false;
+
+      flashChrome();
+      if (dx < 0) {
+        if (isOverlayPage && !isTailPage) return true;
+        if (!isTailPage) goNext();
+      } else if (canGoPrev) {
+        goPrev();
+      }
+      return true;
+    },
+    [flashChrome, goNext, goPrev, isOverlayPage, isTailPage, canGoPrev]
+  );
 
   const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    cancelLongPress();
+
+    if (selectionBar) {
+      touchStartRef.current = null;
+      swipeIntentRef.current = false;
+      return;
+    }
+
     const start = touchStartRef.current;
-    touchStartRef.current = null;
-    if (!start) return;
-
     const touch = e.changedTouches[0];
-    if (!touch) return;
+    touchStartRef.current = null;
 
-    const dx = touch.clientX - start.x;
-    const dy = touch.clientY - start.y;
-    const absDx = Math.abs(dx);
-    const absDy = Math.abs(dy);
+    if (start && touch) {
+      const dx = touch.clientX - start.x;
+      const dy = touch.clientY - start.y;
+      if (swipeIntentRef.current || trySwipePage(dx, dy)) {
+        swipeIntentRef.current = false;
+        window.getSelection()?.removeAllRanges();
+        exitSelectionMode();
+        return;
+      }
+    }
+    swipeIntentRef.current = false;
 
-    if (absDx < 48 || absDx < absDy * 1.2) return;
+    const wasSelecting = selectionModeRef.current;
+    const sel = window.getSelection();
+    const hasSelection = sel && !sel.isCollapsed && sel.toString().trim().length >= 2;
 
-    flashChrome();
-    if (dx < 0) {
-      if (isOverlayPage && !isTailPage) return;
-      if (!isTailPage) goNext();
-    } else if (canGoPrev) {
-      goPrev();
+    if (wasSelecting && hasSelection) {
+      handleSelectionEnd();
+      return;
+    }
+
+    if (wasSelecting) {
+      exitSelectionMode();
     }
   };
+
+  const handleZoneTap = useCallback(
+    (direction: "prev" | "next") => {
+      if (commentPopup) {
+        setCommentPopup(null);
+        return;
+      }
+      if (selectionBar) {
+        clearSelection();
+        return;
+      }
+      if (suppressNavRef.current || selectionModeRef.current) return;
+      flashChrome();
+      if (direction === "prev") {
+        if (canGoPrev) goPrev();
+      } else if (!isTailPage && !(isOverlayPage && !isTailPage)) {
+        goNext();
+      }
+    },
+    [
+      commentPopup,
+      selectionBar,
+      clearSelection,
+      flashChrome,
+      canGoPrev,
+      goPrev,
+      goNext,
+      isTailPage,
+      isOverlayPage,
+    ]
+  );
 
   const tocTitle = isTailPage
     ? "💬 对话"
@@ -431,18 +764,23 @@ export default function EbookReader({
         className="relative flex flex-1 overflow-hidden"
         onClick={handleTap}
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="ebook-page relative mx-auto flex h-full min-h-0 w-full max-w-full flex-col pl-[max(24px,env(safe-area-inset-left))] pr-[max(24px,env(safe-area-inset-right))] pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.75rem))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pl-[max(28px,env(safe-area-inset-left))] sm:pr-[max(28px,env(safe-area-inset-right))] md:max-w-2xl md:px-10 md:pt-10 lg:max-w-3xl">
+        <div className="ebook-page ebook-page-selectable relative mx-auto flex h-full min-h-0 w-full max-w-full flex-col pl-[max(24px,env(safe-area-inset-left))] pr-[max(24px,env(safe-area-inset-right))] pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.75rem))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pl-[max(28px,env(safe-area-inset-left))] sm:pr-[max(28px,env(safe-area-inset-right))] md:max-w-2xl md:px-10 md:pt-10 lg:max-w-3xl">
           <div
             ref={viewportRef}
             className="flex min-h-0 flex-1 flex-col overflow-hidden"
             aria-hidden={isOverlayPage}
           >
             {!isOverlayPage && (
-              <div className="h-full min-h-0 overflow-hidden">
-                <MarkdownContent content={pages[currentPage] ?? ""} className="ebook-prose" />
-              </div>
+              <MarkdownWithNotes
+                ref={proseRef}
+                content={pageContent}
+                className={`ebook-prose${selectionEnabled ? " ebook-selection-enabled" : ""}`}
+                notes={chapterNotes}
+                pageIndex={currentPage}
+              />
             )}
           </div>
 
@@ -526,11 +864,58 @@ export default function EbookReader({
           />
         ) : !isOverlayPage ? (
           <>
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-[28%]" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-[28%]" />
+            <div
+              className="absolute inset-y-0 left-0 z-20 w-[30%] touch-manipulation"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleZoneTap("prev");
+              }}
+              aria-label="上一页"
+            />
+            <div
+              className="absolute inset-y-0 right-0 z-20 w-[30%] touch-manipulation"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleZoneTap("next");
+              }}
+              aria-label="下一页"
+            />
           </>
         ) : null}
       </div>
+
+      {selectionBar && (
+        <SelectionActionBar
+          x={selectionBar.x}
+          y={selectionBar.y}
+          onHighlight={handleHighlightNote}
+          onShare={handleShareSelection}
+          onClose={clearSelection}
+        />
+      )}
+
+      {commentPopup && (
+        <NoteCommentPopup
+          noteId={commentPopup.noteId}
+          x={commentPopup.x}
+          y={commentPopup.y}
+          initialComment={commentPopup.comment}
+          onSave={(id, comment) => updateReadingNote(id, comment)}
+          onClose={() => setCommentPopup(null)}
+        />
+      )}
+
+      {sharePoster && (
+        <SharePosterModal
+          imageUrl={sharePoster.imageUrl}
+          blob={sharePoster.blob}
+          bookTitle={sharePoster.bookTitle}
+          onClose={() => {
+            URL.revokeObjectURL(sharePoster.imageUrl);
+            setSharePoster(null);
+          }}
+        />
+      )}
 
       <div
         className={`px-4 pb-[max(12px,env(safe-area-inset-bottom))] transition-opacity duration-300 safe-bottom ${

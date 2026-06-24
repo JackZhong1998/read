@@ -1,15 +1,19 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import type { ChatMessage, ReadBook, UserProfile } from "@/lib/types";
+import type { ChatMessage, ReadBook, UserProfile, ReadingNote } from "@/lib/types";
 import { sanitizeChatForDisplay } from "@/lib/content-utils";
 import {
   getMessages,
   getProfile,
   getReadBooks,
+  getReadingNotes,
   saveMessages,
   saveProfile,
   saveReadBooks,
+  addReadingNote as storageAddReadingNote,
+  updateReadingNote as storageUpdateReadingNote,
+  deleteReadingNote as storageDeleteReadingNote,
   addReadBook as storageAddReadBook,
 } from "@/lib/storage";
 
@@ -22,6 +26,10 @@ interface AppContextValue {
   readBooks: ReadBook[];
   setReadBooks: (b: ReadBook[]) => void;
   markBookAsRead: (book: ReadBook) => void;
+  readingNotes: ReadingNote[];
+  addReadingNote: (note: ReadingNote) => void;
+  updateReadingNote: (id: string, comment: string) => void;
+  removeReadingNote: (id: string) => void;
   hydrated: boolean;
 }
 
@@ -31,6 +39,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfileState] = useState<UserProfile | null>(null);
   const [messages, setMessagesState] = useState<ChatMessage[]>([]);
   const [readBooks, setReadBooksState] = useState<ReadBook[]>([]);
+  const [readingNotes, setReadingNotesState] = useState<ReadingNote[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -44,6 +53,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       })
     );
     setReadBooksState(getReadBooks());
+    setReadingNotesState(getReadingNotes());
     setHydrated(true);
   }, []);
 
@@ -75,6 +85,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setReadBooksState(getReadBooks());
   }, []);
 
+  const addReadingNote = useCallback((note: ReadingNote) => {
+    storageAddReadingNote(note);
+    setReadingNotesState(getReadingNotes());
+  }, []);
+
+  const updateReadingNote = useCallback((id: string, comment: string) => {
+    storageUpdateReadingNote(id, { comment, updatedAt: Date.now() });
+    setReadingNotesState(getReadingNotes());
+  }, []);
+
+  const removeReadingNote = useCallback((id: string) => {
+    storageDeleteReadingNote(id);
+    setReadingNotesState(getReadingNotes());
+  }, []);
+
   return (
     <AppContext.Provider
       value={{
@@ -86,6 +111,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         readBooks,
         setReadBooks,
         markBookAsRead,
+        readingNotes,
+        addReadingNote,
+        updateReadingNote,
+        removeReadingNote,
         hydrated,
       }}
     >

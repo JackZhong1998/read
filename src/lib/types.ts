@@ -123,3 +123,24 @@ export type RecommendStreamEvent =
 export interface ReadMode {
   mode: "page" | "scroll";
 }
+
+/** 阅读划线笔记 */
+export interface ReadingNote {
+  id: string;
+  /** 书目 id 或消息 id */
+  sourceId: string;
+  sourceTitle: string;
+  sourceAuthor?: string;
+  chapterId: string;
+  /** 划线文本 */
+  text: string;
+  /** 在章节 Markdown 全文中的起始偏移（或页内纯文本偏移） */
+  startOffset: number;
+  /** 在章节 Markdown 全文中的结束偏移（或页内纯文本偏移） */
+  endOffset: number;
+  /** 创建笔记时的页码，用于重定位 */
+  pageIndex?: number;
+  comment?: string;
+  createdAt: number;
+  updatedAt: number;
+}

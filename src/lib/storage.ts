@@ -5,6 +5,7 @@ import type {
   DiscoverPreference,
   ReadBook,
   ReaderMemory,
+  ReadingNote,
   UserProfile,
 } from "./types";
 
@@ -19,6 +20,7 @@ const KEYS = {
   pendingMessage: "speedread_pending_message",
   discoverPreference: "speedread_discover_preference",
   discoverFeedCache: "speedread_discover_feed_cache",
+  readingNotes: "speedread_reading_notes",
 } as const;
 
 function safeGet<T>(key: string): T | null {
@@ -253,6 +255,33 @@ export function consumePendingMessage(): string | null {
     localStorage.removeItem(KEYS.pendingMessage);
   }
   return message;
+}
+
+export function getReadingNotes(): ReadingNote[] {
+  return safeGet<ReadingNote[]>(KEYS.readingNotes) ?? [];
+}
+
+export function saveReadingNotes(notes: ReadingNote[]): void {
+  safeSet(KEYS.readingNotes, notes);
+}
+
+export function addReadingNote(note: ReadingNote): void {
+  const notes = getReadingNotes();
+  notes.unshift(note);
+  saveReadingNotes(notes);
+}
+
+export function updateReadingNote(id: string, patch: Partial<Pick<ReadingNote, "comment" | "updatedAt">>): ReadingNote | null {
+  const notes = getReadingNotes();
+  const idx = notes.findIndex((n) => n.id === id);
+  if (idx < 0) return null;
+  notes[idx] = { ...notes[idx], ...patch, updatedAt: patch.updatedAt ?? Date.now() };
+  saveReadingNotes(notes);
+  return notes[idx];
+}
+
+export function deleteReadingNote(id: string): void {
+  saveReadingNotes(getReadingNotes().filter((n) => n.id !== id));
 }
 
 export function clearAllData(): void {

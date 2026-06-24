@@ -328,6 +328,21 @@
   -webkit-user-select: none;
 }
 
+.ebook-page-selectable .markdown-body.ebook-selection-enabled {
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-touch-callout: default;
+}
+
+.reading-underline,
+.reading-underline-static {
+  text-decoration: underline;
+  text-decoration-color: #c45c26;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
 .ebook-reader {
   width: 100%;
   max-width: 100vw;
