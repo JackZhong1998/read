@@ -35,6 +35,40 @@ function Stars({ count }: { count: 1 | 2 | 3 }) {
   return <span className="text-xs text-amber-500">{"★".repeat(count)}{"☆".repeat(3 - count)}</span>;
 }
 
+function RefreshIconButton({
+  onClick,
+  disabled,
+  refreshing,
+  label = "刷新推荐",
+}: {
+  onClick: () => void;
+  disabled?: boolean;
+  refreshing?: boolean;
+  label?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-paper bg-white text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:opacity-50"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        className={refreshing ? "animate-spin" : ""}
+      >
+        <path d="M21 12a9 9 0 1 1-3-6.7M21 3v6h-6" />
+      </svg>
+    </button>
+  );
+}
+
 interface DiscoverFeedViewProps {
   feed: DiscoverFeedSegment;
   onStartBook: (title: string, context?: string) => void;
@@ -58,44 +92,21 @@ export default function DiscoverFeedView({
     <div className="flex flex-col gap-8 pb-10">
       {/* Header */}
       <section className="animate-fade-in">
-        <div>
+        <div className="flex items-start justify-between gap-3">
           <h1 className="font-serif text-2xl font-bold text-ink sm:text-3xl">
             {DISCOVER_PAGE_HEADER.title}
           </h1>
-          <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-muted">
-            {DISCOVER_PAGE_HEADER.subtitle}
-          </p>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-2">
           {onRefresh && (
-            <button
-              type="button"
+            <RefreshIconButton
               onClick={() => onRefresh("default")}
               disabled={refreshing}
-              className="flex items-center gap-1 rounded-full border border-paper bg-white px-3 py-1.5 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:opacity-50"
-            >
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className={refreshing ? "animate-spin" : ""}
-              >
-                <path d="M21 12a9 9 0 1 1-3-6.7M21 3v6h-6" />
-              </svg>
-              刷新
-            </button>
+              refreshing={refreshing}
+            />
           )}
-          <button
-            type="button"
-            onClick={onSwitchSegment}
-            className="rounded-full border border-paper bg-white px-3 py-1.5 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-accent"
-          >
-            切换人群
-          </button>
         </div>
+        <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-muted">
+          {DISCOVER_PAGE_HEADER.subtitle}
+        </p>
       </section>
 
       {/* One-tap Start */}
@@ -325,6 +336,16 @@ export default function DiscoverFeedView({
           {footer.hardFilter}
         </button>
       </section>
+
+      <div className="flex justify-center border-t border-paper pt-6">
+        <button
+          type="button"
+          onClick={onSwitchSegment}
+          className="rounded-full border border-paper bg-white px-4 py-2 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-accent"
+        >
+          切换人群
+        </button>
+      </div>
     </div>
   );
 }
