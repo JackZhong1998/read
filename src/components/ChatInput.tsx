@@ -33,7 +33,7 @@ export default function ChatInput({ onSend, disabled, placeholder, padded = true
     <div
       className={
         bare
-          ? "py-2 safe-bottom"
+          ? "pt-1 pb-2 safe-bottom"
           : `bg-white/90 backdrop-blur-sm py-3 safe-bottom ${padded ? "border-t border-paper px-4" : ""}`
       }
       onClick={(e) => e.stopPropagation()}

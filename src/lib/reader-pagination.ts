@@ -153,8 +153,14 @@ function splitLongText(text: string, maxChars: number): string[] {
   return chunks.length ? chunks : [text];
 }
 
-function splitBlockToFit(block: string, maxHeight: number, width: number): string[] {
-  if (measureMarkdownHeight(block, width) <= maxHeight) return [block];
+/** 取块头部能放进 maxHeight 的部分，余下内容原样返回 */
+function splitBlockHead(
+  block: string,
+  maxHeight: number,
+  width: number
+): [string, string] | null {
+  if (!block.trim() || maxHeight <= 0) return null;
+  if (measureMarkdownHeight(block, width) <= maxHeight) return [block, ""];
 
   let lo = 1;
   let hi = block.length;
@@ -172,16 +178,24 @@ function splitBlockToFit(block: string, maxHeight: number, width: number): strin
     }
   }
 
-  if (best <= 0) return [block];
+  if (best <= 0) return null;
 
   const first = block.slice(0, best).trim();
   const rest = block.slice(best).trim();
-  if (!rest) return [first];
-  return [first, ...splitBlockToFit(rest, maxHeight, width)];
+  return [first, rest];
 }
 
 function joinBlocks(blocks: string[]): string {
   return blocks.join("\n\n");
+}
+
+function currentPageHeight(current: string[], width: number): number {
+  return current.length ? measureMarkdownHeight(joinBlocks(current), width) : 0;
+}
+
+function flushPage(pages: string[], current: string[]): string[] {
+  if (current.length) pages.push(joinBlocks(current));
+  return [];
 }
 
 export function paginateMarkdownByHeight(
@@ -198,15 +212,43 @@ export function paginateMarkdownByHeight(
   let current: string[] = [];
 
   for (const rawBlock of blocks) {
-    const parts = splitBlockToFit(rawBlock, maxHeight, width);
-    for (const part of parts) {
-      const candidate = current.length ? joinBlocks([...current, part]) : part;
-      if (measureMarkdownHeight(candidate, width) > maxHeight && current.length > 0) {
-        pages.push(joinBlocks(current));
-        current = [part];
-      } else {
-        current.push(part);
+    let remaining = rawBlock;
+
+    while (remaining) {
+      const candidate = current.length ? joinBlocks([...current, remaining]) : remaining;
+      if (measureMarkdownHeight(candidate, width) <= maxHeight) {
+        current.push(remaining);
+        remaining = "";
+        break;
       }
+
+      const usedHeight = currentPageHeight(current, width);
+      const room = maxHeight - usedHeight;
+
+      if (current.length > 0) {
+        if (room > 0) {
+          const split = splitBlockHead(remaining, room, width);
+          if (split?.[0]) {
+            current.push(split[0]);
+            current = flushPage(pages, current);
+            remaining = split[1];
+            continue;
+          }
+        }
+        current = flushPage(pages, current);
+        continue;
+      }
+
+      const split = splitBlockHead(remaining, maxHeight, width);
+      if (!split) {
+        current.push(remaining);
+        remaining = "";
+        break;
+      }
+
+      current.push(split[0]);
+      current = flushPage(pages, current);
+      remaining = split[1];
     }
   }
 

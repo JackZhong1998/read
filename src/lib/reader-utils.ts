@@ -208,27 +208,43 @@ export function paginateParagraphs(paragraphs: string[], charsPerPage: number): 
   let current = "";
 
   for (const p of paragraphs) {
-    if (p.length > charsPerPage) {
-      if (current.trim()) {
+    let remaining = p;
+
+    while (remaining) {
+      const separator = current ? "\n\n" : "";
+      const block = `${separator}${remaining}`;
+
+      if (current.length + block.length <= charsPerPage) {
+        current += block;
+        remaining = "";
+        break;
+      }
+
+      if (current) {
+        const room = charsPerPage - current.length - separator.length;
+        if (room > 0) {
+          const head = remaining.slice(0, room);
+          current += separator + head;
+          pages.push(current.trim());
+          current = "";
+          remaining = remaining.slice(head.length).trimStart();
+          continue;
+        }
         pages.push(current.trim());
         current = "";
+        continue;
       }
-      let offset = 0;
-      while (offset < p.length) {
-        pages.push(p.slice(offset, offset + charsPerPage));
-        offset += charsPerPage;
-      }
-      continue;
-    }
 
-    const block = current ? `\n\n${p}` : p;
-    if ((current + block).length > charsPerPage && current) {
-      pages.push(current.trim());
-      current = p;
-    } else {
-      current += block;
+      if (remaining.length > charsPerPage) {
+        pages.push(remaining.slice(0, charsPerPage));
+        remaining = remaining.slice(charsPerPage);
+      } else {
+        current = remaining;
+        remaining = "";
+      }
     }
   }
+
   if (current.trim()) pages.push(current.trim());
   return pages.length ? pages : [""];
 }
@@ -350,4 +366,52 @@ export function resolveNavChapterId(
     return chapters.some((c) => c.id === "waiting") ? "waiting" : undefined;
   }
   return resolveChapterId(chapters, chapterId) ?? undefined;
+}
+
+/** 等待页应展示的流式/已返回内容（当前轮用户消息之后的助手回复） */
+export function getWaitingOverlayContent(messages: ChatMessage[]): {
+  kind: "chat" | "rec" | "jingdu" | "shendu";
+  content: string;
+  title?: string;
+  streaming?: boolean;
+} | null {
+  const lastUserIdx = messages.map((m) => m.role).lastIndexOf("user");
+  if (lastUserIdx < 0) return null;
+  const recent = messages.slice(lastUserIdx + 1);
+
+  const contentMsg = [...recent].reverse().find(
+    (m) =>
+      m.role === "assistant" &&
+      (m.type === "rec" || m.type === "jingdu" || m.type === "shendu") &&
+      m.content.trim()
+  );
+  if (contentMsg) {
+    const label = KIND_LABELS[contentMsg.type as keyof typeof KIND_LABELS] ?? contentMsg.type;
+    const bookLabel = contentMsg.book
+      ? `《${contentMsg.book.title}》· ${contentMsg.book.author}`
+      : "";
+    return {
+      kind: contentMsg.type as "rec" | "jingdu" | "shendu",
+      content:
+        contentMsg.type === "jingdu" || contentMsg.type === "shendu"
+          ? normalizeReadingContent(contentMsg.content)
+          : contentMsg.content,
+      title: bookLabel ? `${label} · ${bookLabel}` : label,
+      streaming: contentMsg.streaming,
+    };
+  }
+
+  const dialogues = recent.filter(isDialogue);
+  if (dialogues.length > 0) {
+    const text = formatDialogueContent(dialogues.filter((m) => m.content.trim()));
+    if (text.trim()) {
+      return {
+        kind: "chat",
+        content: text,
+        streaming: dialogues.some((m) => m.role === "assistant" && m.streaming),
+      };
+    }
+  }
+
+  return null;
 }

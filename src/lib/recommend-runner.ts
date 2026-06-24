@@ -310,7 +310,7 @@ export async function runRecommendWithEvents(
       emitChatFromRaw(content, results, streamEmitter);
     }
 
-    if (!isFollowUpRound && !pendingFollowUp) {
+    if (!isFollowUpRound && !pendingFollowUp && executedTools.size === 0) {
       const intent = detectReadingIntent(message);
       if (intent) {
         const book = extractBookFromContext(message, history, readBooks);

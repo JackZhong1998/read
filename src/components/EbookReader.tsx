@@ -8,6 +8,7 @@ import {
   formatTailDialogueMarkdown,
   getChapterAtPage,
   getLastAssistantChat,
+  getWaitingOverlayContent,
   resolveNavPage,
   type PageBook,
   type ReaderNavIntent,
@@ -85,6 +86,11 @@ export default function EbookReader({
   const tailDialogueMarkdown = useMemo(
     () => formatTailDialogueMarkdown(tailDialogueContent || lastAssistantChat),
     [tailDialogueContent, lastAssistantChat]
+  );
+
+  const waitingOverlay = useMemo(
+    () => (withWaitingChapter ? getWaitingOverlayContent(messages) : null),
+    [messages, withWaitingChapter]
   );
 
   const charPagedBook = useMemo(
@@ -442,23 +448,55 @@ export default function EbookReader({
 
           {isWaitingChapter && (
             <div
-              className="absolute inset-0 z-[1] flex flex-col items-center justify-center gap-4 bg-cream pl-[max(24px,env(safe-area-inset-left))] pr-[max(24px,env(safe-area-inset-right))] pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.75rem))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pl-[max(28px,env(safe-area-inset-left))] sm:pr-[max(28px,env(safe-area-inset-right))] md:px-10 md:pt-10"
+              className="absolute inset-0 z-[1] flex min-h-0 flex-col bg-cream pl-[max(24px,env(safe-area-inset-left))] pr-[max(24px,env(safe-area-inset-right))] pt-[max(1.75rem,calc(env(safe-area-inset-top)+0.75rem))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pl-[max(28px,env(safe-area-inset-left))] sm:pr-[max(28px,env(safe-area-inset-right))] md:px-10 md:pt-10"
               onClick={(e) => e.stopPropagation()}
             >
               {canGoPrev && (
                 <button
                   type="button"
                   onClick={goPrev}
-                  className="absolute left-3 top-8 text-xs text-[#8a7f72] hover:text-[#3d362e] sm:left-5 md:left-6 md:top-10"
+                  className="absolute left-3 top-8 z-10 text-xs text-[#8a7f72] hover:text-[#3d362e] sm:left-5 md:left-6 md:top-10"
                 >
                   ← 上一页
                 </button>
               )}
-              <h2 className="text-sm tracking-widest text-[#8a7f72]">正在生成内容</h2>
-              {toolLoading ? (
-                <ToolLoadingBanner tool={toolLoading.tool} bookTitle={toolLoading.bookTitle} />
+              {waitingOverlay ? (
+                <div className="flex min-h-0 flex-1 flex-col">
+                  {waitingOverlay.title && (
+                    <p className="mb-3 shrink-0 text-xs tracking-wide text-[#8a7f72]">
+                      {waitingOverlay.title}
+                    </p>
+                  )}
+                  <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+                    <MarkdownContent
+                      content={waitingOverlay.content}
+                      className={
+                        waitingOverlay.kind === "chat"
+                          ? "ebook-prose ebook-tail-dialogue"
+                          : "ebook-prose"
+                      }
+                    />
+                    {waitingOverlay.streaming && (
+                      <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-[#c45c26] align-middle" />
+                    )}
+                  </div>
+                  <div className="mt-3 shrink-0 border-t border-black/5 pt-3">
+                    {toolLoading ? (
+                      <ToolLoadingBanner tool={toolLoading.tool} bookTitle={toolLoading.bookTitle} />
+                    ) : (
+                      <LoadingDots text="正在生成..." />
+                    )}
+                  </div>
+                </div>
               ) : (
-                <LoadingDots text="正在思考..." />
+                <div className="flex flex-1 flex-col items-center justify-center gap-4">
+                  <h2 className="text-sm tracking-widest text-[#8a7f72]">正在生成内容</h2>
+                  {toolLoading ? (
+                    <ToolLoadingBanner tool={toolLoading.tool} bookTitle={toolLoading.bookTitle} />
+                  ) : (
+                    <LoadingDots text="正在思考..." />
+                  )}
+                </div>
               )}
             </div>
           )}

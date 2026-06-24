@@ -18,6 +18,7 @@ const KEYS = {
   readerMemory: "speedread_reader_memory",
   pendingMessage: "speedread_pending_message",
   discoverPreference: "speedread_discover_preference",
+  discoverFeedCache: "speedread_discover_feed_cache",
 } as const;
 
 function safeGet<T>(key: string): T | null {
@@ -71,6 +72,27 @@ export function getDiscoverPreference(): DiscoverPreference | null {
 
 export function saveDiscoverPreference(pref: DiscoverPreference): void {
   safeSet(KEYS.discoverPreference, pref);
+}
+
+export interface DiscoverFeedCache {
+  segmentKey: string;
+  feed: import("./discover-feed-types").DiscoverFeedSegment;
+  updatedAt: number;
+}
+
+export function getDiscoverFeedCache(segmentKey: string): DiscoverFeedCache | null {
+  const raw = safeGet<DiscoverFeedCache>(KEYS.discoverFeedCache);
+  if (!raw || raw.segmentKey !== segmentKey) return null;
+  return raw;
+}
+
+export function saveDiscoverFeedCache(cache: DiscoverFeedCache): void {
+  safeSet(KEYS.discoverFeedCache, cache);
+}
+
+export function clearDiscoverFeedCache(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(KEYS.discoverFeedCache);
 }
 
 export function getMessages(): ChatMessage[] {

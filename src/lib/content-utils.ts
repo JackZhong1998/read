@@ -1,4 +1,4 @@
-import { parseJsonFromText } from "./json-utils";
+import { parseJsonFromText, stripJsonCodeFences } from "./json-utils";
 import type { BookInfo } from "./types";
 
 export const AI_NAME = "读书先生";
@@ -16,13 +16,19 @@ export interface RecommendJson {
 
 /** 解析精读/深读 JSON 输出，提取 Markdown 正文；兼容旧版纯 Markdown */
 export function normalizeReadingContent(raw: string): string {
-  const trimmed = raw.trim();
+  const trimmed = stripJsonCodeFences(raw);
   if (!trimmed) return "";
 
   const parsed = parseJsonFromText<ReadingContentJson>(trimmed);
   if (parsed) {
     const md = (parsed.content ?? parsed.body ?? "").trim();
     if (md) return md;
+  }
+
+  // 兜底：模型常输出非法 JSON（字符串内真实换行、截断、仅结尾 ``` 等）
+  for (const field of ["content", "body"] as const) {
+    const partial = extractPartialJsonStringField(trimmed, field);
+    if (partial?.trim()) return partial.trim();
   }
 
   return trimmed;
@@ -80,8 +86,11 @@ export function extractPartialJsonStringField(raw: string, field: string): strin
 
 /** 流式输出时提取可读正文（精读/深读/推荐 JSON 的 content 字段） */
 export function extractStreamingReadingDisplay(raw: string): string {
-  const partial = extractPartialJsonStringField(raw, "content");
-  if (partial !== null) return partial;
+  const cleaned = stripJsonCodeFences(raw);
+  for (const field of ["content", "body"] as const) {
+    const partial = extractPartialJsonStringField(cleaned, field);
+    if (partial !== null) return partial;
+  }
   return "";
 }
 
@@ -132,10 +141,10 @@ export function sanitizeChatForDisplay(content: string): string {
   return normalizeChatContent(content);
 }
 
-/** 检测用户消息中的精读/深读意图 */
+/** 检测用户消息中的精读/深读意图（需明确表述，避免误触发） */
 export function detectReadingIntent(message: string): "jingdu" | "shendu" | null {
   if (/深读|深度解读|深度阅读|深入读|深度理解/.test(message)) return "shendu";
-  if (/精读|速读|快速读|精读书/.test(message)) return "jingdu";
+  if (/精读|精读书|帮我读|读一下|解读《/.test(message)) return "jingdu";
   return null;
 }
 

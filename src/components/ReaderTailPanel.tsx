@@ -24,29 +24,33 @@ export default function ReaderTailPanel({
   onSend,
   onTapBlank,
 }: ReaderTailPanelProps) {
+  const hasSuggestions = suggestionsLoading || suggestions.length > 0;
+
   return (
     <div className="flex min-h-0 flex-1 flex-col" onClick={onTapBlank}>
       {dialogueMarkdown ? (
-        <div className="mb-4 min-h-0 shrink overflow-y-auto overscroll-contain">
+        <div className="mb-3 min-h-0 flex-1 overflow-y-auto overscroll-contain">
           <MarkdownContent content={dialogueMarkdown} className="ebook-prose ebook-tail-dialogue" />
         </div>
-      ) : null}
-
-      {(suggestionsLoading || suggestions.length > 0) && (
-        <div className="mb-3 shrink-0">
-          <p className="mb-2 text-xs tracking-wide text-ink-muted">接下来你可以</p>
-          <div className="max-h-[min(42vh,320px)] overflow-y-auto overscroll-contain pr-1">
-            <SuggestionChips
-              suggestions={suggestions}
-              onSelect={onSelectSuggestion}
-              loading={suggestionsLoading}
-              variant="reader"
-            />
-          </div>
-        </div>
+      ) : (
+        <div className="min-h-0 flex-1" />
       )}
 
       <div className="mt-auto shrink-0">
+        {hasSuggestions && (
+          <div className="mb-1.5">
+            <p className="mb-2.5 text-sm tracking-wide text-ink-muted">接下来你可以</p>
+            <div className="max-h-[min(52vh,420px)] overflow-y-auto overscroll-contain pr-0.5">
+              <SuggestionChips
+                suggestions={suggestions}
+                onSelect={onSelectSuggestion}
+                loading={suggestionsLoading}
+                variant="reader"
+              />
+            </div>
+          </div>
+        )}
+
         <ChatInput
           onSend={onSend}
           disabled={chatLoading}

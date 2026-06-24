@@ -26,6 +26,7 @@ import {
 import {
   cacheBookContent,
   consumePendingMessage,
+  getBookCache,
   getBookKey,
   getReaderMemory,
   getSuggestions,
@@ -34,6 +35,7 @@ import {
   saveSuggestions,
   upsertReadBookFromMessage,
 } from "@/lib/storage";
+import { buildSuggestionsContext } from "@/lib/suggestion-utils";
 import type { RecommendStreamEvent, ChatMessage } from "@/lib/types";
 
 const CHAT_SHELL = "mx-auto w-full max-w-lg px-5 sm:px-6 md:max-w-xl md:px-10 lg:max-w-2xl lg:px-12";
@@ -78,25 +80,22 @@ export default function ChatPage() {
       if (!profile) return;
       setSuggestionsLoading(true);
       try {
-        const context = currentMessages
-          .slice(-8)
-          .map((m) => {
-            const body =
-              m.type === "jingdu" || m.type === "shendu" || m.type === "rec"
-                ? normalizeReadingContent(m.content)
-                : m.content;
-            return `${m.role}/${m.type}: ${body.slice(0, 200)}`;
-          })
-          .join("\n");
         const normalizedLast =
           contentType === "jingdu" || contentType === "shendu" || contentType === "rec"
             ? normalizeReadingContent(lastContent)
             : lastContent;
+        const context = buildSuggestionsContext(
+          contentType,
+          normalizedLast,
+          currentMessages,
+          readBooks,
+          getBookCache()
+        );
         const res = await fetch("/api/suggestions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            context: context + "\n" + normalizedLast,
+            context,
             profile,
             contentType,
             readBooks,
@@ -380,8 +379,11 @@ export default function ChatPage() {
     [setMessages]
   );
 
-  const findNavChapterId = useCallback((msgs: ChatMessage[]): string => {
-    const lastContent = [...msgs].reverse().find(
+  const findNavChapterIdForTurn = useCallback((msgs: ChatMessage[]): string => {
+    const lastUserIdx = msgs.map((m) => m.role).lastIndexOf("user");
+    if (lastUserIdx < 0) return "tail";
+    const turnMessages = msgs.slice(lastUserIdx + 1);
+    const lastContent = [...turnMessages].reverse().find(
       (m) =>
         m.role === "assistant" &&
         (m.type === "jingdu" || m.type === "shendu" || m.type === "rec")
@@ -464,7 +466,8 @@ export default function ChatPage() {
         requestReaderNav("waiting");
       }
 
-      let readerNavigated = false;
+      /** 本轮请求中已定位到的内容章节（推荐/精读/深读） */
+      let readerContentNavId: string | null = null;
 
       const history = buildAgentHistory(currentMessages);
 
@@ -500,6 +503,21 @@ export default function ChatPage() {
         let lastItem: { type: string; content: string } | null = null;
         let sugSource: { type: string; content: string } | null = null;
 
+        /**
+         * 阅读器导航规则（请求进行中）：
+         * - 始终先在等待页展示流式内容（含 Agent 对话、工具加载）
+         * - 仅当推荐/精读/深读开始生成时，才离开等待页进入对应章节
+         * - 不在中途跳转到尾页对话（避免对话页出现工具加载、阻断后续章节跳转）
+         */
+        const navigateReaderToContent = (id: string, type: string) => {
+          if (!fromReader) return;
+          if (type !== "rec" && type !== "jingdu" && type !== "shendu") return;
+          if (readerContentNavId === id) return;
+          readerContentNavId = id;
+          setReaderWaiting(false);
+          requestReaderNav(id);
+        };
+
         await consumeRecommendStream(res, (event) => {
           if (event.event === "tool_loading") {
             setToolLoading({ tool: event.tool, bookTitle: event.book?.title });
@@ -510,18 +528,15 @@ export default function ChatPage() {
               { id: event.id, type: event.type, book: event.book },
               currentMessages
             );
-            if (
-              fromReader &&
-              (event.type === "jingdu" || event.type === "shendu")
-            ) {
-              setReaderWaiting(false);
-              requestReaderNav(event.id);
-              readerNavigated = true;
-            }
+            navigateReaderToContent(event.id, event.type);
           } else if (event.event === "message_delta") {
             setToolLoading(null);
             setStreamingActive(true);
             currentMessages = appendStreamingDelta(event.id, event.delta, currentMessages);
+            const streamed = currentMessages.find((m) => m.id === event.id);
+            if (streamed?.content) {
+              navigateReaderToContent(event.id, streamed.type);
+            }
           } else if (event.event === "message_done") {
             currentMessages = finalizeAssistantMessage(
               {
@@ -536,17 +551,7 @@ export default function ChatPage() {
             if (event.type === "rec" || event.type === "jingdu" || event.type === "shendu") {
               sugSource = lastItem;
             }
-            if (
-              fromReader &&
-              (event.type === "jingdu" || event.type === "shendu")
-            ) {
-              setReaderWaiting(false);
-              const target = currentMessages.find((m) => m.id === event.id);
-              if (target) {
-                requestReaderNav(target.id);
-                readerNavigated = true;
-              }
-            }
+            navigateReaderToContent(event.id, event.type);
           } else if (event.event === "error") {
             throw new Error(event.message);
           }
@@ -567,8 +572,9 @@ export default function ChatPage() {
 
         if (fromReader) {
           setReaderWaiting(false);
-          if (!readerNavigated) {
-            requestReaderNav(findNavChapterId(currentMessages));
+          // 纯对话回复：落回尾页；有内容章节：流式过程中已定位，无需再跳
+          if (!readerContentNavId) {
+            requestReaderNav(findNavChapterIdForTurn(currentMessages));
           }
         }
 
@@ -593,6 +599,10 @@ export default function ChatPage() {
             timestamp: Date.now(),
           },
         ]);
+        if (fromReader) {
+          setReaderWaiting(false);
+          requestReaderNav("tail");
+        }
       } finally {
         setLoading(false);
         setStreamingActive(false);
@@ -600,7 +610,7 @@ export default function ChatPage() {
         setReaderWaiting(false);
       }
     },
-    [profile, loading, readBooks, messages, setMessages, fetchSuggestions, finalizeAssistantMessage, appendStreamingDelta, startStreamingMessage, findNavChapterId, requestReaderNav, persistMemoryArchive]
+    [profile, loading, readBooks, messages, setMessages, fetchSuggestions, finalizeAssistantMessage, appendStreamingDelta, startStreamingMessage, findNavChapterIdForTurn, requestReaderNav, persistMemoryArchive]
   );
 
   const pendingSentRef = useRef(false);
@@ -707,12 +717,11 @@ export default function ChatPage() {
 
       {readerOpen && (
         <EbookReader
-          key={readerNav?.seq ?? "reader"}
           messages={messages}
           suggestions={suggestions}
           suggestionsLoading={suggestionsLoading}
           chatLoading={loading}
-          toolLoading={toolLoading}
+          toolLoading={readerWaiting ? toolLoading : null}
           onSendMessage={(text) => sendMessage(text, true)}
           withTailPage
           withWaitingChapter={readerWaiting}

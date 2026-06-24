@@ -1,15 +1,27 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppNav from "@/components/AppNav";
+import DiscoverChatOrb from "@/components/DiscoverChatOrb";
 import DiscoverFeedView from "@/components/DiscoverFeedView";
 import DiscoverItemCard from "@/components/DiscoverItemCard";
+import PullToRefresh from "@/components/PullToRefresh";
 import { useApp } from "@/context/AppContext";
 import { AGE_GROUP_OPTIONS, getDiscoverItems, type DiscoverItem } from "@/lib/discover-data";
-import { buildBookPrompt, buildQuizPrompt, getDiscoverFeed } from "@/lib/discover-feed";
-import { getDiscoverPreference, saveDiscoverPreference, setPendingMessage } from "@/lib/storage";
-import type { AgeGroup, DiscoverPreference, Gender } from "@/lib/types";
+import type { DiscoverFeedSegment } from "@/lib/discover-feed-types";
+import { buildBookPrompt, buildQuizPrompt, getDiscoverFeed, segmentKey, applyDiscoverHeader, DISCOVER_PAGE_HEADER, type DiscoverRefreshIntent } from "@/lib/discover-feed";
+import {
+  clearDiscoverFeedCache,
+  getDiscoverFeedCache,
+  getDiscoverPreference,
+  getMessages,
+  getReaderMemory,
+  saveDiscoverFeedCache,
+  saveDiscoverPreference,
+  setPendingMessage,
+} from "@/lib/storage";
+import type { AgeGroup, DiscoverPreference, Gender, UserProfile } from "@/lib/types";
 
 const GENDER_OPTIONS: { value: Gender; label: string; emoji: string }[] = [
   { value: "male", label: "男生", emoji: "👨" },
@@ -29,12 +41,27 @@ function profileToPreference(profile: { gender: Gender; ageGroup: AgeGroup; crea
   };
 }
 
+function effectiveProfile(
+  profile: UserProfile | null,
+  pref: DiscoverPreference
+): UserProfile {
+  return (
+    profile ?? {
+      gender: pref.gender,
+      ageGroup: pref.ageGroup,
+      createdAt: pref.savedAt,
+    }
+  );
+}
+
 export default function DiscoverPage() {
   const router = useRouter();
-  const { profile, setProfile, hydrated } = useApp();
+  const { profile, setProfile, hydrated, readBooks } = useApp();
   const [savedPref, setSavedPref] = useState<DiscoverPreference | null>(null);
   const [prefsLoaded, setPrefsLoaded] = useState(false);
   const [showSwitcher, setShowSwitcher] = useState(false);
+  const [feed, setFeed] = useState<DiscoverFeedSegment | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (!hydrated || prefsLoaded) return;
@@ -52,19 +79,82 @@ export default function DiscoverPage() {
     setPrefsLoaded(true);
   }, [hydrated, profile, prefsLoaded]);
 
-  const feed = useMemo(
+  const staticFeed = useMemo(
     () => (savedPref ? getDiscoverFeed(savedPref.gender, savedPref.ageGroup) : null),
     [savedPref]
   );
+
+  useEffect(() => {
+    if (!savedPref) return;
+    const key = segmentKey(savedPref.gender, savedPref.ageGroup);
+    const cached = getDiscoverFeedCache(key);
+    if (cached) {
+      setFeed(applyDiscoverHeader(cached.feed));
+      return;
+    }
+    setFeed(staticFeed);
+  }, [savedPref, staticFeed]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    void fetch("/api/discover-feed").catch(() => {});
+  }, [hydrated]);
 
   const legacyItems = useMemo(
     () => (savedPref && !feed ? getDiscoverItems(savedPref.gender, savedPref.ageGroup) : []),
     [savedPref, feed]
   );
 
+  const refreshFeed = useCallback(
+    async (intent: DiscoverRefreshIntent = "default", userPreference?: string) => {
+      if (!savedPref || refreshing) return;
+      const base = getDiscoverFeed(savedPref.gender, savedPref.ageGroup);
+      if (!base) return;
+
+      setRefreshing(true);
+      try {
+        const res = await fetch("/api/discover-feed", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            profile: effectiveProfile(profile, savedPref),
+            readBooks,
+            readerMemory: getReaderMemory(),
+            recentMessages: getMessages(),
+            currentFeed: feed ?? undefined,
+            refreshIntent: intent,
+            userPreference,
+          }),
+        });
+
+        if (!res.ok) {
+          console.error("Discover feed refresh failed:", res.status);
+          return;
+        }
+
+        const data = (await res.json()) as { feed?: DiscoverFeedSegment };
+        if (data.feed) {
+          const normalized = applyDiscoverHeader(data.feed);
+          setFeed(normalized);
+          saveDiscoverFeedCache({
+            segmentKey: segmentKey(savedPref.gender, savedPref.ageGroup),
+            feed: normalized,
+            updatedAt: Date.now(),
+          });
+        }
+      } catch (error) {
+        console.error("Discover feed refresh error:", error);
+      } finally {
+        setRefreshing(false);
+      }
+    },
+    [savedPref, refreshing, profile, readBooks, feed]
+  );
+
   const handleSetupComplete = (gender: Gender, ageGroup: AgeGroup) => {
     const pref: DiscoverPreference = { gender: toDiscoverGender(gender), ageGroup, savedAt: Date.now() };
     saveDiscoverPreference(pref);
+    clearDiscoverFeedCache();
     setSavedPref(pref);
     setShowSwitcher(false);
     if (!profile) {
@@ -128,65 +218,95 @@ export default function DiscoverPage() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col bg-cream">
+    <div className="flex h-dvh flex-col bg-cream">
       <AppNav subtitle="困惑共鸣 → 书籍解忧" />
 
-      <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 sm:px-6">
-        {feed ? (
-          <DiscoverFeedView
-            feed={feed}
-            onStartBook={handleStartBook}
-            onStartQuiz={handleStartQuiz}
-            onSwitchSegment={() => setShowSwitcher(true)}
-          />
-        ) : (
-          <>
-            <section className="mb-8 animate-fade-in">
-              <div className="flex items-start justify-between gap-3">
+      <PullToRefresh onRefresh={() => refreshFeed()} refreshing={refreshing}>
+        <main className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-6">
+          {feed ? (
+            <DiscoverFeedView
+              feed={feed}
+              onStartBook={handleStartBook}
+              onStartQuiz={handleStartQuiz}
+              onSwitchSegment={() => setShowSwitcher(true)}
+              onRefresh={(intent, userPreference) => void refreshFeed(intent, userPreference)}
+              refreshing={refreshing}
+            />
+          ) : (
+            <>
+              <section className="mb-8 animate-fade-in">
                 <div>
-                  <h1 className="font-serif text-2xl font-bold text-ink sm:text-3xl">发现你的解忧书单</h1>
+                  <h1 className="font-serif text-2xl font-bold text-ink sm:text-3xl">
+                    {DISCOVER_PAGE_HEADER.title}
+                  </h1>
                   <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-muted">
-                    每个困惑都配有一本解忧之书——问题与推荐直接呈现，一键跳转 AI 对话。
+                    {DISCOVER_PAGE_HEADER.subtitle}
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setShowSwitcher(true)}
-                  className="shrink-0 rounded-full border border-paper bg-white px-3 py-1.5 text-xs text-ink-muted hover:border-accent/40 hover:text-accent"
-                >
-                  切换人群
-                </button>
-              </div>
-            </section>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => void refreshFeed()}
+                    disabled={refreshing}
+                    className="flex items-center gap-1 rounded-full border border-paper bg-white px-3 py-1.5 text-xs text-ink-muted hover:border-accent/40 hover:text-accent disabled:opacity-50"
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      className={refreshing ? "animate-spin" : ""}
+                    >
+                      <path d="M21 12a9 9 0 1 1-3-6.7M21 3v6h-6" />
+                    </svg>
+                    刷新
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowSwitcher(true)}
+                    className="rounded-full border border-paper bg-white px-3 py-1.5 text-xs text-ink-muted hover:border-accent/40 hover:text-accent"
+                  >
+                    切换人群
+                  </button>
+                </div>
+              </section>
 
-            <section>
-              <p className="mb-4 text-xs text-ink-muted">10 个困惑 · 10 本解忧书</p>
-              <div className="flex flex-col gap-4">
-                {legacyItems.map((item, index) => (
-                  <DiscoverItemCard
-                    key={item.id}
-                    item={item}
-                    index={index}
-                    onStartChat={handleStartChat}
-                  />
-                ))}
-              </div>
-            </section>
-          </>
-        )}
+              <section>
+                <p className="mb-4 text-xs text-ink-muted">10 个困惑 · 10 本解忧书</p>
+                <div className="flex flex-col gap-4">
+                  {legacyItems.map((item, index) => (
+                    <DiscoverItemCard
+                      key={item.id}
+                      item={item}
+                      index={index}
+                      onStartChat={handleStartChat}
+                    />
+                  ))}
+                </div>
+              </section>
+            </>
+          )}
 
-        {!profile && (
-          <div className="mt-10 rounded-2xl border border-dashed border-accent/30 bg-accent/5 p-5 text-center">
-            <p className="text-sm text-ink-light">完成简单设置后，可一键跳转对话让 AI 为你荐书</p>
-            <button
-              onClick={() => router.push("/")}
-              className="mt-3 rounded-full bg-accent px-5 py-2 text-sm text-white hover:bg-accent-dark"
-            >
-              开始设置
-            </button>
-          </div>
-        )}
-      </main>
+          {!profile && (
+            <div className="mt-10 rounded-2xl border border-dashed border-accent/30 bg-accent/5 p-5 text-center">
+              <p className="text-sm text-ink-light">完成简单设置后，可一键跳转对话让 AI 为你荐书</p>
+              <button
+                onClick={() => router.push("/")}
+                className="mt-3 rounded-full bg-accent px-5 py-2 text-sm text-white hover:bg-accent-dark"
+              >
+                开始设置
+              </button>
+            </div>
+          )}
+        </main>
+      </PullToRefresh>
+
+      <DiscoverChatOrb
+        hasProfile={Boolean(profile)}
+        onNeedProfile={() => router.push("/")}
+      />
     </div>
   );
 }

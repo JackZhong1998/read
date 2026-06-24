@@ -1,6 +1,7 @@
 "use client";
 
 import type { DiscoverBookRef, DiscoverFeedSegment } from "@/lib/discover-feed-types";
+import { DISCOVER_PAGE_HEADER, type DiscoverRefreshIntent } from "@/lib/discover-feed";
 
 const BADGE_STYLES: Record<string, string> = {
   必读: "bg-accent/15 text-accent",
@@ -39,24 +40,58 @@ interface DiscoverFeedViewProps {
   onStartBook: (title: string, context?: string) => void;
   onStartQuiz: (bookTitle: string, quizTitle: string) => void;
   onSwitchSegment: () => void;
+  onRefresh?: (intent?: DiscoverRefreshIntent, userPreference?: string) => void;
+  refreshing?: boolean;
 }
 
-export default function DiscoverFeedView({ feed, onStartBook, onStartQuiz, onSwitchSegment }: DiscoverFeedViewProps) {
-  const { header, oneTapStart, problemClusters, zones, shortHooks, sevenDayPath, footer } = feed;
+export default function DiscoverFeedView({
+  feed,
+  onStartBook,
+  onStartQuiz,
+  onSwitchSegment,
+  onRefresh,
+  refreshing,
+}: DiscoverFeedViewProps) {
+  const { oneTapStart, problemClusters, zones, shortHooks, sevenDayPath, footer } = feed;
 
   return (
     <div className="flex flex-col gap-8 pb-10">
       {/* Header */}
       <section className="animate-fade-in">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h1 className="font-serif text-2xl font-bold text-ink sm:text-3xl">{header.title}</h1>
-            <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-muted">{header.subtitle}</p>
-          </div>
+        <div>
+          <h1 className="font-serif text-2xl font-bold text-ink sm:text-3xl">
+            {DISCOVER_PAGE_HEADER.title}
+          </h1>
+          <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-muted">
+            {DISCOVER_PAGE_HEADER.subtitle}
+          </p>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {onRefresh && (
+            <button
+              type="button"
+              onClick={() => onRefresh("default")}
+              disabled={refreshing}
+              className="flex items-center gap-1 rounded-full border border-paper bg-white px-3 py-1.5 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:opacity-50"
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className={refreshing ? "animate-spin" : ""}
+              >
+                <path d="M21 12a9 9 0 1 1-3-6.7M21 3v6h-6" />
+              </svg>
+              刷新
+            </button>
+          )}
           <button
             type="button"
             onClick={onSwitchSegment}
-            className="shrink-0 rounded-full border border-paper bg-white px-3 py-1.5 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-accent"
+            className="rounded-full border border-paper bg-white px-3 py-1.5 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-accent"
           >
             切换人群
           </button>
@@ -267,19 +302,25 @@ export default function DiscoverFeedView({ feed, onStartBook, onStartQuiz, onSwi
       <section className="flex flex-wrap gap-2 border-t border-paper pt-6">
         <button
           type="button"
-          className="rounded-full border border-paper bg-white px-4 py-2 text-xs text-ink-muted hover:border-accent/30"
+          onClick={() => onRefresh?.("default", footer.refreshLabel)}
+          disabled={!onRefresh || refreshing}
+          className="rounded-full border border-paper bg-white px-4 py-2 text-xs text-ink-muted hover:border-accent/30 disabled:opacity-50"
         >
           {footer.refreshLabel}
         </button>
         <button
           type="button"
-          className="rounded-full border border-paper bg-white px-4 py-2 text-xs text-ink-muted hover:border-accent/30"
+          onClick={() => onRefresh?.("easy", footer.easyFilter)}
+          disabled={!onRefresh || refreshing}
+          className="rounded-full border border-paper bg-white px-4 py-2 text-xs text-ink-muted hover:border-accent/30 disabled:opacity-50"
         >
           {footer.easyFilter}
         </button>
         <button
           type="button"
-          className="rounded-full border border-paper bg-white px-4 py-2 text-xs text-ink-muted hover:border-accent/30"
+          onClick={() => onRefresh?.("hard", footer.hardFilter)}
+          disabled={!onRefresh || refreshing}
+          className="rounded-full border border-paper bg-white px-4 py-2 text-xs text-ink-muted hover:border-accent/30 disabled:opacity-50"
         >
           {footer.hardFilter}
         </button>
